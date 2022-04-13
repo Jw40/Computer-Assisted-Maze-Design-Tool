@@ -1,3 +1,5 @@
+package Controller;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class Maze {
     }
 
     public String toString() {//overriding the toString() method
-        return "Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " MazeX: " + mazeSizeX + " MazeY: " + mazeSizeY + " Difficulty: " + difficulty;
+        return "Controller.Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " MazeX: " + mazeSizeX + " MazeY: " + mazeSizeY + " Difficulty: " + difficulty;
     }
 
     public List<Maze> GetMazes()
