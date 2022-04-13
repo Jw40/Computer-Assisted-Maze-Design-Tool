@@ -14,5 +14,5 @@ Notes:
 Version 1.1 
 Notes:
 14/04/22
--Created Model, View, Controller packages to seperate the classes 
--Added an implmentation to KidsMaze class to inherit from Maze class 
+- Created Model, View, Controller packages to seperate the classes 
+- Added an implmentation to KidsMaze class to inherit from Maze class 
