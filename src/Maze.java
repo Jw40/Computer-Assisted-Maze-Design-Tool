@@ -32,5 +32,39 @@ public class Maze {
         return mazeList;
     }
 
+    public void drawMaze()
+    {
 
+    }
+
+    public void drawMazeTemplate()
+    {
+
+    }
+
+    public Boolean searchMaze(Maze maze)
+    {
+        return true;
+
+    }
+    public void addMaze()
+    {
+
+    }
+    public void getMaze(Maze maze)
+    {
+
+    }
+
+    public void editMaze(Maze maze)
+    {
+
+
+    }
+
+    public void exportMaze()
+    {
+
+
+    }
 }

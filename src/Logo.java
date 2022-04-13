@@ -15,4 +15,21 @@ public class Logo {
     public String toString(){
         return "File Name: " + filename + " LogoX: " + logoSizeX + " LogoY: " + logoSizeY;
     }
+
+    public void exportLogo()
+    {
+
+    }
+    public void addLogo()
+    {
+
+    }
+    public void removeLogo()
+    {
+
+    }
+    public void positionLogo()
+    {
+
+    }
 }
