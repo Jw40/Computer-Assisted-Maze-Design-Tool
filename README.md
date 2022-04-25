@@ -16,3 +16,10 @@ Notes:
 14/04/22
 - Created Model, View, Controller packages to seperate the classes 
 - Added an implmentation to KidsMaze class to inherit from Maze class 
+
+Version 1.2
+Notes:
+26/04/2022
+-Added IMaze interface
+-Fixed Errors in KidzMaze and Maze class, added interface implmentation 
+-Added return statement to all methods
