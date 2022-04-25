@@ -20,6 +20,6 @@ Notes:
 Version 1.2
 Notes:
 26/04/2022
--Added IMaze interface
--Fixed Errors in KidzMaze and Maze class, added interface implmentation 
--Added return statement to all methods
+- Added IMaze interface
+- Fixed Errors in KidzMaze and Maze class, added interface implmentation 
+- Added return statement to all methods
