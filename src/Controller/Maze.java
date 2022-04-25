@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Maze {
+public class Maze implements IMaze{
+
+    //need to add getters and setter here
+
     public enum Difficulty{ Child, Easy, Intermediate, Hard};
 
     private String author;
@@ -13,6 +16,7 @@ public class Maze {
     private int mazeSizeX;
     private int mazeSizeY;
     private Difficulty difficulty;
+    private Logo adultLogo;
 
     Maze(String mazeName, String author, LocalDate dateCreated, int mazeSizeX, int mazeSizeY, Difficulty difficulty)
     {
@@ -36,12 +40,12 @@ public class Maze {
 
     public void drawMaze()
     {
-
+        return;
     }
 
     public void drawMazeTemplate()
     {
-
+        return;
     }
 
     public Boolean searchMaze(Maze maze)
@@ -51,22 +55,22 @@ public class Maze {
     }
     public void addMaze()
     {
-
+        return;
     }
     public void getMaze(Maze maze)
     {
-
+        return;
     }
 
     public void editMaze(Maze maze)
     {
 
-
+        return;
     }
 
     public void exportMaze()
     {
 
-
+        return;
     }
 }
