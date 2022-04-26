@@ -1,20 +1,28 @@
 package Controller;
 
+import java.awt.*;
+
 public interface IMaze
 {
-    public void drawMaze();
+    int  getMazeSize();
 
-    public void drawMazeTemplate();
+    Cell[] getMazeCells();
 
-    public Boolean searchMaze(Maze maze);
+    void draw(Graphics g);
 
-    public void addMaze();
+    void makeWalls();
 
-    public void getMaze(Maze maze);
+    void clearWalls();
+
+    Dimension windowSize();
+
+    void getMaze(Maze maze);
+
+    String toString();
 
 
-    public void editMaze(Maze maze);
+    void drawMazeTemplate();
 
 
-    public void exportMaze();
+    boolean[] getPath();
 }
