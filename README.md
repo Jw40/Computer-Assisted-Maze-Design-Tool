@@ -23,3 +23,15 @@ Notes:
 - Added IMaze interface
 - Fixed Errors in KidzMaze and Maze class, added interface implmentation 
 - Added return statement to all methods
+
+Version 1.2
+Notes:
+27/04/2022
+- Added Cell, DisjSets classes
+- Added implmentation of draw, getMazeSize, getMazeCells, makeWalls, clearWalls, windowSize, getMaze, toString, drawMazeTemplate and getPath to Maze and KidsMaze classes
+- Added implmentation of createPath and depthSearch in MazeSolver class
+- Linked up the classes to enable complication 
+- Ran tests on creating a maze
+- Created Model Package to store database related code
+- Stored Database and MazeCollections in Model package
+- Added some encapuslation to the mainGUI class, moving the Main method to a seperate class and called mainGUI object
