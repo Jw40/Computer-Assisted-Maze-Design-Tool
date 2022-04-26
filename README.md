@@ -24,7 +24,7 @@ Notes:
 - Fixed Errors in KidzMaze and Maze class, added interface implmentation 
 - Added return statement to all methods
 
-Version 1.2
+Version 1.3
 Notes:
 27/04/2022
 - Added Cell, DisjSets classes
