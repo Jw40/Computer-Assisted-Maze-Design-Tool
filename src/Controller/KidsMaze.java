@@ -225,7 +225,7 @@ public class KidsMaze implements IMaze {
     }
 
 
-    public void getMaze(Maze maze)
+    public void getMaze()
     {
         return;
     }

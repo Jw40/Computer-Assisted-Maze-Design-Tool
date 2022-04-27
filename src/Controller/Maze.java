@@ -35,6 +35,12 @@ public class Maze implements IMaze{
     private Difficulty difficulty;
     private Logo adultLogo;
 
+    /**
+     * @param size size of maze
+     * @param mazeName name of maze
+     * @param author author of maze
+     * @param dateCreated creation date of maze
+     */
     //constructor for the maze object
     public Maze(int size, String mazeName, String author, LocalDate dateCreated)//, Difficulty difficulty)
     {
@@ -63,17 +69,27 @@ public class Maze implements IMaze{
         }
     }
 
-    //getters for MazeSolver
+    /**
+     *
+     * @return the size of a maze to the maze solver class
+     */
     public int getMazeSize()
     {
         return N;
     }
 
+    /**
+     *
+     * @return the Cell array to the maze solver class
+     */
     public Cell[] getMazeCells()
     {
         return cells;
     }
 
+    /**
+     * draw a new maze template
+     */
     public boolean[] getPath()
     {
         return path;
@@ -81,8 +97,12 @@ public class Maze implements IMaze{
 
 
 
-
+    /**
+     *
+     * @param g to draw the maze, used in the MazePanel class
+     */
     //this is what draws the maze, called in the MazePanel GUI
+    @Override
     public void draw(Graphics g) // draws a maze
    {
        g.setColor(Color.BLACK);
@@ -148,7 +168,11 @@ public class Maze implements IMaze{
        }
    }
 
+    /**
+     * used to make the walls of a maze in a grid like fashion
+     */
    //this is used to create all cells in the maze aka the walls roofs and floors
+    @Override
     public void makeWalls() // fills wall information in Cells, -1 represents a
     // border wall
     {
@@ -174,7 +198,10 @@ public class Maze implements IMaze{
         }
     }
 
-    //this used to randomly knock down some of the walls in the maze
+    /**
+     * used after make walls to clear random walls in the maze
+     */
+    @Override
     public void clearWalls() // destroys walls with a modified version of
     // Kruskal's algorithm
     {
@@ -223,7 +250,13 @@ public class Maze implements IMaze{
         }
     }
 
+    /**
+     *
+     * @return the ideal size of the window (for ScrollPanes)
+     *
+     */
     //set window size demension for the maze panel
+    @Override
     public Dimension windowSize() // returns the ideal size of the window (for
     // JScrollPanes)
     {
@@ -231,18 +264,29 @@ public class Maze implements IMaze{
                 * 2);
     }
 
-    //need to add code to draw a maze template
+    /**
+     *
+     * @return the path to maze solver
+     */
     public void drawMazeTemplate()
     {
         return;
     }
 
+    /**
+     *
+     * return the current maze
+     */
     //not sure if this is needed here because we dont create the maze object here we crate it in the mainGUI
-    public void getMaze(Maze maze)
+    public void getMaze()
     {
         return;
     }
 
+    /**
+     *
+     * @return string to console of new maze object (used for debugging)
+     */
     //can be used for debugging i guess
     public String toString() {//overriding the toString() method
         return "Controller.Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " Size: " + N;
