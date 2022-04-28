@@ -35,3 +35,11 @@ Notes:
 - Created Model Package to store database related code
 - Stored Database and MazeCollections in Model package
 - Added some encapuslation to the mainGUI class, moving the Main method to a seperate class and called mainGUI object
+
+Version 1.4
+Notes:
+28/04/2022
+- Added JavaDocs comments for every class
+- Added JavaDocs comments for every method 
+- Generated JavaDocs
+ 
