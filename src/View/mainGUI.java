@@ -17,10 +17,17 @@ public class mainGUI {
     //we can have a main method in here to start the application I think
     //the GUI object will be called in that main method and then the application will run.
 
+    public mainGUI()
+    {
+        //write GUI code here
+    }
+
+
 
     /**
      * Used to create a mainGUI object
      */
+    /*
     public mainGUI() {
         //this creates a new maze object
         int size = Integer.valueOf(10);
@@ -51,4 +58,5 @@ public class mainGUI {
         //print maze details to console
         System.out.println(maze.toString());
     }
+    */
 }
