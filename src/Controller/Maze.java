@@ -6,36 +6,63 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Contains Maze object properties and methods to create a maze. Initialises the maze currently takes place in the mainGUI class, which draw method is called in MazePanel class
+ *
+ */
 public class Maze implements IMaze{
 
 
-
+    /**
+     *  maze square size
+     */
     //class properties
-    public static final int CELL_WIDTH = 20; // maze square size
-    public static final int MARGIN = 50; // buffer between window edge and maze
-    public static final int DOT_SIZE = 10; // size of maze solution dot
-    public static final int DOT_MARGIN = 5; // space between wall and dot
+    public static final int CELL_WIDTH = 20;
+
+    /**
+     * buffer between window edge and maze
+     */
+    public static final int MARGIN = 50;
+
+    /**
+     * size of maze solution dot
+     */
+    public static final int DOT_SIZE = 10;
+
+    /**
+     * space between wall and dot
+     */
+    public static final int DOT_MARGIN = 5;
     private int N;
-    private Cell[] cells; // array containing all the cells in the maze
-    public boolean[] path; // array representing the unique path solution
+    /**
+     * array containing all the cells in the maze
+     */
+    private Cell[] cells;
+    /**
+     * array representing the unique path solution
+     */
+    public boolean[] path;
 
     final int NORTH = 0 ;
     final int SOUTH = 1 ;
     final int EAST = 2 ;
     final int WEST = 3 ;
 
-    //this is currently unsued
-    public enum Difficulty{ Child, Easy, Intermediate, Hard};
+    /**
+     * Difficulty or "size" of a Kids maze (not yet implemented)
+     */
+//    public enum Difficulty{ Child, Easy, Intermediate, Hard};
 
     private String author;
     private String mazeName;
     private LocalDate dateCreated;
     private int mazeSizeX;
     private int mazeSizeY;
-    private Difficulty difficulty;
+   // private Difficulty difficulty;
     private Logo adultLogo;
 
     /**
+     * Used to create a maze object
      * @param size size of maze
      * @param mazeName name of maze
      * @param author author of maze
@@ -88,7 +115,7 @@ public class Maze implements IMaze{
     }
 
     /**
-     * draw a new maze template
+     * return path to MazeSolver
      */
     public boolean[] getPath()
     {
@@ -251,11 +278,11 @@ public class Maze implements IMaze{
     }
 
     /**
-     *
+     * set window size demension for the maze panel
      * @return the ideal size of the window (for ScrollPanes)
      *
      */
-    //set window size demension for the maze panel
+
     @Override
     public Dimension windowSize() // returns the ideal size of the window (for
     // JScrollPanes)
@@ -266,7 +293,7 @@ public class Maze implements IMaze{
 
     /**
      *
-     * @return the path to maze solver
+     * draw a new maze template
      */
     public void drawMazeTemplate()
     {

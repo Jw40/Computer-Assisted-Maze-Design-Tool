@@ -8,12 +8,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
+/**
+ * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.
+ * This will also be responsible for the general appearance and apply to the user-friendliness of the project
+ */
 public class mainGUI {
 
     //we can have a main method in here to start the application I think
     //the GUI object will be called in that main method and then the application will run.
 
 
+    /**
+     * Used to create a mainGUI object
+     */
     public mainGUI() {
         //this creates a new maze object
         int size = Integer.valueOf(10);

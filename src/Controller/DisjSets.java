@@ -1,6 +1,8 @@
 package Controller;
 
-//disjointed set class (not entirely sure how this works but its called when creating a new maze)
+/**
+ * disjointed set class
+ */
 public class DisjSets
 {
     /**
@@ -47,6 +49,9 @@ public class DisjSets
             return s[ x ] = find( s[ x ] );
     }
 
+    /**
+     * s
+     */
     public int [ ] s;
 
     /**

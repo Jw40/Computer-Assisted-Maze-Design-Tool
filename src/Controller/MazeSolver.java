@@ -1,5 +1,8 @@
 package Controller;
 
+/**
+ * Contains methods that will allow the user to derive a solution (if one exists) for the maze they create and display the path form them.
+ */
 public class MazeSolver {
 
     final int NORTH = 0 ;
@@ -7,7 +10,10 @@ public class MazeSolver {
     final int EAST = 2 ;
     final int WEST = 3 ;
 
-    //used to create the solution path and is called in the main GUI to add the current solution to the maze object
+    /**
+     * used to create the solution path and is called in the main GUI to add the current solution to the maze object
+     * @param thisMaze IMaze object
+     */
     public void createPath(IMaze thisMaze) // finds a path in the maze
     {
         int N = thisMaze.getMazeSize();
@@ -37,7 +43,12 @@ public class MazeSolver {
         // cell
     }
 
-    //this is a helped function for createPath
+
+    /**
+     * this is a helped function for createPath
+     * @param cell int
+     * @param thisMaze maze object
+     */
     public void depthSearch(int cell, IMaze thisMaze) // executes a first breath search to find
     // a path in the maze
     {
@@ -79,16 +90,25 @@ public class MazeSolver {
         }
     }
 
+    /**
+     * Used to display the solution mertrics on the screen (not yet implemented)
+     */
     public void dispalySolutionMetrics()
     {
         return;
     }
 
+    /**
+     * Used to display Solution calculation on the screen (not yet implemented)
+     */
     public void displaySolutionCalc()
     {
         return;
     }
 
+    /**
+     * Used to toggle the Solution path on the screen (not yet implemented)
+     */
     public void toggleSolutionPath()
     {
         return;

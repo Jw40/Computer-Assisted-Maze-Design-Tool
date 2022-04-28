@@ -7,32 +7,64 @@ import java.util.List;
 import java.util.Random;
 
 
+/**
+ * Certain elements of the Adult maze will be different to the kids maze, this includes size, difficulty and what techniques are used to indicate the start and end of the maze.
+ * Therefore this class will manage those elements and provide a maze object that will be suited for children
+ */
 public class KidsMaze implements IMaze {
 
-    public static final int CELL_WIDTH = 20; // maze square size
-    public static final int MARGIN = 50; // buffer between window edge and maze
-    public static final int DOT_SIZE = 10; // size of maze solution dot
-    public static final int DOT_MARGIN = 5; // space between wall and dot
+    /**
+     * maze square size
+     */
+    public static final int CELL_WIDTH = 20;
+    /**
+     * buffer between window edge and maze
+     */
+    public static final int MARGIN = 50;
+    /**
+     * size of maze solution dot
+     */
+    public static final int DOT_SIZE = 10;
+    /**
+     * space between wall and dot
+     */
+    public static final int DOT_MARGIN = 5;
     private int N;
-    private Cell[] cells; // array containing all the cells in the maze
-    public boolean[] path; // array representing the unique path solution
+    /**
+     * array containing all the cells in the maze
+     */
+    private Cell[] cells;
+    /**
+     *  array representing the unique path solution
+     */
+    public boolean[] path;
 
     final int NORTH = 0 ;
     final int SOUTH = 1 ;
     final int EAST = 2 ;
     final int WEST = 3 ;
 
-    public enum Difficulty{ Easy, Intermediate };
+    /**
+     * Difficulty or "size" of a Kids maze (not yet implemented)
+     */
+//    public enum Difficulty{ Easy, Intermediate };
 
     private String author;
     private String mazeName;
     private LocalDate dateCreated;
     private int mazeSizeX;
     private int mazeSizeY;
-    private KidsMaze.Difficulty difficulty;
+    //private KidsMaze.Difficulty difficulty;
     private Logo kidsLogo;
 
 
+    /**
+     * Used to create a KidsMaze object
+     * @param mazeName name of maze
+     * @param author author of maze
+     * @param dateCreated date created
+     * @param size size of maze
+     */
     public KidsMaze(String mazeName, String author, LocalDate dateCreated, int size)
     {
         this.N = size;
@@ -237,11 +269,7 @@ public class KidsMaze implements IMaze {
 
 
 
-    public java.util.List<Maze> GetMazes()
-    {
-        List<Maze> mazeList = new ArrayList<Maze>();
-        return mazeList;
-    }
+
 
 
 
