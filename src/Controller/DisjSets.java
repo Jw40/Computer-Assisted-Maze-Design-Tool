@@ -2,6 +2,13 @@ package Controller;
 
 /**
  * disjointed set class
+ *Disclaimer - This piece of source code was referenced:
+ *                 Author: irealva
+ *                 Date: 4/9/2014
+ *                 Title of program: maze-gui
+ *                 Code version: unknown
+ *                 Type: Source code
+ *                 Web address: https://github.com/irealva/maze-gui
  */
 public class DisjSets
 {

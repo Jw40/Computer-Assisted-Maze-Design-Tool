@@ -2,8 +2,6 @@ package Controller;
 
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -64,6 +62,14 @@ public class KidsMaze implements IMaze {
      * @param author author of maze
      * @param dateCreated date created
      * @param size size of maze
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
     public KidsMaze(String mazeName, String author, LocalDate dateCreated, int size)
     {
@@ -98,6 +104,18 @@ public class KidsMaze implements IMaze {
         return new Cell[0];
     }
 
+
+    /**
+     * @param g to draw the maze, used in the MazePanel class
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
+     */
     public void draw(Graphics g) // draws a maze
     {
         g.setColor(Color.BLACK);
@@ -110,13 +128,13 @@ public class KidsMaze implements IMaze {
                     count += N;
                 }
 
-                if (cells[count].walls[NORTH] != N * N) // if there exists a wall to the north
+                if (cells[count].cellWalls[NORTH] != N * N) // if there exists a wall to the north
                 {
                     g.drawLine((i * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN),
                             ((i + 1) * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN));
                 }
 
-                if (cells[count].walls[SOUTH] != N * N) // if there exists a wall to the
+                if (cells[count].cellWalls[SOUTH] != N * N) // if there exists a wall to the
                 // south
                 {
                     g.drawLine(i * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
@@ -124,7 +142,7 @@ public class KidsMaze implements IMaze {
                             + MARGIN);
                 }
 
-                if (cells[count].walls[EAST] != N * N) // if there exists a wall to the
+                if (cells[count].cellWalls[EAST] != N * N) // if there exists a wall to the
                 // east
                 {
                     g.drawLine((i + 1) * CELL_WIDTH + MARGIN, j * CELL_WIDTH
@@ -132,7 +150,7 @@ public class KidsMaze implements IMaze {
                             + MARGIN);
                 }
 
-                if (cells[count].walls[WEST] != N * N) // if there exists a wall to the
+                if (cells[count].cellWalls[WEST] != N * N) // if there exists a wall to the
                 // west
                 {
                     g.drawLine(i * CELL_WIDTH + MARGIN, j * CELL_WIDTH + MARGIN, i
@@ -163,32 +181,50 @@ public class KidsMaze implements IMaze {
         }
     }
 
+    /**
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
+     */
     //this is used to create all cells in the maze aka the walls roofs and floors
     public void makeWalls() // fills wall information in Cells, -1 represents a
     // border wall
     {
         for (int i = 0; i < N * N; i++) // set north,south,east,west walls
         {
-            cells[i].walls[NORTH] = i - N;
-            cells[i].walls[SOUTH] = i + N;
-            cells[i].walls[EAST] = i + 1;
-            cells[i].walls[WEST] = i - 1;
+            cells[i].cellWalls[NORTH] = i - N;
+            cells[i].cellWalls[SOUTH] = i + N;
+            cells[i].cellWalls[EAST] = i + 1;
+            cells[i].cellWalls[WEST] = i - 1;
         }
 
         for (int i = 0; i < N; i++)
         {
-            cells[i].walls[NORTH] = -1; // set in border north cells, north wall to -1
-            cells[N * N - i - 1].walls[SOUTH] = -1; // set in border south cells, south
+            cells[i].cellWalls[NORTH] = -1; // set in border north cells, north wall to -1
+            cells[N * N - i - 1].cellWalls[SOUTH] = -1; // set in border south cells, south
             // wall to -1
         }
         for (int i = 0; i < N * N; i += N)
         {
-            cells[N * N - i - 1].walls[EAST] = -1; // set in border east cells, east
+            cells[N * N - i - 1].cellWalls[EAST] = -1; // set in border east cells, east
             // wall to -1
-            cells[i].walls[WEST] = -1; // set in border west cells, west wall to -1
+            cells[i].cellWalls[WEST] = -1; // set in border west cells, west wall to -1
         }
     }
 
+    /**
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
+     */
     //this used to randomly knock down some of the walls in the maze
     public void clearWalls() // destroys walls with a modified version of
     // Kruskal's algorithm
@@ -209,7 +245,7 @@ public class KidsMaze implements IMaze {
             int cell1 = generator.nextInt(N * N); // pick a random cell
             int wall = generator.nextInt(4);
 
-            int cell2 = cells[cell1].walls[wall]; // pick a second random cell
+            int cell2 = cells[cell1].cellWalls[wall]; // pick a second random cell
 
             if (cell2 != -1 && cell2 != N * N) // if there exists a wall between
             // these two cells
@@ -217,17 +253,17 @@ public class KidsMaze implements IMaze {
                 if (ds.find(cell1) != ds.find(cell2)) // if cells do not belong to
                 // the same set
                 {
-                    cells[cell1].walls[wall] = N * N; // destroy the wall between
+                    cells[cell1].cellWalls[wall] = N * N; // destroy the wall between
                     // these two cells. N*N will
                     // represent no wall
 
                     if (wall == NORTH || wall == EAST)
                     {
-                        cells[cell2].walls[wall + 1] = N * N;
+                        cells[cell2].cellWalls[wall + 1] = N * N;
                     }
                     if (wall == SOUTH || wall == WEST)
                     {
-                        cells[cell2].walls[wall - 1] = N * N;
+                        cells[cell2].cellWalls[wall - 1] = N * N;
                     }
 
                     ds.union(ds.find(cell1), ds.find(cell2)); // make a union of the

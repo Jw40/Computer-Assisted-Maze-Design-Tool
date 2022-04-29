@@ -2,8 +2,6 @@ package Controller;
 
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,7 +31,7 @@ public class Maze implements IMaze{
      * space between wall and dot
      */
     public static final int DOT_MARGIN = 5;
-    private int N;
+    private int MazeSize;
     /**
      * array containing all the cells in the maze
      */
@@ -67,12 +65,20 @@ public class Maze implements IMaze{
      * @param mazeName name of maze
      * @param author author of maze
      * @param dateCreated creation date of maze
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
     //constructor for the maze object
     public Maze(int size, String mazeName, String author, LocalDate dateCreated)//, Difficulty difficulty)
     {
 
-        this.N = size;
+        this.MazeSize = size;
         this.mazeName = mazeName;
         this.author = author;
         this.dateCreated = dateCreated;
@@ -80,19 +86,19 @@ public class Maze implements IMaze{
 
         //this.difficulty = difficulty ;
 
-        cells = new Cell[N * N]; // creates array of Cells
+        cells = new Cell[MazeSize * MazeSize]; // creates array of Cells
 
-        for (int i = 0; i < N * N; i++) // initializes array with Cell objects
+        for (int i = 0; i < MazeSize * MazeSize; i++) // initializes array with Cell objects
         {
             cells[i] = new Cell();
         }
 
-        if(N > 0)
+        if(MazeSize > 0)
         {
             makeWalls(); // updates wall information inside each Cell object
             clearWalls(); // destoys wall until a maze is formed
 
-            path = new boolean[N * N];
+            path = new boolean[MazeSize * MazeSize];
         }
     }
 
@@ -102,7 +108,7 @@ public class Maze implements IMaze{
      */
     public int getMazeSize()
     {
-        return N;
+        return MazeSize;
     }
 
     /**
@@ -127,28 +133,36 @@ public class Maze implements IMaze{
     /**
      *
      * @param g to draw the maze, used in the MazePanel class
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
     //this is what draws the maze, called in the MazePanel GUI
     @Override
     public void draw(Graphics g) // draws a maze
    {
        g.setColor(Color.BLACK);
-       for (int i = 0; i < N; i++)
+       for (int i = 0; i < MazeSize; i++)
        {
            int count = i;
-           for (int j = 0; j < N; j++)
+           for (int j = 0; j < MazeSize; j++)
            {
                if (j != 0) {
-                   count += N;
+                   count += MazeSize;
                }
 
-               if (cells[count].walls[NORTH] != N * N) // if there exists a wall to the north
+               if (cells[count].cellWalls[NORTH] != MazeSize * MazeSize) // if there exists a wall to the north
                 {
                     g.drawLine((i * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN),
                             ((i + 1) * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN));
                 }
 
-               if (cells[count].walls[SOUTH] != N * N) // if there exists a wall to the
+               if (cells[count].cellWalls[SOUTH] != MazeSize * MazeSize) // if there exists a wall to the
                     // south
                 {
                     g.drawLine(i * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
@@ -156,7 +170,7 @@ public class Maze implements IMaze{
                                 + MARGIN);
                 }
 
-               if (cells[count].walls[EAST] != N * N) // if there exists a wall to the
+               if (cells[count].cellWalls[EAST] != MazeSize * MazeSize) // if there exists a wall to the
                     // east
                 {
                     g.drawLine((i + 1) * CELL_WIDTH + MARGIN, j * CELL_WIDTH
@@ -164,7 +178,7 @@ public class Maze implements IMaze{
                                 + MARGIN);
                 }
 
-                if (cells[count].walls[WEST] != N * N) // if there exists a wall to the
+                if (cells[count].cellWalls[WEST] != MazeSize * MazeSize) // if there exists a wall to the
                     // west
                 {
                         g.drawLine(i * CELL_WIDTH + MARGIN, j * CELL_WIDTH + MARGIN, i
@@ -173,14 +187,14 @@ public class Maze implements IMaze{
            }
        }
        g.setColor(Color.RED); // changes color to draw the dots
-       for (int i = 0; i < N; i++)
+       for (int i = 0; i < MazeSize; i++)
        {
            int count = i;
-           for (int j = 0; j < N; j++)
+           for (int j = 0; j < MazeSize; j++)
            {
                if (j != 0)
                {
-                   count += N;
+                   count += MazeSize;
                }
 
                if (path[count] == true) // if cell is part of the path
@@ -197,46 +211,62 @@ public class Maze implements IMaze{
 
     /**
      * used to make the walls of a maze in a grid like fashion
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
    //this is used to create all cells in the maze aka the walls roofs and floors
     @Override
     public void makeWalls() // fills wall information in Cells, -1 represents a
     // border wall
     {
-        for (int i = 0; i < N * N; i++) // set north,south,east,west walls
+        for (int i = 0; i < MazeSize * MazeSize; i++) // set north,south,east,west walls
         {
-            cells[i].walls[NORTH] = i - N;
-            cells[i].walls[SOUTH] = i + N;
-            cells[i].walls[EAST] = i + 1;
-            cells[i].walls[WEST] = i - 1;
+            cells[i].cellWalls[NORTH] = i - MazeSize;
+            cells[i].cellWalls[SOUTH] = i + MazeSize;
+            cells[i].cellWalls[EAST] = i + 1;
+            cells[i].cellWalls[WEST] = i - 1;
         }
 
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < MazeSize; i++)
         {
-            cells[i].walls[NORTH] = -1; // set in border north cells, north wall to -1
-            cells[N * N - i - 1].walls[SOUTH] = -1; // set in border south cells, south
+            cells[i].cellWalls[NORTH] = -1; // set in border north cells, north wall to -1
+            cells[MazeSize * MazeSize - i - 1].cellWalls[SOUTH] = -1; // set in border south cells, south
             // wall to -1
         }
-        for (int i = 0; i < N * N; i += N)
+        for (int i = 0; i < MazeSize * MazeSize; i += MazeSize)
         {
-            cells[N * N - i - 1].walls[EAST] = -1; // set in border east cells, east
+            cells[MazeSize * MazeSize - i - 1].cellWalls[EAST] = -1; // set in border east cells, east
             // wall to -1
-            cells[i].walls[WEST] = -1; // set in border west cells, west wall to -1
+            cells[i].cellWalls[WEST] = -1; // set in border west cells, west wall to -1
         }
     }
 
     /**
      * used after make walls to clear random walls in the maze
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
     @Override
     public void clearWalls() // destroys walls with a modified version of
     // Kruskal's algorithm
     {
-        int NumElements = N * N;
+        int NumElements = MazeSize * MazeSize;
 
         DisjSets ds = new DisjSets(NumElements); // creates a disjoint set to
         // represent cells
-        for (int k = 0; k < N * N; k++)
+        for (int k = 0; k < MazeSize * MazeSize; k++)
         {
             ds.find(k); // adds each cell to a single set
         }
@@ -245,28 +275,28 @@ public class Maze implements IMaze{
         while (ds.allConnected() == false) // while not all the elements in the
         // set are connected
         {
-            int cell1 = generator.nextInt(N * N); // pick a random cell
+            int cell1 = generator.nextInt(MazeSize * MazeSize); // pick a random cell
             int wall = generator.nextInt(4);
 
-            int cell2 = cells[cell1].walls[wall]; // pick a second random cell
+            int cell2 = cells[cell1].cellWalls[wall]; // pick a second random cell
 
-            if (cell2 != -1 && cell2 != N * N) // if there exists a wall between
+            if (cell2 != -1 && cell2 != MazeSize * MazeSize) // if there exists a wall between
             // these two cells
             {
                 if (ds.find(cell1) != ds.find(cell2)) // if cells do not belong to
                 // the same set
                 {
-                    cells[cell1].walls[wall] = N * N; // destroy the wall between
+                    cells[cell1].cellWalls[wall] = MazeSize * MazeSize; // destroy the wall between
                     // these two cells. N*N will
                     // represent no wall
 
                     if (wall == NORTH || wall == EAST)
                     {
-                        cells[cell2].walls[wall + 1] = N * N;
+                        cells[cell2].cellWalls[wall + 1] = MazeSize * MazeSize;
                     }
                     if (wall == SOUTH || wall == WEST)
                     {
-                        cells[cell2].walls[wall - 1] = N * N;
+                        cells[cell2].cellWalls[wall - 1] = MazeSize * MazeSize;
                     }
 
                     ds.union(ds.find(cell1), ds.find(cell2)); // make a union of the
@@ -282,12 +312,11 @@ public class Maze implements IMaze{
      * @return the ideal size of the window (for ScrollPanes)
      *
      */
-
     @Override
     public Dimension windowSize() // returns the ideal size of the window (for
     // JScrollPanes)
     {
-        return new Dimension(N * CELL_WIDTH + MARGIN * 2, N * CELL_WIDTH + MARGIN
+        return new Dimension(MazeSize * CELL_WIDTH + MARGIN * 2, MazeSize * CELL_WIDTH + MARGIN
                 * 2);
     }
 
@@ -316,6 +345,6 @@ public class Maze implements IMaze{
      */
     //can be used for debugging i guess
     public String toString() {//overriding the toString() method
-        return "Controller.Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " Size: " + N;
+        return "Controller.Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " Size: " + MazeSize;
     }
 }

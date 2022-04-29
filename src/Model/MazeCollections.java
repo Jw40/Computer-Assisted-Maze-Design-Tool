@@ -6,8 +6,8 @@ import Controller.Maze;
  * Used to for pre prepared SQL statements to add, search, edit, export and save mazes to the database
  */
 public class MazeCollections {
-    //this is probs not needed as this would be used if we were not using a database and this would be the storage class
-    //would could implement this as a class between the GUI to add/delete for database etc
+
+    //implement this as a class between the GUI to add/delete for database etc
 
     /**
      * Used to add a maze to the database

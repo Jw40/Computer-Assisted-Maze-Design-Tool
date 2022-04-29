@@ -13,19 +13,25 @@ public class MazeSolver {
     /**
      * used to create the solution path and is called in the main GUI to add the current solution to the maze object
      * @param thisMaze IMaze object
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
      */
-    public void createPath(IMaze thisMaze) // finds a path in the maze
+    public void createMazePath(IMaze thisMaze) // finds a path in the maze
     {
-        int N = thisMaze.getMazeSize();
-        if( N != 1) //if maze is not of size 1
+        int mazeSize = thisMaze.getMazeSize();
+        if( mazeSize != 1) //if maze is not of size 1
         {
             depthSearch(0, thisMaze); // executes a first breath search starting on the top
             // left cell
-
             thisMaze.getPath()[0] = true; // path starts on top left cell
-            thisMaze.getPath()[N * N - 1] = true; // path ends on bottom right cell
-
-            int current = thisMaze.getMazeCells()[N * N - 1].visitedBy; // start on the last, bottom
+            thisMaze.getPath()[mazeSize * mazeSize - 1] = true; // path ends on bottom right cell
+            int current = thisMaze.getMazeCells()[mazeSize * mazeSize - 1].visitedBy; // start on the last, bottom
             // right cell
             while (current != 0) // follows the path back to the starting cell
             {
@@ -37,9 +43,8 @@ public class MazeSolver {
         {
             thisMaze.getPath()[0] = true ;
         }
-
-        thisMaze.getMazeCells()[0].walls[WEST] = N * N; // destroys west wall on top left cell
-        thisMaze.getMazeCells()[N * N - 1].walls[EAST] = N * N; // destroys east wall on bottom right
+        thisMaze.getMazeCells()[0].cellWalls[WEST] = mazeSize * mazeSize; // destroys west wall on top left cell
+        thisMaze.getMazeCells()[mazeSize * mazeSize - 1].cellWalls[EAST] = mazeSize * mazeSize; // destroys east wall on bottom right
         // cell
     }
 
@@ -48,6 +53,15 @@ public class MazeSolver {
      * this is a helped function for createPath
      * @param cell int
      * @param thisMaze maze object
+     *
+     *Disclaimer - This piece of source code was referenced:
+     *                 Author: irealva
+     *                 Date: 4/9/2014
+     *                 Title of program: maze-gui
+     *                 Code version: unknown
+     *                 Type: Source code
+     *                 Web address: https://github.com/irealva/maze-gui
+     *
      */
     public void depthSearch(int cell, IMaze thisMaze) // executes a first breath search to find
     // a path in the maze
@@ -60,7 +74,7 @@ public class MazeSolver {
         {
             int adjacent = -1;
 
-            if (startCell.walls[i] == N * N) // if there is no wall in north,
+            if (startCell.cellWalls[i] == N * N) // if there is no wall in north,
             // south, east or west direction
             {
                 if (i == NORTH)

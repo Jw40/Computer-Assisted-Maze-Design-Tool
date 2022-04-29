@@ -21,11 +21,14 @@ import java.time.LocalDate;
  */
 public class mainGUI extends Component {
 
+    /**
+     * variable to store the Jframe for maze displayfg
+     */
     JFrame mazeWindow = new JFrame("Maze Generator");
 
-    //we can have a main method in here to start the application I think
-    //the GUI object will be called in that main method and then the application will run.
-
+    /**
+     * Used to open a file in the GUI
+     */
     public void OpenFileChooser()
     {
         JFileChooser fileChooser = new JFileChooser();
@@ -54,6 +57,10 @@ public class mainGUI extends Component {
         }
 
     }
+
+    /**
+     * Used to create the drop down menu in the GUI
+     */
     public void createDropDownMenu()
     {
         JMenu file, autogen, createNew, edit, database;
@@ -102,6 +109,10 @@ public class mainGUI extends Component {
             }
         });
     }
+
+    /**
+     * Used to create new GUI
+     */
     public void createNewWindow()
     {
 
@@ -116,6 +127,10 @@ public class mainGUI extends Component {
         createDropDownMenu();
 
     }
+
+    /**
+     * this may be redundant
+     */
     public mainGUI()
     {
         createNewWindow();
@@ -126,36 +141,26 @@ public class mainGUI extends Component {
 
 
     /**
-     * Used to create a mainGUI object
+     *
+     * Used to create a mainGUI object, still under implementation
      */
     /*
     public mainGUI() {
         //this creates a new maze object
-        int size = Integer.valueOf(10);
-        IMaze maze = new Maze(size, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
+        int mazeSize = Integer.valueOf(10);
+        IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
-
-
-
-
             //this creates the soultion path
             MazeSolver Solver = new MazeSolver();
             Solver.createPath(maze);
-
-
-            JFrame frame = new JFrame("Maze");
-            MazePanel panel = new MazePanel(maze); // Constructs the panel to hold the
+            JFrame mainJframe = new JFrame("Maze");
+            MazePanel mazePanel = new MazePanel(maze); // Constructs the mazePanel to hold the
             // maze
-            JScrollPane scrollPane = new JScrollPane(panel);
-
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 800);
-            frame.add(scrollPane, BorderLayout.CENTER);
-            frame.setVisible(true);
-        } catch (NumberFormatException exception) {
-            System.out.println("The input number for the maze size must be an integer");
-        }
-
+            JScrollPane scrollPane = new JScrollPane(mazePanel);
+            mainJframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainJframe.setSize(1000, 800);
+            mainJframe.add(scrollPane, BorderLayout.CENTER);
+            mainJframe.setVisible(true);
         //print maze details to console
         System.out.println(maze.toString());
     }
