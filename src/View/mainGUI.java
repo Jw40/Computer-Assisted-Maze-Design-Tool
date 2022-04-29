@@ -63,7 +63,7 @@ public class mainGUI extends Component {
      */
     public void createDropDownMenu()
     {
-        JMenu file, autogen, createNew, edit, database;
+        JMenu file, autogen, createNew, edit, database, about;
         JMenuItem open, save, saveAs, mazePref, export, exit;
 
         JMenuBar mb=new JMenuBar();
@@ -72,6 +72,7 @@ public class mainGUI extends Component {
         createNew=new JMenu("Create New");
         edit=new JMenu("Editor");
         database=new JMenu("Database");
+        about= new JMenu("About");
 
 
         open=new JMenuItem("Open");
@@ -84,7 +85,7 @@ public class mainGUI extends Component {
         file.add(open); file.add(save); file.add(saveAs);
         file.add(mazePref); file.add(export); file.add(exit);
 
-        mb.add(file); mb.add(autogen);mb.add(createNew);mb.add(edit);mb.add(database);
+        mb.add(file); mb.add(autogen);mb.add(createNew);mb.add(edit);mb.add(database);mb.add(about);
         mazeWindow.setJMenuBar(mb);
         mazeWindow.setSize(400,400);
         mazeWindow.setLayout(null);
@@ -127,6 +128,40 @@ public class mainGUI extends Component {
         createDropDownMenu();
 
     }
+
+    public void saveAs() {
+        //Save As
+    }
+
+    public void mazePreferences() {
+        //Preferences
+    }
+
+    public void export() {
+        //Export
+    }
+
+    public void autoGenerate() {
+        //Save As
+    }
+
+    public void createNew() {
+        //Save As
+    }
+
+    public void editor() {
+        //Save As
+    }
+
+    public void database() {
+        //Save As
+    }
+
+    public void about() {
+        //Save As
+    }
+
+
 
     /**
      * this may be redundant
