@@ -15,22 +15,22 @@ public class Maze implements IMaze{
      *  maze square size
      */
     //class properties
-    public static final int CELL_WIDTH = 20;
+    private static final int CELL_WIDTH = 20;
 
     /**
      * buffer between window edge and maze
      */
-    public static final int MARGIN = 50;
+    private static final int MARGIN = 50;
 
     /**
      * size of maze solution dot
      */
-    public static final int DOT_SIZE = 10;
+    private static final int SOLUTION_DOT_SIZE = 10;
 
     /**
      * space between wall and dot
      */
-    public static final int DOT_MARGIN = 5;
+    private static final int DOT_MARGIN = 5;
     private int MazeSize;
     /**
      * array containing all the cells in the maze
@@ -39,12 +39,12 @@ public class Maze implements IMaze{
     /**
      * array representing the unique path solution
      */
-    public boolean[] path;
+    private boolean[] path;
 
-    final int NORTH = 0 ;
-    final int SOUTH = 1 ;
-    final int EAST = 2 ;
-    final int WEST = 3 ;
+    private final int NORTH = 0 ;
+    private final int SOUTH = 1 ;
+    private final int EAST = 2 ;
+    private final int WEST = 3 ;
 
     /**
      * Difficulty or "size" of a Kids maze (not yet implemented)
@@ -100,6 +100,34 @@ public class Maze implements IMaze{
 
             path = new boolean[MazeSize * MazeSize];
         }
+    }
+
+    /**
+     * returns the name of this Maze object
+     * @return maze name
+     */
+    public String getMazeName()
+    {
+        return this.mazeName;
+    }
+
+    /**
+     * returns the author of this Maze object
+     * @return the author of this Maze object
+     */
+    public String getAuthorName()
+    {
+        return this.author;
+    }
+
+
+    /**
+     * return this datacreated of this Maze object
+     * @return this datecreated of this Maze object
+     */
+    public LocalDate getDateCreated()
+    {
+        return this.dateCreated;
     }
 
     /**
@@ -200,7 +228,7 @@ public class Maze implements IMaze{
                if (path[count] == true) // if cell is part of the path
                {
                    g.fillOval(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
-                           + MARGIN + DOT_MARGIN, DOT_SIZE, DOT_SIZE); // paint a red
+                           + MARGIN + DOT_MARGIN, SOLUTION_DOT_SIZE, SOLUTION_DOT_SIZE); // paint a red
                    // circle in the
                    // cell
 
@@ -321,6 +349,7 @@ public class Maze implements IMaze{
     }
 
     /**
+     *
      *
      * draw a new maze template
      */

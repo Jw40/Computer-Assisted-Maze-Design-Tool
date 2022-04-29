@@ -14,19 +14,23 @@ public class KidsMaze implements IMaze {
     /**
      * maze square size
      */
-    public static final int CELL_WIDTH = 20;
+    private static final int CELL_WIDTH = 20;
+
+    public static final int cell_width(){
+        return CELL_WIDTH;
+    }
     /**
      * buffer between window edge and maze
      */
-    public static final int MARGIN = 50;
+    private static final int MARGIN = 50;
     /**
      * size of maze solution dot
      */
-    public static final int DOT_SIZE = 10;
+    private static final int DOT_SIZE = 10;
     /**
      * space between wall and dot
      */
-    public static final int DOT_MARGIN = 5;
+    private static final int DOT_MARGIN = 5;
     private int N;
     /**
      * array containing all the cells in the maze
@@ -94,9 +98,22 @@ public class KidsMaze implements IMaze {
         }
     }
 
+    public String getMazeName()
+    {
+        return this.mazeName;
+    }
+    public String getAuthorName()
+    {
+        return this.author;
+    }
+    public LocalDate getDateCreated()
+    {
+        return this.dateCreated;
+    }
+
     @Override
     public int getMazeSize() {
-        return 0;
+        return this.N;
     }
 
     @Override

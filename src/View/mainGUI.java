@@ -131,12 +131,15 @@ public class mainGUI extends Component {
     /**
      * this may be redundant
      */
+
     public mainGUI()
     {
         createNewWindow();
 
         //write GUI code here
     }
+
+
 
 
 
@@ -150,19 +153,23 @@ public class mainGUI extends Component {
         int mazeSize = Integer.valueOf(10);
         IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
-            //this creates the soultion path
             MazeSolver Solver = new MazeSolver();
-            Solver.createPath(maze);
-            JFrame mainJframe = new JFrame("Maze");
-            MazePanel mazePanel = new MazePanel(maze); // Constructs the mazePanel to hold the
-            // maze
-            JScrollPane scrollPane = new JScrollPane(mazePanel);
-            mainJframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            mainJframe.setSize(1000, 800);
-            mainJframe.add(scrollPane, BorderLayout.CENTER);
-            mainJframe.setVisible(true);
+            Solver.createMazePath(maze);
+            JFrame frame = new JFrame("Maze");
+            MazePanel panel = new MazePanel(maze);
+            JScrollPane scrollPane = new JScrollPane(panel);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 800);
+            frame.add(scrollPane, BorderLayout.CENTER);
+            frame.setVisible(true);
+        } catch (NumberFormatException exception) {
+            System.out.println("The input number for the maze size must be an integer");
+        }
+
         //print maze details to console
         System.out.println(maze.toString());
     }
-    */
+
+     */
+
 }
