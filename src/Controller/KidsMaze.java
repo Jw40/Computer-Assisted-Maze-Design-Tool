@@ -98,28 +98,51 @@ public class KidsMaze implements IMaze {
         }
     }
 
+    /**
+     * returns the name of this Maze object
+     * @return maze name
+     */
     public String getMazeName()
     {
         return this.mazeName;
     }
+
+    /**
+     * returns the author of this Maze object
+     * @return the author of this Maze object
+     */
     public String getAuthorName()
     {
         return this.author;
     }
+
+    /**
+     * return this datacreated of this Maze object
+     * @return this datecreated of this Maze object
+     */
     public LocalDate getDateCreated()
     {
         return this.dateCreated;
     }
 
+    /**
+     *
+     * @return the size of a kidsmaze to the maze solver class
+     */
     @Override
     public int getMazeSize() {
         return this.N;
     }
 
+    /**
+     *
+     * @return the Cell array to the maze solver class
+     */
     @Override
     public Cell[] getMazeCells() {
         return new Cell[0];
     }
+
 
 
     /**
