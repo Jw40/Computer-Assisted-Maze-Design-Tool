@@ -54,13 +54,13 @@ public class mainGUI extends Component {
      * Used to create the drop down menu in the GUI
      */
     public void createDropDownMenu() {
-        JMenu file, autogen, createNew, edit, database;
-        JMenuItem open, save, saveAs, mazePref, export, exit, about;
+        JMenu file, autogen, edit, database;
+        JMenuItem open, save, saveAs, mazePref, export, exit, about, createNew;
 
         JMenuBar mb = new JMenuBar();
         file = new JMenu("File");
         autogen = new JMenu("Auto Generate");
-        createNew = new JMenu("Create New");
+        createNew = new JMenuItem("Create New");
         edit = new JMenu("Editor");
         database = new JMenu("Database");
 
@@ -181,20 +181,53 @@ public class mainGUI extends Component {
     }
 
     public void autoGenerate() {
-        //Save As
+
     }
 
     public void createNew() {
-        //Save As
+        JPanel creatNew = new JPanel();
+        //Title - North
+        JPanel mazetitle = new JPanel();
+        JLabel titlelabel = new JLabel("Retrieve Maze Title and place here");
+
+        //Body - ACTUAL MAZE - Center
+        JPanel mazebody = new JPanel();
+
+        //Editor - East
+        JPanel mazeeditor = new JPanel();
+        JLabel editlabel = new JLabel("Maze Editor");
+        editlabel.add(mazeeditor, BorderLayout.NORTH);
+
+        //Preferences - West
+        JPanel mazepreferences = new JPanel();
+        JLabel preflabel = new JLabel("Maze Preferences");
+        JLabel namelabel = new JLabel("Maze Name:");
+        JTextField mazename = new JTextField();
+        JLabel sizelabel = new JLabel("Maze Size:");
+        //Textbox height
+        JLabel xlabel = new JLabel("x");
+        //Textbox width
+        JLabel cellslabel = new JLabel("cells");
+        //Construct WEST
+        preflabel.add(mazepreferences, BorderLayout.NORTH);
+        namelabel.add(mazepreferences, BorderLayout.CENTER);
+        mazename.add(mazepreferences);
+
+        //Construct ENTIRE
+        creatNew.add(mazetitle, BorderLayout.NORTH);
+        creatNew.add(mazebody, BorderLayout.CENTER);
+        creatNew.add(mazepreferences, BorderLayout.WEST);
+        creatNew.add(mazeeditor, BorderLayout.EAST);
+        mazeWindow.add(creatNew);
+
     }
 
     public void editor() {
-        //Save As
+
     }
 
     public void database() {
 
-        //Save As
     }
 
     public void about() {
