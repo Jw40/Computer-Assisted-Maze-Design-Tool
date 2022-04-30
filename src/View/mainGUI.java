@@ -99,89 +99,35 @@ public class mainGUI extends Component {
         mazeWindow.setVisible(true);
 
 
-        open.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                OpenFileChooser();
-            }
-        });
-
-        saveAs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        open.addActionListener(e -> OpenFileChooser());
+        saveAs.addActionListener(e -> {
+            try {
                 saveAs();
-
+            } catch (AWTException ex) {
+                throw new RuntimeException(ex);
             }
         });
-
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    save();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-
+        save.addActionListener(e -> {
+            try {
+                save();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
-        });
-        mazePref.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mazePreferences();
 
-            }
         });
-        export.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                export();
-
-            }
-        });
-        autogen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                autoGenerate();
-
-            }
-        });
-        createNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createNew();
-
-            }
-        });
-
-        edit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editor();
-
-            }
-        });
-
-        about.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                about();
-
-            }
-        });
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        mazePref.addActionListener(e -> mazePreferences());
+        export.addActionListener(e -> export());
+        autogen.addActionListener(e -> autoGenerate());
+        createNew.addActionListener(e -> createNew());
+        edit.addActionListener(e -> editor());
+        about.addActionListener(e -> about());
+        exit.addActionListener(e -> System.exit(0));
     }
 
     /**
      * Used to create new GUI
      */
     public void createNewWindow() {
-
         JFrame.setDefaultLookAndFeelDecorated(true);
         //Create and set up the window.
         mazeWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -190,25 +136,24 @@ public class mainGUI extends Component {
         mazeWindow.setLocation(new Point(200, 200));
         mazeWindow.pack();
         mazeWindow.setVisible(true);
-
         createDropDownMenu();
 
     }
 
-    public void saveAs() {
-        setSize(getPreferredSize());
-        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
-        printAll(g);
-        g.dispose();
+    public void saveAs() throws AWTException {
+        Point p = mazeWindow.getLocationOnScreen();
+        Dimension dim = mazeWindow.getSize();
+        Rectangle rect = new Rectangle(p, dim);
+        Robot robot = new Robot();
+        BufferedImage image = robot.createScreenCapture(rect);
         try {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
             fileChooser.setDialogTitle("Choose a location to save maze");
-            int result = fileChooser.showOpenDialog(this);
+            int result = fileChooser.showSaveDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
-                ImageIO.write(image, "jpg", new File(fileToSave.getAbsolutePath()));
+                ImageIO.write(image, "jpg", new File(fileToSave.getAbsolutePath() + ".jpg"));
                 System.out.println("Save as file: " + fileToSave.getAbsolutePath());
             }
 
@@ -272,10 +217,7 @@ public class mainGUI extends Component {
     }
 
 
-    /**
-     *
-     * Used to create a mainGUI object, still under implementation
-     */
+
     /*
     public mainGUI() {
         //this creates a new maze object
