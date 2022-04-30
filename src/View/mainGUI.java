@@ -218,7 +218,7 @@ public class mainGUI extends Component {
         creatNew.add(mazebody, BorderLayout.CENTER);
         creatNew.add(mazepreferences, BorderLayout.WEST);
         creatNew.add(mazeeditor, BorderLayout.EAST);
-        mazeWindow.add(creatNew);
+
 
     }
 
@@ -233,12 +233,7 @@ public class mainGUI extends Component {
     public void about() {
         //Save As
 
-        JOptionPane.showMessageDialog(null, """
-        This CAB302 Major assessment was created by Group 5: 
-        Sam Pappalardo - N10469729
-        Declan Roache - N10885081
-        York Wang - N10867333
-        James Wyatt - N8040478""","About" , JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, "This CAB302 Major assessment was created by Group 5: \nSam Pappalardo - N10469729 \nDeclan Roache - N10885081 \nYork Wang - N10867333 \nJames Wyatt - N8040478","About" , JOptionPane.PLAIN_MESSAGE);
     }
 
 
