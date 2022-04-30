@@ -1,6 +1,9 @@
 package View;
 
+import Controller.IMaze;
 import Controller.KidsMaze;
+import Controller.Maze;
+import Controller.MazeSolver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.*;
 import java.awt.image.BufferedImage;
+import java.time.LocalDate;
 import javax.imageio.ImageIO;
 
 
@@ -111,7 +115,7 @@ public class mainGUI extends Component {
             }
 
         });
-        mazePref.addActionListener(e -> mazePreferences());
+        mazePref.addActionListener(e -> autoGenerate());
         export.addActionListener(e -> export());
         autogen.addActionListener(e -> autoGenerate());
         createNew.addActionListener(e -> createNew());
@@ -184,7 +188,24 @@ public class mainGUI extends Component {
     }
 
     public void autoGenerate() {
+        //this creates a new maze object
+        int mazeSize = Integer.valueOf(10);
+        IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
+        try {
 
+            JFrame frame = new JFrame("Maze");
+            MazePanel panel = new MazePanel(maze);
+            JScrollPane scrollPane = new JScrollPane(panel);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 800);
+            frame.add(scrollPane, BorderLayout.CENTER);
+            frame.setVisible(true);
+        } catch (NumberFormatException exception) {
+            System.out.println("The input number for the maze size must be an integer");
+        }
+
+        //print maze details to console
+        System.out.println(maze.toString());
     }
 
     public void createNew() {
@@ -318,7 +339,7 @@ public class mainGUI extends Component {
 
 
 
-    /*
+/*
     public mainGUI() {
         //this creates a new maze object
         int mazeSize = Integer.valueOf(10);
@@ -340,7 +361,7 @@ public class mainGUI extends Component {
         //print maze details to console
         System.out.println(maze.toString());
     }
+*/
 
-     */
 
 }
