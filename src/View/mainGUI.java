@@ -1,19 +1,13 @@
 package View;
 
-import Controller.IMaze;
-import Controller.Maze;
-import Controller.MazeSolver;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.time.LocalDate;
 
 
 /**
@@ -21,7 +15,6 @@ import java.time.LocalDate;
  * This will also be responsible for the general appearance and apply to the user-friendliness of the project
  */
 public class mainGUI extends Component {
-
     /**
      * variable to store the Jframe for maze displayfg
      */
@@ -61,8 +54,8 @@ public class mainGUI extends Component {
      * Used to create the drop down menu in the GUI
      */
     public void createDropDownMenu() {
-        JMenu file, autogen, createNew, edit, database, about;
-        JMenuItem open, save, saveAs, mazePref, export, exit;
+        JMenu file, autogen, createNew, edit, database;
+        JMenuItem open, save, saveAs, mazePref, export, exit, about;
 
         JMenuBar mb = new JMenuBar();
         file = new JMenu("File");
@@ -70,9 +63,8 @@ public class mainGUI extends Component {
         createNew = new JMenu("Create New");
         edit = new JMenu("Editor");
         database = new JMenu("Database");
-        about = new JMenu("About");
 
-
+        about = new JMenuItem("About");
         open = new JMenuItem("Open");
         save = new JMenuItem("Save");
         saveAs = new JMenuItem("Save As");
@@ -93,11 +85,11 @@ public class mainGUI extends Component {
         mb.add(edit);
         mb.add(database);
         mb.add(about);
+
         mazeWindow.setJMenuBar(mb);
         mazeWindow.setSize(400, 400);
         mazeWindow.setLayout(null);
         mazeWindow.setVisible(true);
-
 
         open.addActionListener(e -> OpenFileChooser());
         saveAs.addActionListener(e -> {
@@ -137,11 +129,11 @@ public class mainGUI extends Component {
         mazeWindow.pack();
         mazeWindow.setVisible(true);
         createDropDownMenu();
-
     }
 
     public void saveAs() throws AWTException {
         // This saves in a directory of choice using a file chooser.
+        // TODO - Change mazewindow to jpanel of the maze when it's implimented
         Point p = mazeWindow.getLocationOnScreen();
         Dimension dim = mazeWindow.getSize();
         Rectangle rect = new Rectangle(p, dim);
@@ -165,6 +157,7 @@ public class mainGUI extends Component {
 
     }
     public void captureScreen(String fileName) throws Exception {
+        // TODO - Change mazewindow to jpanel of the maze when it's implimented
         Point p = mazeWindow.getLocationOnScreen();
         Dimension dim = mazeWindow.getSize();
         Rectangle rect = new Rectangle(p, dim);
@@ -200,11 +193,19 @@ public class mainGUI extends Component {
     }
 
     public void database() {
+
         //Save As
     }
 
     public void about() {
         //Save As
+
+        JOptionPane.showMessageDialog(null, """
+        This CAB302 Major assessment was created by Group 5: 
+        Sam Pappalardo - N10469729
+        Declan Roache - N10885081
+        York Wang - N10867333
+        James Wyatt - N8040478""","About" , JOptionPane.PLAIN_MESSAGE);
     }
 
 
