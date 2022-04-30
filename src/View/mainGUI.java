@@ -216,6 +216,7 @@ public class mainGUI extends Component {
         mazeeditor.add(editlabel, BorderLayout.NORTH);
 
         //Preferences - West
+        //TODO - Gridbagconstants can be declared when called in the "add" function. Does not need new definition before each element
         JPanel mazepreferences = new JPanel();
         mazepreferences.setLayout(new GridBagLayout());
         JLabel preflabel = new JLabel("Maze Preferences");
