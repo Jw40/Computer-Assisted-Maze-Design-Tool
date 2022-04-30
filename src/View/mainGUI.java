@@ -158,6 +158,7 @@ public class mainGUI extends Component {
 
 
     }
+
     public void captureScreen(String fileName) throws Exception {
         // TODO - Change mazewindow to jpanel of the maze when it's implimented
         Point p = mazeWindow.getLocationOnScreen();
@@ -187,25 +188,28 @@ public class mainGUI extends Component {
     }
 
     public void createNew() {
-
-        JFrame createNew = new JFrame("Test");
+        JFrame createNew = new JFrame("Create New Maze");
         createNew.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createUI(createNew);
-        createNew.setSize(560, 200);
+        createNew.setSize(800, 600);
         createNew.setLocationRelativeTo(null);
         createNew.setVisible(true);
 
     }
-    public static void createUI(final JFrame frame){
+
+    public static void createUI(final JFrame frame) {
         JPanel createNew = new JPanel();
         createNew.setLayout(new BorderLayout());
 
         //Title - North
+        //Replace Maze placeholder text with maze name
         JPanel mazetitle = new JPanel();
         JLabel titlelabel = new JLabel("Retrieve Maze Title and place here");
         mazetitle.add(titlelabel);
         GridBagConstraints c = new GridBagConstraints();
+
         //Body - ACTUAL MAZE - Center
+        //Maze Render goes here
         JPanel mazebody = new JPanel();
         JLabel bodyplaceholder = new JLabel("Body Placeholder here");
         mazebody.add(bodyplaceholder);
@@ -225,16 +229,18 @@ public class mainGUI extends Component {
         c.gridwidth = GridBagConstraints.BOTH;
         c.weightx = 1.0;
 
+        //Maze Name
         JLabel namelabel = new JLabel("Maze Name:");
-        mazepreferences.add(namelabel,c);
+        mazepreferences.add(namelabel, c);
         JTextField mazename = new JTextField("", 10);
         c.gridwidth = GridBagConstraints.REMAINDER;
-        mazepreferences.add(mazename,c);
+        mazepreferences.add(mazename, c);
 
+        //Maze Size
         JLabel sizelabel = new JLabel("Maze Size:");
         c.gridwidth = GridBagConstraints.BOTH;
         mazepreferences.add(sizelabel, c);
-        JTextField mazeheight = new JTextField("",3);
+        JTextField mazeheight = new JTextField("", 3);
         mazepreferences.add(mazeheight, c);
         JLabel xlabel = new JLabel("x");
         mazepreferences.add(xlabel, c);
@@ -244,6 +250,7 @@ public class mainGUI extends Component {
         c.gridwidth = GridBagConstraints.REMAINDER;
         mazepreferences.add(cellslabel, c);
 
+        //Difficulty
         JLabel difficulty = new JLabel("Maze Difficulty:");
         c.gridwidth = GridBagConstraints.REMAINDER;
         mazepreferences.add(difficulty, c);
@@ -251,31 +258,31 @@ public class mainGUI extends Component {
         c.gridwidth = GridBagConstraints.REMAINDER;
         mazepreferences.add(difficultyslider, c);
 
+        //Kids Maze Button
         JToggleButton kidsmazebutton = new JToggleButton("Kids Maze");
         mazepreferences.add(kidsmazebutton, c);
         ItemListener kidslistener = itemEvent -> {
             int state = itemEvent.getStateChange();
             if (state == ItemEvent.SELECTED) {
                 System.out.println("Kids Maze Selected");
-            }
-            else {
+            } else {
                 System.out.println("Adults Maze Selected");
-            }};
+            }
+        };
         kidsmazebutton.addItemListener(kidslistener);
 
+        //Solve Button
         JToggleButton solvebutton = new JToggleButton("Solve");
         mazepreferences.add(solvebutton, c);
         ItemListener solveListener = itemEvent -> {
             int state = itemEvent.getStateChange();
             if (state == ItemEvent.SELECTED) {
                 System.out.println("Route Displayed");
-            }
-            else {
+            } else {
                 System.out.println("Route Removed");
-            }};
+            }
+        };
         solvebutton.addItemListener(solveListener);
-
-
 
         //Construct ENTIRE
         createNew.add(mazetitle, BorderLayout.NORTH);
@@ -283,10 +290,7 @@ public class mainGUI extends Component {
         createNew.add(mazeeditor, BorderLayout.EAST);
         createNew.add(mazepreferences, BorderLayout.WEST);
         frame.getContentPane().add(createNew, BorderLayout.CENTER);
-
     }
-
-
 
     public void editor() {
 
@@ -298,7 +302,7 @@ public class mainGUI extends Component {
 
     public void about() {
         //Save As
-        JOptionPane.showMessageDialog(null, "This CAB302 Major assessment was created by Group 5:  \nSam Pappalardo - N10469729 \nDeclan Roache - N10885081 \nYork Wang - N10867333 \nJames Wyatt - N8040478","About" , JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, "This CAB302 Major assessment was created by Group 5:  \nSam Pappalardo - N10469729 \nDeclan Roache - N10885081 \nYork Wang - N10867333 \nJames Wyatt - N8040478", "About", JOptionPane.PLAIN_MESSAGE);
     }
 
 
