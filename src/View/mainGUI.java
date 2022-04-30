@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.time.LocalDate;
 
+
 /**
  * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.
  * This will also be responsible for the general appearance and apply to the user-friendliness of the project
@@ -29,8 +30,7 @@ public class mainGUI extends Component {
     /**
      * Used to open a file in the GUI
      */
-    public void OpenFileChooser()
-    {
+    public void OpenFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
@@ -38,8 +38,7 @@ public class mainGUI extends Component {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 
-            try
-            {
+            try {
                 JPanel panel = new JPanel();
                 panel.setBounds(400, 50, 1000, 1400);
                 BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
@@ -51,8 +50,8 @@ public class mainGUI extends Component {
                 mazeWindow.setVisible(true);
 
 
+            } catch (IOException ignored) {
             }
-            catch (IOException e) {}
 
         }
 
@@ -61,51 +60,118 @@ public class mainGUI extends Component {
     /**
      * Used to create the drop down menu in the GUI
      */
-    public void createDropDownMenu()
-    {
+    public void createDropDownMenu() {
         JMenu file, autogen, createNew, edit, database, about;
         JMenuItem open, save, saveAs, mazePref, export, exit;
 
-        JMenuBar mb=new JMenuBar();
-        file=new JMenu("File");
-        autogen=new JMenu("Auto Generate");
-        createNew=new JMenu("Create New");
-        edit=new JMenu("Editor");
-        database=new JMenu("Database");
-        about= new JMenu("About");
+        JMenuBar mb = new JMenuBar();
+        file = new JMenu("File");
+        autogen = new JMenu("Auto Generate");
+        createNew = new JMenu("Create New");
+        edit = new JMenu("Editor");
+        database = new JMenu("Database");
+        about = new JMenu("About");
 
 
-        open=new JMenuItem("Open");
-        save=new JMenuItem("Save");
-        saveAs=new JMenuItem("Save As");
-        mazePref=new JMenuItem("Maze Preferences");
-        export=new JMenuItem("Export Maze");
-        exit=new JMenuItem("Exit");
+        open = new JMenuItem("Open");
+        save = new JMenuItem("Save");
+        saveAs = new JMenuItem("Save As");
+        mazePref = new JMenuItem("Maze Preferences");
+        export = new JMenuItem("Export Maze");
+        exit = new JMenuItem("Exit");
 
-        file.add(open); file.add(save); file.add(saveAs);
-        file.add(mazePref); file.add(export); file.add(exit);
+        file.add(open);
+        file.add(save);
+        file.add(saveAs);
+        file.add(mazePref);
+        file.add(export);
+        file.add(exit);
 
-        mb.add(file); mb.add(autogen);mb.add(createNew);mb.add(edit);mb.add(database);mb.add(about);
+        mb.add(file);
+        mb.add(autogen);
+        mb.add(createNew);
+        mb.add(edit);
+        mb.add(database);
+        mb.add(about);
         mazeWindow.setJMenuBar(mb);
-        mazeWindow.setSize(400,400);
+        mazeWindow.setSize(400, 400);
         mazeWindow.setLayout(null);
         mazeWindow.setVisible(true);
 
 
-        open.addActionListener(new ActionListener()
-        {
+        open.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 OpenFileChooser();
             }
         });
 
-        exit.addActionListener(new ActionListener()
-        {
+        saveAs.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
+                saveAs();
+
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    save();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+        mazePref.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mazePreferences();
+
+            }
+        });
+        export.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                export();
+
+            }
+        });
+        autogen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                autoGenerate();
+
+            }
+        });
+        createNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createNew();
+
+            }
+        });
+
+        edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editor();
+
+            }
+        });
+
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                about();
+
+            }
+        });
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
@@ -114,8 +180,7 @@ public class mainGUI extends Component {
     /**
      * Used to create new GUI
      */
-    public void createNewWindow()
-    {
+    public void createNewWindow() {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         //Create and set up the window.
@@ -125,12 +190,46 @@ public class mainGUI extends Component {
         mazeWindow.setLocation(new Point(200, 200));
         mazeWindow.pack();
         mazeWindow.setVisible(true);
+
         createDropDownMenu();
 
     }
 
     public void saveAs() {
-        //Save As
+        setSize(getPreferredSize());
+        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = image.createGraphics();
+        printAll(g);
+        g.dispose();
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setDialogTitle("Choose a location to save maze");
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                ImageIO.write(image, "jpg", new File(fileToSave.getAbsolutePath()));
+                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public void captureScreen(String fileName) throws Exception {
+        Point p = mazeWindow.getLocationOnScreen();
+        Dimension dim = mazeWindow.getSize();
+        Rectangle rect = new Rectangle(p, dim);
+        Robot robot = new Robot();
+        BufferedImage image = robot.createScreenCapture(rect);
+        ImageIO.write(image, "jpg", new File(fileName + ".jpg"));
+    }
+
+    public void save() throws Exception {
+        String timestamp = "" + System.currentTimeMillis();
+        captureScreen(timestamp);
     }
 
     public void mazePreferences() {
@@ -162,20 +261,15 @@ public class mainGUI extends Component {
     }
 
 
-
     /**
      * this may be redundant
      */
 
-    public mainGUI()
-    {
+    public mainGUI() {
         createNewWindow();
 
         //write GUI code here
     }
-
-
-
 
 
     /**
