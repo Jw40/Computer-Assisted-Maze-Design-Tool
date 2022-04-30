@@ -141,6 +141,7 @@ public class mainGUI extends Component {
     }
 
     public void saveAs() throws AWTException {
+        // This saves in a directory of choice using a file chooser.
         Point p = mazeWindow.getLocationOnScreen();
         Dimension dim = mazeWindow.getSize();
         Rectangle rect = new Rectangle(p, dim);
@@ -173,6 +174,7 @@ public class mainGUI extends Component {
     }
 
     public void save() throws Exception {
+        // This saves in the Project directory, as a JPG, with the filename as the current absolute time.
         String timestamp = "" + System.currentTimeMillis();
         captureScreen(timestamp);
     }
