@@ -330,11 +330,8 @@ public class mainGUI extends Component {
     /**
      * this may be redundant
      */
-
     public mainGUI() {
         createNewWindow();
-
-        //write GUI code here
     }
 
 
