@@ -14,7 +14,9 @@ public class MazeSolver {
      * used to create the solution path and is called in the main GUI to add the current solution to the maze object
      * @param thisMaze IMaze object
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -54,7 +56,9 @@ public class MazeSolver {
      * @param cell int
      * @param thisMaze maze object
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui

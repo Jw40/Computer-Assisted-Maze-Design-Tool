@@ -66,7 +66,9 @@ public class Maze implements IMaze{
      * @param author author of maze
      * @param dateCreated creation date of maze
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -162,7 +164,9 @@ public class Maze implements IMaze{
      *
      * @param g to draw the maze, used in the MazePanel class
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -240,7 +244,9 @@ public class Maze implements IMaze{
     /**
      * used to make the walls of a maze in a grid like fashion
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -278,7 +284,9 @@ public class Maze implements IMaze{
     /**
      * used after make walls to clear random walls in the maze
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui

@@ -67,7 +67,9 @@ public class KidsMaze implements IMaze {
      * @param dateCreated date created
      * @param size size of maze
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -148,7 +150,9 @@ public class KidsMaze implements IMaze {
     /**
      * @param g to draw the maze, used in the MazePanel class
      *
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -222,7 +226,9 @@ public class KidsMaze implements IMaze {
     }
 
     /**
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
@@ -257,7 +263,9 @@ public class KidsMaze implements IMaze {
     }
 
     /**
-     *Disclaimer - This piece of source code was referenced:
+     *Disclaimer - This piece of source code was referenced
+     *  * and is used for development purposes and testing,
+     *  * this code will not be used in its current state in the final submission.
      *                 Author: irealva
      *                 Date: 4/9/2014
      *                 Title of program: maze-gui
