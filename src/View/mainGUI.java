@@ -76,14 +76,12 @@ public class mainGUI extends Component {
         open = new JMenuItem("Open");
         save = new JMenuItem("Save");
         saveAs = new JMenuItem("Save As");
-        mazePref = new JMenuItem("Maze Preferences");
         export = new JMenuItem("Export Maze");
         exit = new JMenuItem("Exit");
 
         file.add(open);
         file.add(save);
         file.add(saveAs);
-        file.add(mazePref);
         file.add(export);
         file.add(exit);
 
@@ -115,7 +113,6 @@ public class mainGUI extends Component {
             }
 
         });
-        mazePref.addActionListener(e -> autoGenerate());
         export.addActionListener(e -> export());
         autogen.addActionListener(e -> autoGenerate());
         createNew.addActionListener(e -> createNew());
@@ -179,9 +176,6 @@ public class mainGUI extends Component {
         captureScreen(timestamp);
     }
 
-    public void mazePreferences() {
-        //Preferences
-    }
 
     public void export() {
         //Export
