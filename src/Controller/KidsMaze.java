@@ -340,6 +340,11 @@ public class KidsMaze implements IMaze {
         return new boolean[0];
     }
 
+    @Override
+    public void DrawSolution(Graphics g) {
+
+    }
+
 
     public void getMaze()
     {

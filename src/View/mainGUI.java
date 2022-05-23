@@ -25,7 +25,7 @@ public class mainGUI extends Component {
      * variable to store the Jframe for maze displayfg
      */
     JFrame mazeWindow = new JFrame("Maze Generator");
-
+    IMaze thisMaze;
     /**
      * Used to open a file in the GUI
      */
@@ -116,7 +116,7 @@ public class mainGUI extends Component {
         });
         export.addActionListener(e -> export());
         autogen.addActionListener(e -> autoGenerate());
-        createNew.addActionListener(e -> createNew());
+        createNew.addActionListener(e -> showSolution(thisMaze));
         edit.addActionListener(e -> editor());
         about.addActionListener(e -> about());
         exit.addActionListener(e -> System.exit(0));
@@ -187,14 +187,15 @@ public class mainGUI extends Component {
         int mazeSize = Integer.valueOf(20);// change this to user input from the gui
         //name from user input
         //author name from user input
-        IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
+        thisMaze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
 
             JFrame frame = new JFrame("Maze");
-            MazePanel panel = new MazePanel(maze);
+            MazePanel panel = new MazePanel(thisMaze);
             JScrollPane scrollPane = new JScrollPane(panel);
             MazeSolver solver = new MazeSolver();
-            solver.createMazePath(maze);
+            solver.createMazePath(thisMaze);
+            //panel.paintSolution(maze);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 800);
             frame.add(scrollPane, BorderLayout.CENTER);
@@ -204,7 +205,14 @@ public class mainGUI extends Component {
         }
 
         //print maze details to console
-        System.out.println(maze.toString());
+        System.out.println(thisMaze.toString());
+    }
+
+    public void showSolution(IMaze maze)
+    {
+        MazeSolver solver = new MazeSolver();
+        solver.createMazePath(maze);
+
     }
 
     public void createNew() {
