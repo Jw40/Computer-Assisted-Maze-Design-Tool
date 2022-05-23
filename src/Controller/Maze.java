@@ -2,6 +2,7 @@ package Controller;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -102,6 +103,7 @@ public class Maze implements IMaze{
 
             path = new boolean[MazeSize * MazeSize];
         }
+        //else throw exception maze size not big enough
     }
 
     /**
@@ -178,10 +180,12 @@ public class Maze implements IMaze{
     @Override
     public void draw(Graphics g) // draws a maze
    {
+
+       int count = 0;
        g.setColor(Color.BLACK);
        for (int i = 0; i < MazeSize; i++)
        {
-           int count = i;
+           count = i;
            for (int j = 0; j < MazeSize; j++)
            {
                if (j != 0) {
@@ -218,10 +222,17 @@ public class Maze implements IMaze{
                 }
            }
        }
+/*
+       ArrayList<Integer> xPointsList = new ArrayList<Integer>();
+       ArrayList<Integer> yPointsList = new ArrayList<Integer>();
+       int[]xPoints = new int[count];
+       int[] yPoints = new int[count];
+       int totalPoints = 0;
+       int nPoints;
        g.setColor(Color.RED); // changes color to draw the dots
        for (int i = 0; i < MazeSize; i++)
        {
-           int count = i;
+           count = i;
            for (int j = 0; j < MazeSize; j++)
            {
                if (j != 0)
@@ -231,14 +242,97 @@ public class Maze implements IMaze{
 
                if (path[count] == true) // if cell is part of the path
                {
-                   g.fillOval(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
-                           + MARGIN + DOT_MARGIN, SOLUTION_DOT_SIZE, SOLUTION_DOT_SIZE); // paint a red
+                   int x = i * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                   int y = j * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                   xPointsList.add(x);
+                   yPointsList.add(y);
+                   totalPoints++;
+
+
+                   g.drawLine(
+                           i * CELL_WIDTH + MARGIN + DOT_MARGIN, //x1 - the first point's x coordinate.
+                           j * CELL_WIDTH + MARGIN + DOT_MARGIN, //y1 - the first point's y coordinate.
+
+                           i * CELL_WIDTH + MARGIN + DOT_MARGIN * 2 ,//x2 - the second point's x coordinate.
+                           j * CELL_WIDTH + MARGIN + DOT_MARGIN * 2) ;//y2 - the second point's y coordinate.
+
+                   // paint a red
                    // circle in the
                    // cell
 
                }
            }
+
        }
+
+       int[] xPointsArray = xPointsList.stream()
+               .mapToInt(Integer::intValue)
+               .toArray();
+
+       int[] yPointsArray = yPointsList.stream()
+               .mapToInt(Integer::intValue)
+               .toArray();
+
+
+
+       int[] yPointsArray = yPointsList.stream().mapToInt(i -> i).toArray();
+       int[] xPointsArray = xPointsList.stream().mapToInt(i -> i).toArray();
+
+
+       for(int i = 1; i < yPointsList.size(); i++)
+       {
+           g.drawLine(xPointsArray[i-1], yPointsArray[i-1], xPointsArray[i],yPointsArray[i]);
+       }
+
+*/
+       //g.drawPolyline(yPointsArray, xPointsArray, xPointsArray.length );
+
+       int xCurrent = 0;
+       int yCurrent = 0;
+       int xPrevious = 0;
+       int yPrevious = 0;
+       g.setColor(Color.RED); // changes color to draw the dots
+       for (int i = 0; i < MazeSize; i++)
+       {
+           count = i;
+           for (int j = 0; j < MazeSize; j++)
+           {
+               if (j != 0)
+               {
+                   count += MazeSize;
+               }
+
+               if (path[count] == true) // if cell is part of the path
+               {
+                   if (j == 0)
+                   {
+                       xCurrent = i * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                       yCurrent = j * CELL_WIDTH + MARGIN + DOT_MARGIN;
+
+
+                   g.drawLine(xCurrent,yCurrent,xCurrent,yCurrent);
+
+
+                   /*
+                   g.fill3DRect(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
+                           + MARGIN + DOT_MARGIN, 10, 10, true); // paint a red
+                   // circle in the
+                   // cell
+                    */
+                   }
+                   else
+                   {
+                       xCurrent = i * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                       yCurrent = j * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                       g.drawLine(xCurrent,yCurrent,xPrevious,yPrevious);
+                   }
+                   xPrevious = xCurrent;
+                   yPrevious = yCurrent;
+
+               }
+           }
+       }
+
    }
 
     /**

@@ -1,7 +1,6 @@
 package View;
 
 import Controller.IMaze;
-import Controller.KidsMaze;
 import Controller.Maze;
 import Controller.MazeSolver;
 
@@ -16,8 +15,6 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.Color;
 
 /**
  * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.
@@ -63,12 +60,15 @@ public class mainGUI extends Component {
      * Used to create the drop down menu in the GUI
      */
     public void createDropDownMenu() {
-        JMenu file, autogen, edit, database;
+        JMenu file;
+        JMenuItem autogen;
+        JMenu edit;
+        JMenu database;
         JMenuItem open, save, saveAs, mazePref, export, exit, about, createNew;
 
         JMenuBar mb = new JMenuBar();
         file = new JMenu("File");
-        autogen = new JMenu("Auto Generate");
+        autogen = new JMenuItem("Auto Generate");
         createNew = new JMenuItem("Create New");
         edit = new JMenu("Editor");
         database = new JMenu("Database");
@@ -184,13 +184,17 @@ public class mainGUI extends Component {
 
     public void autoGenerate() {
         //this creates a new maze object
-        int mazeSize = Integer.valueOf(10);
+        int mazeSize = Integer.valueOf(20);// change this to user input from the gui
+        //name from user input
+        //author name from user input
         IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
 
             JFrame frame = new JFrame("Maze");
             MazePanel panel = new MazePanel(maze);
             JScrollPane scrollPane = new JScrollPane(panel);
+            MazeSolver solver = new MazeSolver();
+            solver.createMazePath(maze);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 800);
             frame.add(scrollPane, BorderLayout.CENTER);
