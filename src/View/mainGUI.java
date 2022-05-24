@@ -1,9 +1,7 @@
 package View;
 
 import Controller.IMaze;
-import Controller.KidsMaze;
 import Controller.Maze;
-import Controller.MazeSolver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +9,14 @@ import java.awt.*;
 import javax.swing.JFileChooser;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import javax.imageio.ImageIO;
+import javax.swing.border.EmptyBorder;
 import java.awt.Graphics;
-import java.awt.Color;
 
 /**
  * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.
@@ -32,7 +31,10 @@ public class mainGUI extends Component {
     /**
      * Used to open a file in the GUI
      */
-    public void OpenFileChooser() {
+
+
+
+    public Image OpenFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
@@ -45,19 +47,26 @@ public class mainGUI extends Component {
                 panel.setBounds(400, 50, 1000, 1400);
                 BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
                 JLabel pic = new JLabel(new ImageIcon(img));
+
+
                 panel.add(pic);
+                pic.setBounds(100,100, 0, 0);
                 mazeWindow.add(panel);
                 mazeWindow.setSize(400, 400);
                 mazeWindow.setLayout(null);
                 mazeWindow.setVisible(true);
+                pic.setBorder(BorderFactory.createLineBorder(Color.black));
+                return img;
 
-
-            } catch (IOException ignored) {
+            }
+            catch (IOException ignored) {
+                return null;
             }
 
         }
-
+        return null;
     }
+
 
     /**
      * Used to create the drop down menu in the GUI
