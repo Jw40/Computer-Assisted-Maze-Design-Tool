@@ -43,3 +43,9 @@ Notes:
 - Added JavaDocs comments for every method 
 - Generated JavaDocs
  
+Version 1.5
+Notes:
+23/05/2022
+- Added Solution to a maze
+- Added Solution to the maze to display in the GUI
+- Attempted Solution to be displayed via a button in the GUI
