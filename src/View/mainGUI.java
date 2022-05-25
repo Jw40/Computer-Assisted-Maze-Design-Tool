@@ -32,6 +32,9 @@ public class mainGUI extends Component {
     IMaze thisMaze;
     MazePanel thispanel = new MazePanel(thisMaze);
 
+    //main window
+    private JFrame mainFrame;
+
     /**
      * Used to open a file in the GUI
      */
@@ -206,22 +209,16 @@ public class mainGUI extends Component {
 
     public void autoGenerate() {
         //this creates a new maze object
-        int mazeSize = Integer.valueOf(20);
+        int mazeSize = Integer.valueOf(5);
         thisMaze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
 
             JFrame frame = new JFrame("Maze");
 
-           //MazePanel panel = new MazePanel(thisMaze);
-           // JScrollPane scrollPane = new JScrollPane(panel);
+            MazePanel panel = new MazePanel(thisMaze);
+            JScrollPane scrollPane = new JScrollPane(panel);
 
-            thispanel = new MazePanel(thisMaze);
-            JScrollPane scrollPane = new JScrollPane(thispanel);
-            //MazeSolver solver = new MazeSolver();
-            //solver.createMazePath(thisMaze);
-            //panel.paintSolution(maze);
-
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 800);
             frame.add(scrollPane, BorderLayout.CENTER);
             frame.setVisible(true);
@@ -236,13 +233,13 @@ public class mainGUI extends Component {
     public void showSolution(IMaze maze)
     {
         if (maze != null) {
-            MazePanel panel = new MazePanel(maze);
+            thispanel = new MazePanel(maze);
 
 
             MazeSolver solver = new MazeSolver();
             solver.createMazePath(maze);
 
-            maze.DrawSolution(panel.GetGraphics());
+            maze.DrawSolution(thispanel.GetGraphics());
 
         }
         else
@@ -252,10 +249,10 @@ public class mainGUI extends Component {
     }
     public void clearSolution(IMaze maze)
     {
-        MazePanel panel = new MazePanel(maze);
-        panel.repaint();
-        maze.draw(thispanel.GetGraphics());
-        System.out.println(("Hello"));
+        //thispanel = new MazePanel(maze);
+        thispanel.removeAll();
+        thispanel.validate();
+        thispanel.repaint();
     }
 
     public void createNew() {

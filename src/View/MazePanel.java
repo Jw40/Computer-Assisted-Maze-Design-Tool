@@ -21,6 +21,7 @@ import java.awt.*;
             maze = theMaze;
         }
 
+
         /**
          * paintComponent used every time this panel needs refrehing or a maze needs to be drawn on the GUI
          * @param thisPage
@@ -30,6 +31,7 @@ import java.awt.*;
         // that the panel needs to be displayed or refreshed.
         // Anything you want drawn on the panel should be drawn
         // in this method.
+        @Override
         public void paintComponent(Graphics thisPage)
         {
             ThisPage = thisPage;
