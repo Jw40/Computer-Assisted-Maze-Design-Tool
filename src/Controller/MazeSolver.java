@@ -26,28 +26,29 @@ public class MazeSolver {
      */
     public void createMazePath(IMaze thisMaze) // finds a path in the maze
     {
-        int mazeSize = thisMaze.getMazeSize();
-        if( mazeSize != 1) //if maze is not of size 1
-        {
-            depthSearch(0, thisMaze); // executes a first breath search starting on the top
-            // left cell
-            thisMaze.getPath()[0] = true; // path starts on top left cell
-            thisMaze.getPath()[mazeSize * mazeSize - 1] = true; // path ends on bottom right cell
-            int current = thisMaze.getMazeCells()[mazeSize * mazeSize - 1].visitedBy; // start on the last, bottom
-            // right cell
-            while (current != 0) // follows the path back to the starting cell
+        if(thisMaze != null) {
+            int mazeSize = thisMaze.getMazeSize();
+            if (mazeSize != 1) //if maze is not of size 1
             {
-                thisMaze.getPath()[current] = true;
-                current = thisMaze.getMazeCells()[current].visitedBy;
+                depthSearch(0, thisMaze); // executes a first breath search starting on the top
+                // left cell
+                thisMaze.getPath()[0] = true; // path starts on top left cell
+                thisMaze.getPath()[mazeSize * mazeSize - 1] = true; // path ends on bottom right cell
+                int current = thisMaze.getMazeCells()[mazeSize * mazeSize - 1].visitedBy; // start on the last, bottom
+                // right cell
+                while (current != 0) // follows the path back to the starting cell
+                {
+                    thisMaze.getPath()[current] = true;
+                    current = thisMaze.getMazeCells()[current].visitedBy;
+                }
+            } else // if maze is of size 1
+            {
+                thisMaze.getPath()[0] = true;
             }
+            thisMaze.getMazeCells()[0].cellWalls[WEST] = mazeSize * mazeSize; // destroys west wall on top left cell
+            thisMaze.getMazeCells()[mazeSize * mazeSize - 1].cellWalls[EAST] = mazeSize * mazeSize; // destroys east wall on bottom right
+            // cell
         }
-        else // if maze is of size 1
-        {
-            thisMaze.getPath()[0] = true ;
-        }
-        thisMaze.getMazeCells()[0].cellWalls[WEST] = mazeSize * mazeSize; // destroys west wall on top left cell
-        thisMaze.getMazeCells()[mazeSize * mazeSize - 1].cellWalls[EAST] = mazeSize * mazeSize; // destroys east wall on bottom right
-        // cell
 
     }
 
@@ -71,6 +72,7 @@ public class MazeSolver {
     public void depthSearch(int cell, IMaze thisMaze) // executes a first breath search to find
     // a path in the maze
     {
+
         int N = thisMaze.getMazeSize();
         Cell startCell = thisMaze.getMazeCells()[cell]; // current cell being checked
 
@@ -98,12 +100,15 @@ public class MazeSolver {
                 {
                     adjacent = cell - 1;
                 }
-
-                if (thisMaze.getMazeCells()[adjacent].visitedBy == -1)
+                try {
+                    if (thisMaze.getMazeCells()[adjacent].visitedBy == -1) {
+                        thisMaze.getMazeCells()[adjacent].visitedBy = cell; // update information to
+                        // store which cell has visited this one
+                        depthSearch(adjacent, thisMaze);
+                    }
+                }catch(ArrayIndexOutOfBoundsException e)
                 {
-                    thisMaze.getMazeCells()[adjacent].visitedBy = cell; // update information to
-                    // store which cell has visited this one
-                    depthSearch(adjacent, thisMaze);
+                    System.out.println(("Array Index Out of Bounds Error - DepthSearch (Maze Solution)"));
                 }
             }
         }

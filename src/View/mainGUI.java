@@ -2,6 +2,7 @@ package View;
 
 import Controller.IMaze;
 import Controller.Maze;
+import Controller.MazeSolver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,9 @@ public class mainGUI extends Component {
      * variable to store the Jframe for maze displayfg
      */
     JFrame mazeWindow = new JFrame("Maze Generator");
+
+    IMaze thisMaze;
+    MazePanel thispanel = new MazePanel(thisMaze);
 
     /**
      * Used to open a file in the GUI
@@ -72,14 +76,21 @@ public class mainGUI extends Component {
      * Used to create the drop down menu in the GUI
      */
     public void createDropDownMenu() {
-        JMenu file, autogen, edit, database;
+
+        JMenu file;
+        JMenuItem autogen;
+        JMenuItem edit;
+        JMenu database;
+
         JMenuItem open, save, saveAs, mazePref, export, exit, about, createNew;
 
         JMenuBar mb = new JMenuBar();
         file = new JMenu("File");
-        autogen = new JMenu("Auto Generate");
-        createNew = new JMenuItem("Create New");
-        edit = new JMenu("Editor");
+
+        autogen = new JMenuItem("Auto Generate");
+        createNew = new JMenuItem("Path");
+        edit = new JMenuItem("Editor");
+
         database = new JMenu("Database");
 
         about = new JMenuItem("About");
@@ -125,8 +136,10 @@ public class mainGUI extends Component {
         });
         export.addActionListener(e -> export());
         autogen.addActionListener(e -> autoGenerate());
-        createNew.addActionListener(e -> createNew());
-        edit.addActionListener(e -> editor());
+
+        createNew.addActionListener(e -> showSolution(thisMaze));
+        edit.addActionListener(e -> clearSolution(thisMaze));
+
         about.addActionListener(e -> about());
         exit.addActionListener(e -> System.exit(0));
     }
@@ -193,13 +206,21 @@ public class mainGUI extends Component {
 
     public void autoGenerate() {
         //this creates a new maze object
-        int mazeSize = Integer.valueOf(10);
-        IMaze maze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
+        int mazeSize = Integer.valueOf(20);
+        thisMaze = new Maze(mazeSize, "MyFirstMaze", "Johnny Smith", LocalDate.now()); // Constructs the maze object
         try {
 
             JFrame frame = new JFrame("Maze");
-            MazePanel panel = new MazePanel(maze);
-            JScrollPane scrollPane = new JScrollPane(panel);
+
+           //MazePanel panel = new MazePanel(thisMaze);
+           // JScrollPane scrollPane = new JScrollPane(panel);
+
+            thispanel = new MazePanel(thisMaze);
+            JScrollPane scrollPane = new JScrollPane(thispanel);
+            //MazeSolver solver = new MazeSolver();
+            //solver.createMazePath(thisMaze);
+            //panel.paintSolution(maze);
+
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 800);
             frame.add(scrollPane, BorderLayout.CENTER);
@@ -209,7 +230,32 @@ public class mainGUI extends Component {
         }
 
         //print maze details to console
-        System.out.println(maze.toString());
+        System.out.println(thisMaze.toString());
+    }
+
+    public void showSolution(IMaze maze)
+    {
+        if (maze != null) {
+            MazePanel panel = new MazePanel(maze);
+
+
+            MazeSolver solver = new MazeSolver();
+            solver.createMazePath(maze);
+
+            maze.DrawSolution(panel.GetGraphics());
+
+        }
+        else
+        {
+            System.out.println("Error Maze Object Null");
+        }
+    }
+    public void clearSolution(IMaze maze)
+    {
+        MazePanel panel = new MazePanel(maze);
+        panel.repaint();
+        maze.draw(thispanel.GetGraphics());
+        System.out.println(("Hello"));
     }
 
     public void createNew() {

@@ -289,20 +289,21 @@ public class Maze implements IMaze{
     }
 
     public void DrawSolution(Graphics g){
-
-        int count = 0;
-        g.setColor(Color.RED); // changes color to draw the dots
-        for (int i = 0; i < MazeSize; i++) {
-            count = i;
-            for (int j = 0; j < MazeSize; j++) {
-                if (j != 0) {
-                    count += MazeSize;
-                }
-                boolean checker = false;
-                if (path[count] == true) // if cell is part of the path
-                {
-                    g.fill3DRect(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
-                            + MARGIN + DOT_MARGIN, 10, 10, true);
+        if (g != null) {
+            int count = 0;
+            g.setColor(Color.RED); // changes color to draw the dots
+            for (int i = 0; i < MazeSize; i++) {
+                count = i;
+                for (int j = 0; j < MazeSize; j++) {
+                    if (j != 0) {
+                        count += MazeSize;
+                    }
+                    boolean checker = false;
+                    if (path[count] == true) // if cell is part of the path
+                    {
+                        g.fill3DRect(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
+                                + MARGIN + DOT_MARGIN, 10, 10, true);
+                    }
                 }
             }
         }

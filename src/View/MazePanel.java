@@ -12,6 +12,8 @@ import java.awt.*;
  */
     class MazePanel extends JPanel
     {
+        Graphics ThisPage;
+
         private IMaze maze; // the maze object
 
         public MazePanel(IMaze theMaze)
@@ -30,12 +32,18 @@ import java.awt.*;
         // in this method.
         public void paintComponent(Graphics thisPage)
         {
+            ThisPage = thisPage;
             super.paintComponent(thisPage);
             setBackground(Color.white);
             this.setPreferredSize(maze.windowSize());
             maze.draw(thisPage);
         }
+        public Graphics GetGraphics()
+        {
+            return ThisPage;
+        }
 /*
+
         public void paintSolution()
         {
             maze.DrawSolution(maze);
