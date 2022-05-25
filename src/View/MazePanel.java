@@ -35,5 +35,13 @@ import java.awt.*;
             this.setPreferredSize(maze.windowSize());
             maze.draw(thisPage);
         }
+/*
+        public void paintSolution()
+        {
+            maze.DrawSolution(maze);
+
+        }
+        */
+
     }
 

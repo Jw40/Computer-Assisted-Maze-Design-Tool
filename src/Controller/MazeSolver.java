@@ -48,6 +48,7 @@ public class MazeSolver {
         thisMaze.getMazeCells()[0].cellWalls[WEST] = mazeSize * mazeSize; // destroys west wall on top left cell
         thisMaze.getMazeCells()[mazeSize * mazeSize - 1].cellWalls[EAST] = mazeSize * mazeSize; // destroys east wall on bottom right
         // cell
+
     }
 
 

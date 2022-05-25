@@ -2,6 +2,7 @@ package Controller;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -102,6 +103,7 @@ public class Maze implements IMaze{
 
             path = new boolean[MazeSize * MazeSize];
         }
+        //else throw exception maze size not big enough
     }
 
     /**
@@ -177,51 +179,58 @@ public class Maze implements IMaze{
     //this is what draws the maze, called in the MazePanel GUI
     @Override
     public void draw(Graphics g) // draws a maze
-   {
-       g.setColor(Color.BLACK);
-       for (int i = 0; i < MazeSize; i++)
-       {
-           int count = i;
-           for (int j = 0; j < MazeSize; j++)
-           {
-               if (j != 0) {
-                   count += MazeSize;
-               }
+    {
 
-               if (cells[count].cellWalls[NORTH] != MazeSize * MazeSize) // if there exists a wall to the north
+        int count = 0;
+        g.setColor(Color.BLACK);
+        for (int i = 0; i < MazeSize; i++) {
+            count = i;
+            for (int j = 0; j < MazeSize; j++) {
+                if (j != 0) {
+                    count += MazeSize;
+                }
+
+                if (cells[count].cellWalls[NORTH] != MazeSize * MazeSize) // if there exists a wall to the north
                 {
                     g.drawLine((i * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN),
                             ((i + 1) * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN));
                 }
 
-               if (cells[count].cellWalls[SOUTH] != MazeSize * MazeSize) // if there exists a wall to the
-                    // south
+                if (cells[count].cellWalls[SOUTH] != MazeSize * MazeSize) // if there exists a wall to the
+                // south
                 {
                     g.drawLine(i * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN);
+                            + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
+                            + MARGIN);
                 }
 
-               if (cells[count].cellWalls[EAST] != MazeSize * MazeSize) // if there exists a wall to the
-                    // east
+                if (cells[count].cellWalls[EAST] != MazeSize * MazeSize) // if there exists a wall to the
+                // east
                 {
                     g.drawLine((i + 1) * CELL_WIDTH + MARGIN, j * CELL_WIDTH
-                                + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN);
+                            + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
+                            + MARGIN);
                 }
 
                 if (cells[count].cellWalls[WEST] != MazeSize * MazeSize) // if there exists a wall to the
-                    // west
+                // west
                 {
-                        g.drawLine(i * CELL_WIDTH + MARGIN, j * CELL_WIDTH + MARGIN, i
-                                * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH + MARGIN);
+                    g.drawLine(i * CELL_WIDTH + MARGIN, j * CELL_WIDTH + MARGIN, i
+                            * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH + MARGIN);
                 }
-           }
-       }
+            }
+        }
+/*
+       ArrayList<Integer> xPointsList = new ArrayList<Integer>();
+       ArrayList<Integer> yPointsList = new ArrayList<Integer>();
+       int[]xPoints = new int[count];
+       int[] yPoints = new int[count];
+       int totalPoints = 0;
+       int nPoints;
        g.setColor(Color.RED); // changes color to draw the dots
        for (int i = 0; i < MazeSize; i++)
        {
-           int count = i;
+           count = i;
            for (int j = 0; j < MazeSize; j++)
            {
                if (j != 0)
@@ -231,16 +240,73 @@ public class Maze implements IMaze{
 
                if (path[count] == true) // if cell is part of the path
                {
-                   g.fillOval(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
-                           + MARGIN + DOT_MARGIN, SOLUTION_DOT_SIZE, SOLUTION_DOT_SIZE); // paint a red
+                   int x = i * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                   int y = j * CELL_WIDTH + MARGIN + DOT_MARGIN;
+                   xPointsList.add(x);
+                   yPointsList.add(y);
+                   totalPoints++;
+
+
+                   g.drawLine(
+                           i * CELL_WIDTH + MARGIN + DOT_MARGIN, //x1 - the first point's x coordinate.
+                           j * CELL_WIDTH + MARGIN + DOT_MARGIN, //y1 - the first point's y coordinate.
+
+                           i * CELL_WIDTH + MARGIN + DOT_MARGIN * 2 ,//x2 - the second point's x coordinate.
+                           j * CELL_WIDTH + MARGIN + DOT_MARGIN * 2) ;//y2 - the second point's y coordinate.
+
+                   // paint a red
                    // circle in the
                    // cell
 
                }
            }
-       }
-   }
 
+       }
+
+       int[] xPointsArray = xPointsList.stream()
+               .mapToInt(Integer::intValue)
+               .toArray();
+
+       int[] yPointsArray = yPointsList.stream()
+               .mapToInt(Integer::intValue)
+               .toArray();
+
+
+
+       int[] yPointsArray = yPointsList.stream().mapToInt(i -> i).toArray();
+       int[] xPointsArray = xPointsList.stream().mapToInt(i -> i).toArray();
+
+
+       for(int i = 1; i < yPointsList.size(); i++)
+       {
+           g.drawLine(xPointsArray[i-1], yPointsArray[i-1], xPointsArray[i],yPointsArray[i]);
+       }
+
+*/
+        //g.drawPolyline(yPointsArray, xPointsArray, xPointsArray.length );
+        DrawSolution(g);
+
+    }
+
+    public void DrawSolution(Graphics g){
+
+        int count = 0;
+        g.setColor(Color.RED); // changes color to draw the dots
+        for (int i = 0; i < MazeSize; i++) {
+            count = i;
+            for (int j = 0; j < MazeSize; j++) {
+                if (j != 0) {
+                    count += MazeSize;
+                }
+                boolean checker = false;
+                if (path[count] == true) // if cell is part of the path
+                {
+                    g.fill3DRect(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
+                            + MARGIN + DOT_MARGIN, 10, 10, true);
+                }
+            }
+        }
+    }
     /**
      * used to make the walls of a maze in a grid like fashion
      *
