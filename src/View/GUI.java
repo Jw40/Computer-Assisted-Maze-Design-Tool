@@ -186,7 +186,7 @@ public class GUI extends Component {
         JMenuItem openMaze = new JMenuItem("Open Maze...");
         JMenuItem saveMazeAs = new JMenuItem("Save As...");
         JMenuItem saveMaze = new JMenuItem("Save");
-        JMenuItem importImage = new JMenuItem("Import Image");
+        JMenuItem importImage = new JMenuItem("Import Image...");
         saveMazeAs.addActionListener(new ActionListener() {
 
             @Override
@@ -1238,7 +1238,7 @@ public class GUI extends Component {
                 BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
                 JLabel pic = new JLabel(new ImageIcon(img));
                 panel.add(pic);
-                mainFrame.add(panel);
+                mazePanel.add(panel);
                 mainFrame.setSize(400, 400);
                 mainFrame.setLayout(null);
                 mainFrame.setVisible(true);
