@@ -66,7 +66,11 @@ public interface IMaze {
      * @return maze goal
      */
     Point getGoal();
-
+    /**
+     * gets maze logo point
+     * @return maze logo
+     */
+    Point getLogo();
 
     /**
      * sets current solution
@@ -86,7 +90,7 @@ public interface IMaze {
 
 
 
-
+    void setLogo(Point newLogoPoint);
     void setStart(Point newStartPoint);
 
     void setGoal(Point newGoalPoint);

@@ -18,10 +18,11 @@ public class Maze implements  IMaze{
     private int rows;//rows of this maze
     private int columns;//columns of this maze
     private MazeBox[][] mazeLogic;//maze data
-    private Point start;//startig poiint
+    private Point start;//starting poiint
     private Point goal;//goal point
     private Point current;//current point
     private ArrayList<MazeBox> solution;//current solution
+    private Point logo;//logo point
 
     /**
      * empty constructor
@@ -32,6 +33,7 @@ public class Maze implements  IMaze{
         mazeLogic = null;
         start = null;
         goal = null;
+        logo = null;
         current = null;
         solution = null;
     }
@@ -56,6 +58,7 @@ public class Maze implements  IMaze{
         goal = null;
         current = null;
         solution = null;
+        logo = null;
     }
 
 
@@ -136,6 +139,9 @@ public class Maze implements  IMaze{
                     else if (goal != null && goal.x == i && goal.y == j){
                         printer.print("2 ");
                     }
+                    else if (logo != null && logo.x == i && logo.y == j){
+                        printer.print("4 ");
+                    }
                     else if (mazeLogic[i][j].isObstacle()){
                         printer.print("3 ");
                     }
@@ -195,6 +201,15 @@ public class Maze implements  IMaze{
             goal = new Point(x, y);
         }
     }
+    public void setLogo(int x, int y){
+        if (logo != null){
+            logo.x = x;
+            logo.y = y;
+        }
+        else{
+            logo = new Point(x, y);
+        }
+    }
 
     /**
      * gets rows
@@ -235,7 +250,9 @@ public class Maze implements  IMaze{
     public Point getGoal(){
         return goal;
     }
-
+    public Point getLogo(){
+        return logo;
+    }
 
     /**
      * sets current solution
@@ -277,7 +294,9 @@ public class Maze implements  IMaze{
     public void setStart(Point newStartPoint){
         start = newStartPoint;
     }
-
+    public void setLogo(Point newLogoPoint){
+        logo = newLogoPoint;
+    }
     public void setGoal(Point newGoalPoint){
         goal = newGoalPoint;
     }
@@ -319,6 +338,12 @@ public class Maze implements  IMaze{
         }
         else if (otherMaze.getGoal() == null){
             goal = null;
+        }
+        if (otherMaze.getLogo() != null && logo == null){
+            logo = new Point(otherMaze.getLogo().x, otherMaze.getLogo().y);
+        }
+        else if (otherMaze.getLogo() == null){
+            logo = null;
         }
     }
 
