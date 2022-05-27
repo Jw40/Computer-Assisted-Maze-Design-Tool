@@ -1,17 +1,7 @@
-import View.mainGUI;
+import View.GUI;
 
-/**
- * Entry point
- */
-public class Main
-{
-    /**
-     * Entry point of program
-     * @param args a
-     */
-    public static void main(String[] args)
-    {
-        mainGUI mainMenu = new mainGUI();
+public class Main {
+    public static void main(String[] args) {
+        GUI testGui = new GUI();//set up GUI
     }
-
 }

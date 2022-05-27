@@ -1,9 +1,7 @@
 package View;
 
 import Controller.IMaze;
-import Controller.KidsMaze;
 import Controller.Maze;
-import Controller.MazeSolver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +14,6 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.Color;
 
 /**
  * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.

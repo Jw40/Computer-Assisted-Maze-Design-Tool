@@ -1,76 +1,110 @@
 package Controller;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
-/**
- * Abstract Class which holds the method calls for the Maze and KidsMaze classes, for the purpose of Abstraction.
- */
-public interface IMaze
-{
+public interface IMaze {
     /**
-     * Used for maze solver class to get the current maze size
-     * @return the size of a maze to the maze solver class
+     * Saves this maze to a text file
+     * @param path file path
+     * @return true if completed without IO errors
      */
-    int  getMazeSize();
-
-
-    /**
-     * Used to return the Cell array to the maze solver class
-     * @return  the Cell array to the maze solver class
-     */
-    Cell[] getMazeCells();
+    boolean saveMaze (String path);
 
 
     /**
-     * Used in the MazePanel class to draw the maze in this current version
-     * @param g to draw the maze, used in the MazePanel class
+     * Set if a cell is obstacle
+     * @param x row
+     * @param y column
+     * @param obstacle obstacle or not
      */
-    void draw(Graphics g);
+    void isObstacle(int x, int y, boolean obstacle);
+
+    /**
+     * Set start of this maze
+     * @param x row
+     * @param y column
+     */
+    void setStart(int x, int y);
+
+    /**
+     * Set goal of this maze
+     * @param x row
+     * @param y column
+     */
+    void setGoal(int x, int y);
+
+    /**
+     * gets rows
+     * @return rows
+     */
+    int getRows();
+
+    /**
+     * gets columns
+     * @return columns
+     */
+    int getColumns();
+
+    /**
+     * get an array with all the maze's cells
+     * @return 2d array
+     */
+    MazeBox[][] getMazeLogic();
+
+    /**
+     * gets maze start
+     * @return maze start
+     */
+    Point getStart();
+
+    /**
+     * gets maze goal
+     * @return maze goal
+     */
+    Point getGoal();
 
 
     /**
-     * used to make the walls of a maze in a grid like fashion
+     * sets current solution
+     * @param solution new solution
      */
-    void makeWalls();
-
+    void setSolution(ArrayList<MazeBox> solution);
 
     /**
-     * used after make walls to clear random walls in the maze
+     * Sets all cells as obstacles
      */
-    void clearWalls();
-
+    void blacken();
 
     /**
-     * Used to set the dimension for the J panel
-     * @return  the ideal size of the window (for ScrollPanes)
+     * Clears this maze
      */
-    Dimension windowSize();
+    void whiten();
 
 
-    /**
-     * return the current maze
-     */
-    void getMaze();
 
 
-    /**
-     * Used for debugging to print to the console
-     * @return string to console of new maze object (used for debugging)
-     */
-    String toString();
+    void setStart(Point newStartPoint);
+
+    void setGoal(Point newGoalPoint);
+
+    ArrayList<MazeBox> getSolution();
+
+    Point getCurrent();
+
+    void setCurrent(Point current);
+
+    void copyMazeObstacles(Maze otherMaze, int iStart, int jStart);
 
 
-    /**
-     * draw a new maze template
-     */
-    void drawMazeTemplate();
+    void addRow(Maze oldMaze);
 
+    void addColumn(Maze oldMaze);
 
-    /**
-     * Used to return the path from the maze class
-     * @return get the path from the Maze class for the MazeSolver class
-     *
-     *
-     */
-    boolean[] getPath();
+    void removeRow();
+
+    void removeColumn();
 }

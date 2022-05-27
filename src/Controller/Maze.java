@@ -1,387 +1,390 @@
 package Controller;
 
-import java.awt.*;
-import java.time.LocalDate;
-import java.util.Random;
+import java.awt.Point;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-/**
- * Contains Maze object properties and methods to create a maze. Initialises the maze currently takes place in the mainGUI class, which draw method is called in MazePanel class
+/**Maze logic
  *
+ * @author Christos Darisaplis
+ * @version 1.2
  */
-public class Maze implements IMaze{
+public class Maze implements  IMaze{
+
+    private int rows;//rows of this maze
+    private int columns;//columns of this maze
+    private MazeBox[][] mazeLogic;//maze data
+    private Point start;//startig poiint
+    private Point goal;//goal point
+    private Point current;//current point
+    private ArrayList<MazeBox> solution;//current solution
+
+    /**
+     * empty constructor
+     */
+    public Maze() {
+        rows = 0;
+        columns = 0;
+        mazeLogic = null;
+        start = null;
+        goal = null;
+        current = null;
+        solution = null;
+    }
+
 
 
     /**
-     *  maze square size
+     * Builds a new empty maze of specific dimensions
+     * @param rows number of rows in the maze
+     * @param columns number of columns in the maze
      */
-    //class properties
-    private static final int CELL_WIDTH = 20;
-
-    /**
-     * buffer between window edge and maze
-     */
-    private static final int MARGIN = 50;
-
-    /**
-     * size of maze solution dot
-     */
-    private static final int SOLUTION_DOT_SIZE = 10;
-
-    /**
-     * space between wall and dot
-     */
-    private static final int DOT_MARGIN = 5;
-    private int MazeSize;
-    /**
-     * array containing all the cells in the maze
-     */
-    private Cell[] cells;
-    /**
-     * array representing the unique path solution
-     */
-    private boolean[] path;
-
-    private final int NORTH = 0 ;
-    private final int SOUTH = 1 ;
-    private final int EAST = 2 ;
-    private final int WEST = 3 ;
-
-    /**
-     * Difficulty or "size" of a Kids maze (not yet implemented)
-     */
-//    public enum Difficulty{ Child, Easy, Intermediate, Hard};
-
-    private String author;
-    private String mazeName;
-    private LocalDate dateCreated;
-    private int mazeSizeX;
-    private int mazeSizeY;
-   // private Difficulty difficulty;
-    private Logo adultLogo;
-
-    /**
-     * Used to create a maze object
-     * @param size size of maze
-     * @param mazeName name of maze
-     * @param author author of maze
-     * @param dateCreated creation date of maze
-     *
-     *Disclaimer - This piece of source code was referenced
-     *  * and is used for development purposes and testing,
-     *  * this code will not be used in its current state in the final submission.
-     *                 Author: irealva
-     *                 Date: 4/9/2014
-     *                 Title of program: maze-gui
-     *                 Code version: unknown
-     *                 Type: Source code
-     *                 Web address: https://github.com/irealva/maze-gui
-     */
-    //constructor for the maze object
-    public Maze(int size, String mazeName, String author, LocalDate dateCreated)//, Difficulty difficulty)
-    {
-
-        this.MazeSize = size;
-        this.mazeName = mazeName;
-        this.author = author;
-        this.dateCreated = dateCreated;
-        this.adultLogo = adultLogo;
-
-        //this.difficulty = difficulty ;
-
-        cells = new Cell[MazeSize * MazeSize]; // creates array of Cells
-
-        for (int i = 0; i < MazeSize * MazeSize; i++) // initializes array with Cell objects
-        {
-            cells[i] = new Cell();
+    public Maze(int rows, int columns){
+        this.rows = rows;
+        this.columns = columns;
+        mazeLogic = new MazeBox[rows][columns];
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j] = new MazeBox();
+            }
         }
-
-        if(MazeSize > 0)
-        {
-            makeWalls(); // updates wall information inside each Cell object
-            clearWalls(); // destoys wall until a maze is formed
-
-            path = new boolean[MazeSize * MazeSize];
-        }
-    }
-
-    /**
-     * returns the name of this Maze object
-     * @return maze name
-     */
-    public String getMazeName()
-    {
-        return this.mazeName;
-    }
-
-    /**
-     * returns the author of this Maze object
-     * @return the author of this Maze object
-     */
-    public String getAuthorName()
-    {
-        return this.author;
-    }
-
-
-    /**
-     * return this datacreated of this Maze object
-     * @return this datecreated of this Maze object
-     */
-    public LocalDate getDateCreated()
-    {
-        return this.dateCreated;
-    }
-
-    /**
-     *
-     * @return the size of a maze to the maze solver class
-     */
-    public int getMazeSize()
-    {
-        return MazeSize;
-    }
-
-    /**
-     *
-     * @return the Cell array to the maze solver class
-     */
-    public Cell[] getMazeCells()
-    {
-        return cells;
-    }
-
-    /**
-     * return path to MazeSolver
-     */
-    public boolean[] getPath()
-    {
-        return path;
+        start = null;
+        goal = null;
+        current = null;
+        solution = null;
     }
 
 
 
     /**
-     *
-     * @param g to draw the maze, used in the MazePanel class
-     *
-     *Disclaimer - This piece of source code was referenced
-     *  * and is used for development purposes and testing,
-     *  * this code will not be used in its current state in the final submission.
-     *                 Author: irealva
-     *                 Date: 4/9/2014
-     *                 Title of program: maze-gui
-     *                 Code version: unknown
-     *                 Type: Source code
-     *                 Web address: https://github.com/irealva/maze-gui
+     * Builds a new maze from file
+     * @param path file path
      */
-    //this is what draws the maze, called in the MazePanel GUI
-    @Override
-    public void draw(Graphics g) // draws a maze
-   {
-       g.setColor(Color.BLACK);
-       for (int i = 0; i < MazeSize; i++)
-       {
-           int count = i;
-           for (int j = 0; j < MazeSize; j++)
-           {
-               if (j != 0) {
-                   count += MazeSize;
-               }
+    public Maze (String path){
+        this();
+        try (Scanner scanner = new Scanner(new File(path))){
+            int input;
+            int rows = scanner.nextInt();
+            int columns = scanner.nextInt();
+            this.rows = rows;
+            this.columns = columns;
 
-               if (cells[count].cellWalls[NORTH] != MazeSize * MazeSize) // if there exists a wall to the north
-                {
-                    g.drawLine((i * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN),
-                            ((i + 1) * CELL_WIDTH + MARGIN), (j * CELL_WIDTH + MARGIN));
+            mazeLogic = new MazeBox[rows][columns];
+            for (int i = 0;i< rows;i++){
+                for (int j = 0;j< columns;j++){
+                    mazeLogic[i][j] = new MazeBox();
                 }
+            }
 
-               if (cells[count].cellWalls[SOUTH] != MazeSize * MazeSize) // if there exists a wall to the
-                    // south
-                {
-                    g.drawLine(i * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN);
-                }
+            for (int i = 0;i< rows;i++){
+                for (int j = 0;j< columns;j++){
+                    if (scanner.hasNextInt()){
+                        input = scanner.nextInt();
+                        if (input == 0){
+                            mazeLogic[i][j].setIsObstacle(false);
+                        }
+                        else if (input == 1){
+                            mazeLogic[i][j].setIsObstacle(false);
+                            start = new Point(i, j);
+                        }
+                        else if (input == 2){
+                            mazeLogic[i][j].setIsObstacle(false);
+                            goal = new Point(i, j);
+                        }
+                        else{
+                            mazeLogic[i][j].setIsObstacle(true);
+                        }
 
-               if (cells[count].cellWalls[EAST] != MazeSize * MazeSize) // if there exists a wall to the
-                    // east
-                {
-                    g.drawLine((i + 1) * CELL_WIDTH + MARGIN, j * CELL_WIDTH
-                                + MARGIN, (i + 1) * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH
-                                + MARGIN);
-                }
 
-                if (cells[count].cellWalls[WEST] != MazeSize * MazeSize) // if there exists a wall to the
-                    // west
-                {
-                        g.drawLine(i * CELL_WIDTH + MARGIN, j * CELL_WIDTH + MARGIN, i
-                                * CELL_WIDTH + MARGIN, (j + 1) * CELL_WIDTH + MARGIN);
-                }
-           }
-       }
-       g.setColor(Color.RED); // changes color to draw the dots
-       for (int i = 0; i < MazeSize; i++)
-       {
-           int count = i;
-           for (int j = 0; j < MazeSize; j++)
-           {
-               if (j != 0)
-               {
-                   count += MazeSize;
-               }
-
-               if (path[count] == true) // if cell is part of the path
-               {
-                   g.fillOval(i * CELL_WIDTH + MARGIN + DOT_MARGIN, j * CELL_WIDTH
-                           + MARGIN + DOT_MARGIN, SOLUTION_DOT_SIZE, SOLUTION_DOT_SIZE); // paint a red
-                   // circle in the
-                   // cell
-
-               }
-           }
-       }
-   }
-
-    /**
-     * used to make the walls of a maze in a grid like fashion
-     *
-     *Disclaimer - This piece of source code was referenced
-     *  * and is used for development purposes and testing,
-     *  * this code will not be used in its current state in the final submission.
-     *                 Author: irealva
-     *                 Date: 4/9/2014
-     *                 Title of program: maze-gui
-     *                 Code version: unknown
-     *                 Type: Source code
-     *                 Web address: https://github.com/irealva/maze-gui
-     */
-   //this is used to create all cells in the maze aka the walls roofs and floors
-    @Override
-    public void makeWalls() // fills wall information in Cells, -1 represents a
-    // border wall
-    {
-        for (int i = 0; i < MazeSize * MazeSize; i++) // set north,south,east,west walls
-        {
-            cells[i].cellWalls[NORTH] = i - MazeSize;
-            cells[i].cellWalls[SOUTH] = i + MazeSize;
-            cells[i].cellWalls[EAST] = i + 1;
-            cells[i].cellWalls[WEST] = i - 1;
-        }
-
-        for (int i = 0; i < MazeSize; i++)
-        {
-            cells[i].cellWalls[NORTH] = -1; // set in border north cells, north wall to -1
-            cells[MazeSize * MazeSize - i - 1].cellWalls[SOUTH] = -1; // set in border south cells, south
-            // wall to -1
-        }
-        for (int i = 0; i < MazeSize * MazeSize; i += MazeSize)
-        {
-            cells[MazeSize * MazeSize - i - 1].cellWalls[EAST] = -1; // set in border east cells, east
-            // wall to -1
-            cells[i].cellWalls[WEST] = -1; // set in border west cells, west wall to -1
-        }
-    }
-
-    /**
-     * used after make walls to clear random walls in the maze
-     *
-     *Disclaimer - This piece of source code was referenced
-     *  * and is used for development purposes and testing,
-     *  * this code will not be used in its current state in the final submission.
-     *                 Author: irealva
-     *                 Date: 4/9/2014
-     *                 Title of program: maze-gui
-     *                 Code version: unknown
-     *                 Type: Source code
-     *                 Web address: https://github.com/irealva/maze-gui
-     */
-    @Override
-    public void clearWalls() // destroys walls with a modified version of
-    // Kruskal's algorithm
-    {
-        int NumElements = MazeSize * MazeSize;
-
-        DisjSets ds = new DisjSets(NumElements); // creates a disjoint set to
-        // represent cells
-        for (int k = 0; k < MazeSize * MazeSize; k++)
-        {
-            ds.find(k); // adds each cell to a single set
-        }
-
-        Random generator = new Random();
-        while (ds.allConnected() == false) // while not all the elements in the
-        // set are connected
-        {
-            int cell1 = generator.nextInt(MazeSize * MazeSize); // pick a random cell
-            int wall = generator.nextInt(4);
-
-            int cell2 = cells[cell1].cellWalls[wall]; // pick a second random cell
-
-            if (cell2 != -1 && cell2 != MazeSize * MazeSize) // if there exists a wall between
-            // these two cells
-            {
-                if (ds.find(cell1) != ds.find(cell2)) // if cells do not belong to
-                // the same set
-                {
-                    cells[cell1].cellWalls[wall] = MazeSize * MazeSize; // destroy the wall between
-                    // these two cells. N*N will
-                    // represent no wall
-
-                    if (wall == NORTH || wall == EAST)
-                    {
-                        cells[cell2].cellWalls[wall + 1] = MazeSize * MazeSize;
                     }
-                    if (wall == SOUTH || wall == WEST)
-                    {
-                        cells[cell2].cellWalls[wall - 1] = MazeSize * MazeSize;
-                    }
+                }
+            }
 
-                    ds.union(ds.find(cell1), ds.find(cell2)); // make a union of the
-                    // set of these two cells, through which a path has just been
-                    // created
+
+
+        } catch (IOException e) {
+            System.out.println("Input issue!");
+        }
+    }
+
+    /**
+     * Saves this maze to a text file
+     * @param path file path
+     * @return true if completed without IO errors
+     */
+    public boolean saveMaze (String path){
+
+        try (PrintWriter printer = new PrintWriter(new FileWriter(new File(path)) {
+        })) {
+
+
+            printer.println(rows);
+            printer.println(columns);
+
+
+
+
+            for (int i = 0;i< rows;i++){
+                for (int j = 0;j< columns;j++){
+                    if (start != null && start.x == i && start.y == j){
+                        printer.print("1 ");
+                    }
+                    else if (goal != null && goal.x == i && goal.y == j){
+                        printer.print("2 ");
+                    }
+                    else if (mazeLogic[i][j].isObstacle()){
+                        printer.print("3 ");
+                    }
+                    else{
+                        printer.print("0 ");
+                    }
+                }
+                printer.println();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Output issue!");
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    /**
+     * Set if a cell is obstacle
+     * @param x row
+     * @param y column
+     * @param obstacle obstacle or not
+     */
+    public void isObstacle(int x, int y, boolean obstacle){
+        mazeLogic[x][y].setIsObstacle(obstacle);
+    }
+
+    /**
+     * Set start of this maze
+     * @param x row
+     * @param y column
+     */
+    public void setStart(int x, int y){
+        if (start != null){
+            start.x = x;
+            start.y = y;
+        }
+        else{
+            start = new Point(x, y);
+        }
+    }
+
+    /**
+     * Set goal of this maze
+     * @param x row
+     * @param y column
+     */
+    public void setGoal(int x, int y){
+        if (goal != null){
+            goal.x = x;
+            goal.y = y;
+        }
+        else{
+            goal = new Point(x, y);
+        }
+    }
+
+    /**
+     * gets rows
+     * @return rows
+     */
+    public int getRows(){
+        return rows;
+    }
+
+    /**
+     * gets columns
+     * @return columns
+     */
+    public int getColumns(){
+        return columns;
+    }
+
+    /**
+     * get an array with all the maze's cells
+     * @return 2d array
+     */
+    public MazeBox[][] getMazeLogic(){
+        return mazeLogic;
+    }
+
+    /**
+     * gets maze start
+     * @return maze start
+     */
+    public Point getStart(){
+        return start;
+    }
+
+    /**
+     * gets maze goal
+     * @return maze goal
+     */
+    public Point getGoal(){
+        return goal;
+    }
+
+
+    /**
+     * sets current solution
+     * @param solution new solution
+     */
+    public void setSolution(ArrayList<MazeBox> solution) {
+        this.solution = solution;
+    }
+
+    /**
+     * Sets all cells as obstacles
+     */
+    public void blacken(){
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j].setIsObstacle(true);
+            }
+        }
+        start = null;
+        goal = null;
+    }
+
+    /**
+     * Clears this maze
+     */
+    public void whiten(){
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j<columns;j++){
+                mazeLogic[i][j].setIsObstacle(false);
+            }
+        }
+        start = null;
+        goal = null;
+    }
+
+
+
+
+    public void setStart(Point newStartPoint){
+        start = newStartPoint;
+    }
+
+    public void setGoal(Point newGoalPoint){
+        goal = newGoalPoint;
+    }
+
+    public ArrayList<MazeBox> getSolution() {
+        return solution;
+    }
+
+    public Point getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Point current) {
+        this.current = current;
+    }
+
+    public void copyMazeObstacles(Maze otherMaze, int iStart, int jStart){
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                if (i + iStart>= otherMaze.getRows() || j + jStart>= otherMaze.getColumns() ||
+                        i + iStart<0 || j + jStart< 0){
+                    mazeLogic[i][j].setIsObstacle(false);
+                }
+                else{
+                    mazeLogic[i][j].setIsObstacle(otherMaze.getMazeLogic()[i + iStart]
+                            [j + jStart].isObstacle());
                 }
             }
         }
+        if (otherMaze.getStart() != null && start == null){
+            start = new Point(otherMaze.getStart().x, otherMaze.getStart().y);
+
+        }
+        else if (otherMaze.getStart() == null){
+            start = null;
+        }
+        if (otherMaze.getGoal() != null && goal == null){
+            goal = new Point(otherMaze.getGoal().x, otherMaze.getGoal().y);
+        }
+        else if (otherMaze.getGoal() == null){
+            goal = null;
+        }
     }
 
-    /**
-     * set window size demension for the maze panel
-     * @return the ideal size of the window (for ScrollPanes)
-     *
-     */
-    @Override
-    public Dimension windowSize() // returns the ideal size of the window (for
-    // JScrollPanes)
-    {
-        return new Dimension(MazeSize * CELL_WIDTH + MARGIN * 2, MazeSize * CELL_WIDTH + MARGIN
-                * 2);
+
+    public void addRow(Maze oldMaze){
+        rows++;
+        mazeLogic = new MazeBox[rows][columns];
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j] = new MazeBox();
+            }
+        }
+        copyMazeObstacles(oldMaze, 0, 0);
     }
 
-    /**
-     *
-     *
-     * draw a new maze template
-     */
-    public void drawMazeTemplate()
-    {
-        return;
+    public void addColumn(Maze oldMaze){
+        columns++;
+        mazeLogic = new MazeBox[rows][columns];
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j] = new MazeBox();
+            }
+        }
+        copyMazeObstacles(oldMaze, 0, 0);
     }
 
-    /**
-     *
-     * return the current maze
-     */
-    //not sure if this is needed here because we dont create the maze object here we crate it in the mainGUI
-    public void getMaze()
-    {
-        return;
+    public void removeRow(){
+        Maze temp = new Maze(rows, columns);
+        temp.copyMazeObstacles(this, 0, 0);
+        rows--;
+        mazeLogic = new MazeBox[rows][columns];
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j] = new MazeBox();
+            }
+        }
+        if (start!= null && start.x>= rows){
+            temp.setStart(null);
+            setStart(null);
+        }
+        if (goal != null && goal.x>= rows){
+            temp.setGoal(null);
+            setGoal(null);
+        }
+        copyMazeObstacles(temp, 0, 0);
     }
 
-    /**
-     *
-     * @return string to console of new maze object (used for debugging)
-     */
-    //can be used for debugging i guess
-    public String toString() {//overriding the toString() method
-        return "Controller.Maze Name: " + mazeName + " Author: " + author + " Date Created: " + dateCreated.toString() + " Size: " + MazeSize;
+    public void removeColumn(){
+        Maze temp = new Maze(rows, columns);
+        temp.copyMazeObstacles(this, 0, 0);
+        columns--;
+        mazeLogic = new MazeBox[rows][columns];
+        for (int i = 0;i< rows;i++){
+            for (int j = 0;j< columns;j++){
+                mazeLogic[i][j] = new MazeBox();
+            }
+        }
+        if (goal != null && goal.y>= columns){
+            temp.setGoal(null);
+            setGoal(null);
+        }
+        if (start != null && start.y>= columns){
+            temp.setStart(null);
+            setStart(null);
+        }
+        copyMazeObstacles(temp, 0, 0);
     }
+
 }
