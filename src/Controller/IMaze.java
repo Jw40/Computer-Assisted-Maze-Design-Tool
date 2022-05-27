@@ -1,9 +1,6 @@
 package Controller;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public interface IMaze {
@@ -53,7 +50,7 @@ public interface IMaze {
      * get an array with all the maze's cells
      * @return 2d array
      */
-    MazeBox[][] getMazeLogic();
+    Cell[][] getMazeLogic();
 
     /**
      * gets maze start
@@ -72,7 +69,7 @@ public interface IMaze {
      * sets current solution
      * @param solution new solution
      */
-    void setSolution(ArrayList<MazeBox> solution);
+    void setSolution(ArrayList<Cell> solution);
 
     /**
      * Sets all cells as obstacles
@@ -91,7 +88,7 @@ public interface IMaze {
 
     void setGoal(Point newGoalPoint);
 
-    ArrayList<MazeBox> getSolution();
+    ArrayList<Cell> getSolution();
 
     Point getCurrent();
 

@@ -26,7 +26,7 @@ package View;
 
 
 import Controller.Maze;
-import Controller.MazeBox;
+import Controller.Cell;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -194,8 +194,8 @@ public class MazePanel extends JPanel{
 
 
         g2D.setColor(Color.GREEN);//draw solution so far
-        MazeBox previous = null;
-        MazeBox aSolutionBox = null;
+        Cell previous = null;
+        Cell aSolutionBox = null;
         if (aMaze.getSolution() != null){
             int currentSize = aMaze.getSolution().size();
             for (int i = 0;i< currentSize;i++){

@@ -24,10 +24,6 @@ package Controller;
  * THE SOFTWARE.
  */
 
-import Controller.Maze;
-import Controller.MazeBox;
-import Controller.MazeSearch;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -37,7 +33,7 @@ import java.util.Collections;
  */
 public final class MazeSolverDBFS extends MazeSearch {
 
-    private final ArrayList<MazeBox> front;
+    private final ArrayList<Cell> front;
     private final boolean randomStep;
     private final boolean dfs;
 
@@ -59,7 +55,7 @@ public final class MazeSolverDBFS extends MazeSearch {
     public boolean nextStep(int speed) throws InterruptedException{
         if(speed>0) Thread.sleep(speed);
         if(!front.isEmpty()){
-            MazeBox box;
+            Cell box;
             if(dfs){
                 box = front.get(front.size()-1);
                 front.remove(front.size()-1);
