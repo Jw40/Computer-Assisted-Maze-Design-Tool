@@ -97,6 +97,8 @@ public class GUI {
 
     private final ImageIcon startIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/start.png")));
+    private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+            "/Icons/logo.png")));
     private final ImageIcon goalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/goal.png")));
     private final ImageIcon legendIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
@@ -738,15 +740,17 @@ public class GUI {
             }
         });
 
-        JPanel editPanel = new JPanel(new GridLayout(1, 2));
+        JPanel editPanel = new JPanel(new GridLayout(1, 3));
         JLabel startLabel = new JLabel(startIcon);
         JLabel goalLabel = new JLabel(goalIcon);
+        JLabel logoLabel = new JLabel(logoIcon);
         editPanel.add(startLabel);
         editPanel.add(goalLabel);
+        editPanel.add(logoLabel);
         editPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         editPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         editPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(
-                Color.BLACK), "Set Start&Goal"));
+                Color.BLACK), "Set start point, end point and logo"));
 
         startLabel.setToolTipText("Start");
         startLabel.setText("S");
@@ -755,9 +759,31 @@ public class GUI {
             public void mousePressed(MouseEvent e){
                 startLabel.setTransferHandler(new TransferHandler("text"));
                 goalLabel.setTransferHandler(new TransferHandler(null));
+                logoLabel.setTransferHandler(new TransferHandler(null));
                 JComponent c = (JComponent)e.getSource();
                 TransferHandler handler = c.getTransferHandler();
                 handler.setDragImage(startIcon.getImage());
+                handler.exportAsDrag(c, e, TransferHandler.COPY);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e){
+
+            }
+
+
+        });
+        logoLabel.setToolTipText("Logo");
+        logoLabel.setText("L");
+        logoLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e){
+                logoLabel.setTransferHandler(new TransferHandler("text"));
+                startLabel.setTransferHandler(new TransferHandler(null));
+                goalLabel.setTransferHandler(new TransferHandler(null));
+                JComponent c = (JComponent)e.getSource();
+                TransferHandler handler = c.getTransferHandler();
+                handler.setDragImage(logoIcon.getImage());
                 handler.exportAsDrag(c, e, TransferHandler.COPY);
             }
 
@@ -776,6 +802,7 @@ public class GUI {
             public void mousePressed(MouseEvent e){
                 goalLabel.setTransferHandler(new TransferHandler("text"));
                 startLabel.setTransferHandler(new TransferHandler(null));
+                logoLabel.setTransferHandler(new TransferHandler(null));
                 JComponent c = (JComponent)e.getSource();
                 TransferHandler handler = c.getTransferHandler();
                 handler.setDragImage(goalIcon.getImage());
