@@ -52,10 +52,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -1211,6 +1213,35 @@ public class GUI {
      * Opens a maze from a text file
      * @return true if the maze opens successfully, false otherwise
      */
+
+    public void OpenFileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+
+            try {
+                JPanel panel = new JPanel();
+                panel.setBounds(400, 50, 1000, 1400);
+                BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
+                JLabel pic = new JLabel(new ImageIcon(img));
+                panel.add(pic);
+                mainFrame.add(panel);
+                mainFrame.setSize(400, 400);
+                mainFrame.setLayout(null);
+                mainFrame.setVisible(true);
+
+
+            } catch (IOException ignored) {
+            }
+
+        }
+
+    }
+
+
     private boolean openMaze(){
         boolean flag = false;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
