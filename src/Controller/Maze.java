@@ -286,6 +286,7 @@ public class Maze implements  IMaze{
         }
         start = null;
         goal = null;
+        logo = null;
     }
 
 
