@@ -94,7 +94,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Christos Darisaplis
  * @version 1.2
  */
-public class GUI {
+public class GUI extends Component {
 
 
     private final ImageIcon startIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
@@ -186,6 +186,7 @@ public class GUI {
         JMenuItem openMaze = new JMenuItem("Open Maze...");
         JMenuItem saveMazeAs = new JMenuItem("Save As...");
         JMenuItem saveMaze = new JMenuItem("Save");
+        JMenuItem importImage = new JMenuItem("Import Image");
         saveMazeAs.addActionListener(new ActionListener() {
 
             @Override
@@ -213,6 +214,14 @@ public class GUI {
             }
         });
 
+        importImage.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageImporter();
+            }
+        });
+
         JMenuItem clear = new JMenuItem("Clear Maze");
         clear.addActionListener(new ActionListener() {
 
@@ -228,6 +237,7 @@ public class GUI {
         fileMenu.addSeparator();
         fileMenu.add(saveMaze);
         fileMenu.add(saveMazeAs);
+        fileMenu.add(importImage);
         fileMenu.addSeparator();
         fileMenu.add(clear);
         fileMenu.addSeparator();
@@ -1214,7 +1224,7 @@ public class GUI {
      * @return true if the maze opens successfully, false otherwise
      */
 
-    public void OpenFileChooser() {
+    public void ImageImporter() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
@@ -1224,7 +1234,7 @@ public class GUI {
 
             try {
                 JPanel panel = new JPanel();
-                panel.setBounds(400, 50, 1000, 1400);
+                panel.setBounds(0, 0, 1000, 1400);
                 BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
                 JLabel pic = new JLabel(new ImageIcon(img));
                 panel.add(pic);
