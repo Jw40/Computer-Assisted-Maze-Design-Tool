@@ -17,11 +17,11 @@ public class Maze implements  IMaze{
 
     private int rows;//rows of this maze
     private int columns;//columns of this maze
-    private MazeBox[][] mazeLogic;//maze data
+    private Cell[][] mazeLogic;//maze data
     private Point start;//starting poiint
     private Point goal;//goal point
     private Point current;//current point
-    private ArrayList<MazeBox> solution;//current solution
+    private ArrayList<Cell> solution;//current solution
     private Point logo;//logo point
 
     /**
@@ -48,10 +48,10 @@ public class Maze implements  IMaze{
     public Maze(int rows, int columns){
         this.rows = rows;
         this.columns = columns;
-        mazeLogic = new MazeBox[rows][columns];
+        mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
-                mazeLogic[i][j] = new MazeBox();
+                mazeLogic[i][j] = new Cell();
             }
         }
         start = null;
@@ -76,10 +76,10 @@ public class Maze implements  IMaze{
             this.rows = rows;
             this.columns = columns;
 
-            mazeLogic = new MazeBox[rows][columns];
+            mazeLogic = new Cell[rows][columns];
             for (int i = 0;i< rows;i++){
                 for (int j = 0;j< columns;j++){
-                    mazeLogic[i][j] = new MazeBox();
+                    mazeLogic[i][j] = new Cell();
                 }
             }
 
@@ -201,6 +201,7 @@ public class Maze implements  IMaze{
             goal = new Point(x, y);
         }
     }
+
     public void setLogo(int x, int y){
         if (logo != null){
             logo.x = x;
@@ -231,7 +232,7 @@ public class Maze implements  IMaze{
      * get an array with all the maze's cells
      * @return 2d array
      */
-    public MazeBox[][] getMazeLogic(){
+    public Cell[][] getMazeLogic(){
         return mazeLogic;
     }
 
@@ -258,7 +259,7 @@ public class Maze implements  IMaze{
      * sets current solution
      * @param solution new solution
      */
-    public void setSolution(ArrayList<MazeBox> solution) {
+    public void setSolution(ArrayList<Cell> solution) {
         this.solution = solution;
     }
 
@@ -302,7 +303,7 @@ public class Maze implements  IMaze{
         goal = newGoalPoint;
     }
 
-    public ArrayList<MazeBox> getSolution() {
+    public ArrayList<Cell> getSolution() {
         return solution;
     }
 
@@ -314,7 +315,7 @@ public class Maze implements  IMaze{
         this.current = current;
     }
 
-    public void copyMazeObstacles(Maze otherMaze, int iStart, int jStart){
+    public void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart){
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
                 if (i + iStart>= otherMaze.getRows() || j + jStart>= otherMaze.getColumns() ||
@@ -349,23 +350,23 @@ public class Maze implements  IMaze{
     }
 
 
-    public void addRow(Maze oldMaze){
+    public void addRow(IMaze oldMaze){
         rows++;
-        mazeLogic = new MazeBox[rows][columns];
+        mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
-                mazeLogic[i][j] = new MazeBox();
+                mazeLogic[i][j] = new Cell();
             }
         }
         copyMazeObstacles(oldMaze, 0, 0);
     }
 
-    public void addColumn(Maze oldMaze){
+    public void addColumn(IMaze oldMaze){
         columns++;
-        mazeLogic = new MazeBox[rows][columns];
+        mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
-                mazeLogic[i][j] = new MazeBox();
+                mazeLogic[i][j] = new Cell();
             }
         }
         copyMazeObstacles(oldMaze, 0, 0);
@@ -375,10 +376,10 @@ public class Maze implements  IMaze{
         Maze temp = new Maze(rows, columns);
         temp.copyMazeObstacles(this, 0, 0);
         rows--;
-        mazeLogic = new MazeBox[rows][columns];
+        mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
-                mazeLogic[i][j] = new MazeBox();
+                mazeLogic[i][j] = new Cell();
             }
         }
         if (start!= null && start.x>= rows){
@@ -396,10 +397,10 @@ public class Maze implements  IMaze{
         Maze temp = new Maze(rows, columns);
         temp.copyMazeObstacles(this, 0, 0);
         columns--;
-        mazeLogic = new MazeBox[rows][columns];
+        mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
-                mazeLogic[i][j] = new MazeBox();
+                mazeLogic[i][j] = new Cell();
             }
         }
         if (goal != null && goal.y>= columns){

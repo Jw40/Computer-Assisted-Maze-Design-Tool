@@ -26,9 +26,6 @@ package Controller;
  * THE SOFTWARE.
  */
 
-import Controller.Maze;
-import Controller.MazeBox;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,20 +38,21 @@ public abstract class MazeSearch {
 
     protected int x, y; // current position
     protected int end_x, end_y; // end position
-    protected MazeBox[][] maze; // the maze boxes
+    protected Cell[][] maze; // the maze boxes
     protected int width, height; // maze dimensions
     protected int step; // solver step
-    protected ArrayList<MazeBox> solution; // maze solution
+    protected ArrayList<Cell> solution; // maze solution
     protected int maxFront; // max front set size
-    protected Maze mazeData;
+    protected IMaze mazeData;
 
     /**
      * Create maze from input
-     * @param mazeInput 2D array with 0 and 1 for obstacles
      * @param x start x coordinate
      * @param y start y coordinate
+     * @param mazeInput 2D array with 0 and 1 for obstacles
+     * @param mazeData
      */
-    MazeSearch(int[][] mazeInput, Maze mazeData){
+    MazeSearch(int[][] mazeInput, IMaze mazeData){
         x= -1;
         y = -1;
         end_x = -1;
@@ -64,11 +62,11 @@ public abstract class MazeSearch {
         step = 0;
         width = mazeInput[0].length;
         height = mazeInput.length;
-        maze = new MazeBox[height][width];
+        maze = new Cell[height][width];
         this.mazeData = mazeData;
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
-                maze[i][j] = new MazeBox();
+                maze[i][j] = new Cell();
                 maze[i][j].setIsObstacle(mazeInput[i][j]==3);
                 maze[i][j].x = j;
                 maze[i][j].y = i;
@@ -152,10 +150,10 @@ public abstract class MazeSearch {
      * Get current maze solution
      * @return ArrayList with current MazeBox solution (MazeBox items)
      */
-    public ArrayList<MazeBox> getSolution(){
+    public ArrayList<Cell> getSolution(){
         solution.clear();
         if(step==0) return null;
-        MazeBox box = maze[y][x];
+        Cell box = maze[y][x];
         int c = 0;
         while(c<2){
             solution.add(box);
@@ -174,7 +172,7 @@ public abstract class MazeSearch {
      * @return
      * @throws InterruptedException
      */
-    public ArrayList<MazeBox> solve(int speed) throws InterruptedException{
+    public ArrayList<Cell> solve(int speed) throws InterruptedException{
         while(nextStep(speed)){
             // continue tree search
         }

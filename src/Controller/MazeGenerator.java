@@ -26,9 +26,6 @@ package Controller;
  * THE SOFTWARE.
  */
 
-import Controller.Maze;
-import Controller.MazeBox;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -42,21 +39,22 @@ public final class MazeGenerator {
     private int start_x, start_y; // start position
     private int nstart_x, nstart_y; // start candidate position
     private int end_x, end_y; // end position
-    private MazeBox[][] maze; // the maze boxes
-    private final ArrayList<MazeBox> front;
+    private Cell[][] maze; // the maze boxes
+    private final ArrayList<Cell> front;
     private final int width, height; // maze dimensions
     private int step; // generator step
     private final boolean classic; // if the generated maze is classic
     private final int vstep; // visit step, 2: classic, 1: randomized
-    private Maze aMaze;
+    private IMaze aMaze;
 
     /**
      * DFS initialization
+     * @param maxSolution maximum solution length (set negative for no limit)
      * @param width maze width >= 4
      * @param height maze height >= 4
-     * @param maxSolution maximum solution length (set negative for no limit)
+     * @param aMaze
      */
-    public MazeGenerator(int width, int height, boolean classic, Maze aMaze) {
+    public MazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         this.classic = classic;
         this.aMaze = aMaze;
         if(classic){
@@ -80,10 +78,10 @@ public final class MazeGenerator {
         if(width<4 || height<4){
             return;
         }
-        maze = new MazeBox[height][width];
+        maze = new Cell[height][width];
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
-                maze[i][j] = new MazeBox();
+                maze[i][j] = new Cell();
                 maze[i][j].x = j;
                 maze[i][j].y = i;
             }
@@ -125,7 +123,7 @@ public final class MazeGenerator {
         if(!front.isEmpty()){
             int k;
             k = front.size()-1; // DFS generation
-            MazeBox box = front.get(k);
+            Cell box = front.get(k);
             front.remove(k);
             if(!canVisit(box.x, box.y)){
                 return nextStep(0);
@@ -259,12 +257,4 @@ public final class MazeGenerator {
         }
         return out;
     }
-
-    public int[][] generate(int speed) throws InterruptedException{
-        while(nextStep(speed)){
-            // continue generation
-        }
-        return getMaze();
-    }
-
 }

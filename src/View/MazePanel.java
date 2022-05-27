@@ -25,8 +25,9 @@ package View;
  */
 
 
+import Controller.IMaze;
 import Controller.Maze;
-import Controller.MazeBox;
+import Controller.Cell;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -51,9 +52,11 @@ import javax.swing.event.MouseInputAdapter;
 public class MazePanel extends JPanel{
     private Point selection;//mouse selection
     private boolean needsRedraw;//redraw flag
-    private Maze aMaze;//linked maze
+    private IMaze aMaze;//linked maze
+
     private MouseAdapter mousePainter;//paints maze cells
     private MouseAdapter mouseSelector;//selects maze cells
+
     private boolean drawArrows;//arrows on solution
     private boolean editable;//can be edited
     private boolean drawgrid;//draw maze grid
@@ -63,7 +66,7 @@ public class MazePanel extends JPanel{
     private boolean previewLogo;
     private boolean moveable;//can be moved around with cursor
     private Point movementStartingPoint;//from which point movement occured
-    private Maze originalMaze;//old linked maze
+    private IMaze originalMaze;//old linked maze
     private Point originalMazeStart;//where the old maze is placed in relation to the current one
 
 
@@ -71,7 +74,7 @@ public class MazePanel extends JPanel{
      * Default constructor
      * @param aMaze maze linked to the panel
      */
-    public MazePanel (Maze aMaze){
+    public MazePanel (IMaze aMaze){
         super();
         setTransferHandler(new TransferHandler("text"));
         selection = null;
@@ -195,8 +198,8 @@ public class MazePanel extends JPanel{
 
 
         g2D.setColor(Color.GREEN);//draw solution so far
-        MazeBox previous = null;
-        MazeBox aSolutionBox = null;
+        Cell previous = null;
+        Cell aSolutionBox = null;
         if (aMaze.getSolution() != null){
             int currentSize = aMaze.getSolution().size();
             for (int i = 0;i< currentSize;i++){
@@ -338,7 +341,7 @@ public class MazePanel extends JPanel{
      * Link this panel with a new maze
      * @param aMaze maze to link
      */
-    public void setMaze(Maze aMaze){
+    public void setMaze(IMaze aMaze){
         removeMouseMotionListener(mouseSelector);
         removeMouseMotionListener(mousePainter);
         removeMouseListener(mousePainter);
@@ -378,7 +381,7 @@ public class MazePanel extends JPanel{
      * Returns the maze currently linked to this panel
      * @return maze object
      */
-    public Maze getMaze(){
+    public IMaze getMaze(){
         return aMaze;
     }
 
@@ -561,7 +564,7 @@ public class MazePanel extends JPanel{
             if (selection.equals("S")){
                 aMaze.setStart(null);
             }
-            else if (selection.equals("G")){
+            else if (selection.equals("L")){
                 aMaze.setGoal(null);
             }
             else if (selection.equals("L")){
@@ -747,7 +750,7 @@ public class MazePanel extends JPanel{
      * Getter of originalMaze variable
      * @return originalMaze variable
      */
-    public Maze getOriginalMaze() {
+    public IMaze getOriginalMaze() {
         return originalMaze;
     }
 
@@ -755,7 +758,7 @@ public class MazePanel extends JPanel{
      * Setter of originalMaze variable
      * @param newOriginalMaze new value
      */
-    public void setOriginalMaze(Maze newOriginalMaze){
+    public void setOriginalMaze(IMaze newOriginalMaze){
         this.originalMaze = newOriginalMaze;
     }
 

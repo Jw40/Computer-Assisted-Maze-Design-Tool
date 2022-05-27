@@ -26,10 +26,7 @@ package View;
 
 
 
-import Controller.Maze;
-import Controller.MazeGenerator;
-import Controller.MazeSearch;
-import Controller.MazeSolverDBFS;
+import Controller.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -111,7 +108,7 @@ public class GUI extends Component {
     private MazePanel mazePanel;//displays maze
     private boolean saved;//maze saved
     private String directory;//save directory
-    private Maze maze;//open maze, holds static maze data
+    private IMaze maze;//open maze, holds static maze data
     private MazeSearch solver;//solves the open maze
     private Thread runThread;//runs to solve the maze
     private boolean pause;//thread paused
@@ -1283,14 +1280,6 @@ public class GUI extends Component {
         return flag;
     }
 
-    /**
-     * Updates speed label
-     * @param speedLabel label to update
-     * @param newValue new value for the label to display
-     */
-    private void updateCurrentSpeedLabel(JLabel speedLabel, int newValue){
-        speedLabel.setText("Step delay(msec): "+Integer.toString(newValue));
-    }
 
     /**
      * Sets up a solver for this maze
@@ -1301,24 +1290,12 @@ public class GUI extends Component {
      */
     private MazeSearch setSolver (String algorithm, boolean random, int depth,
                                   JComboBox<String> distanceFunction){
-        boolean manhattan;
-        if (distanceFunction.getSelectedItem().toString().equals("Euclidean")){
-            manhattan = false;
-        }
-        else{
-            manhattan = true;
-        }
-        if (algorithm.equals("DFS")){
-            solver = new MazeSolverDBFS(mazePanel.getMazeData(), random, true,
-                    mazePanel.getMaze());
-        }
+
         if (algorithm.equals("BFS")){
             solver = new MazeSolverDBFS(mazePanel.getMazeData(), random, false,
                     mazePanel.getMaze());
         }
-
         return solver;
-
     }
 
     /**
