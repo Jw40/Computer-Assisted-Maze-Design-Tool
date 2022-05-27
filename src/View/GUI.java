@@ -792,7 +792,6 @@ public class GUI {
 
             }
 
-
         });
 
         goalLabel.setToolTipText("Goal");
