@@ -447,7 +447,6 @@ public class GUI extends Component {
         JButton stopButton = new JButton("Reset");
         JButton pauseButton = new JButton("Pause");
         JButton nextButton = new JButton("Next Step");
-        JButton randomButton = new JButton("Generate Random Maze");
         runButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseButton.addActionListener(new ActionListener() {
@@ -488,64 +487,11 @@ public class GUI extends Component {
 
             }
         });
-
-        randomButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    statusLabel.setText("Status: Generating...");
-                    generatorMode = true;
-                    random.setEnabled(false);
-                    algoSelection.setEnabled(false);
-                    IDSpinner.setEnabled(false);
-                    stopButton.setEnabled(true);
-                    pauseButton.setEnabled(true);
-                    nextButton.setEnabled(false);
-                    runButton.setEnabled(false);
-                    if (!pause){
-                        mazePanel.blacken();
-                        generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
-                                mazePanel.getMaze().getRows(), random.isSelected(),
-                                mazePanel.getMaze());
-                        mazePanel.repaint();
-                    }
-                    pause = false;
-                    runThread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                while(generator.nextStep(0)){
-                                    if (pause){
-                                        runThread.interrupt();
-                                    }
-                                    mazePanel.repaint();
-                                }
-                            } catch (InterruptedException e) {
-                                System.out.println("Interrupted");
-                            }
-                            pauseButton.setEnabled(false);
-                            algoSelection.setEnabled(true);
-                            if (!pause){
-                                speedSlider.setEnabled(false);
-                                speedSpinner.setEnabled(false);
-                                statusLabel.setText("Status: Maze generated!");
-                            }
-                            mazePanel.repaint();
-                        }
-                    });
-                    runThread.start();
-
-
-            }
-        });
-
-
-
         runButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (algoSelection.getSelectedItem().toString().equals("Maze Generator (DFS)")){
                     statusLabel.setText("Status: Generating...");
                     generatorMode = true;
                     random.setEnabled(false);
@@ -589,7 +535,75 @@ public class GUI extends Component {
                     });
                     runThread.start();
                 }
+                else if (canSolve()){
+                    statusLabel.setText("Status: Running...");
+                    generatorMode = false;
+                    mazePanel.setEditable(false);
+                    pause = false;
+                    random.setEnabled(false);
+                    algoSelection.setEnabled(false);
+                    IDSpinner.setEnabled(false);
+                    stopButton.setEnabled(true);
+                    pauseButton.setEnabled(true);
+                    nextButton.setEnabled(false);
+                    runButton.setEnabled(false);
+                    if (solver == null){
+                        solver = setSolver(algoSelection.getSelectedItem().toString(),
+                                random.isSelected(), (Integer)IDSpinner.getValue(),
+                                distanceSelection);
+                    }
+                    runThread = new Thread(new Runnable() {
 
+                        @Override
+                        public void run() {
+                            try {
+                                while (!solver.isSolved() && solver.nextStep(speedSlider.
+                                        getValue())){
+                                    mazePanel.repaint();
+                                    if (pause){
+                                        runThread.interrupt();
+                                    }
+                                    mazePanel.getMaze().setSolution(solver.getSolution());
+                                    stepInfoLabel.setText("Steps: "+solver.getSteps());
+                                    solutionLabel.setText("Solution Length: "+
+                                            mazePanel.getMaze().getSolution().size());
+                                    maxFrontLabel.setText("Max frontier size: "+
+                                            solver.getMaxFront());
+                                }
+                            } catch (InterruptedException p) {
+                                System.out.println("Interrupted!");
+                            }
+                            mazePanel.getMaze().setSolution(solver.getSolution());
+                            mazePanel.repaint();
+                            if (!pause){
+                                if (mazePanel.getMaze().getSolution() != null &&
+                                        mazePanel.getMaze().getSolution().get(mazePanel.getMaze().getSolution().size() - 1)
+                                                .y == mazePanel.getMaze().getGoal().x && mazePanel.getMaze().getSolution()
+                                        .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y){
+                                    statusLabel.setText("Status: Solved!");
+                                }
+                                else{
+                                    statusLabel.setText("Status: No solution found");
+                                }
+
+                                pauseButton.setEnabled(false);
+                                speedSlider.setEnabled(false);
+                                speedSpinner.setEnabled(false);
+                                stepInfoLabel.setText("Steps: "+solver.getSteps());
+                                solutionLabel.setText("Solution Length: "+
+                                        mazePanel.getMaze().getSolution().size());
+                                maxFrontLabel.setText("Max frontier size: "+
+                                        solver.getMaxFront());
+                                solver = null;
+
+                            }
+
+                        }
+                    });
+                    runThread.start();
+
+                }
+            }
         });
         runButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         pauseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -600,8 +614,6 @@ public class GUI extends Component {
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         nextButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        randomButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        randomButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextButton.addActionListener(new ActionListener() {
 
             @Override
@@ -828,8 +840,6 @@ public class GUI extends Component {
         runPanel.add(stopButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(nextButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(randomButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         runPanel.add(speedPanel);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
