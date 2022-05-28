@@ -69,7 +69,8 @@ public class GUI extends Component {
     /**
      * Constructor, builds GUI
      */
-    public GUI(){
+    public GUI()
+    {
         saved = true;
         directory = null;
         solver = null;
@@ -230,10 +231,10 @@ public class GUI extends Component {
         generateNewMazeButton.addActionListener(e -> {
                 statusLabel.setText("Status: Generating...");
                 generatorMode = true;
-                random.setEnabled(false);
-                resetButton.setEnabled(false);
+                random.setEnabled(true);
+                resetButton.setEnabled(true);
                 solveButton.setEnabled(true);
-                generateNewMazeButton.setEnabled(false);
+                generateNewMazeButton.setEnabled(true);
                 mazePanel.blacken();
                 generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
                             mazePanel.getMaze().getRows(), random.isSelected(),
@@ -370,33 +371,23 @@ public class GUI extends Component {
         //END
 
 
-
+        //Drop down menu ACTION LISTENER
         fileMenu.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!generatorMode){
-                    resetButton.doClick();
-                }
+
             }
             @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
+            public void mousePressed(MouseEvent e) {}
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
+            public void mouseReleased(MouseEvent e) {}
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
+            public void mouseEntered(MouseEvent e) {}
 
             @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
+            public void mouseExited(MouseEvent e) {}
         });
 
         newMaze.addActionListener(e -> {
@@ -543,13 +534,9 @@ public class GUI extends Component {
         JButton buildButton = new JButton("Build");
 
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                newDialog.dispose();
-            }
-        });
+        cancelButton.addActionListener(e -> newDialog.dispose());
+
         JPanel buttonPanel = new JPanel(gridLayout);
         buttonPanel.add(buildButton);
         buttonPanel.add(cancelButton);
@@ -571,117 +558,99 @@ public class GUI extends Component {
         gridBox.setSelected(mazePanel.getDrawGrid());
         gridBox.setVisible(false);
 
-        gridBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (gridBox.isSelected()){
-                    newMazePanel.setDrawGrid(true);
-                }
-                else{
-                    newMazePanel.setDrawGrid(false);
-                }
+        gridBox.addActionListener(e -> {
+            if (gridBox.isSelected()){
+                newMazePanel.setDrawGrid(true);
+            }
+            else{
+                newMazePanel.setDrawGrid(false);
             }
         });
 
-        keepOld.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (keepOld.isSelected()){
-                    borderPanel.setVisible(true);
-                    gridBox.setVisible(true);
-                    newMazePanel.invalidate();
-                    newMazePanel.repaint();
-                    newDialog.setSize(new Dimension(500, 400));
-                    newDialog.repaint();
-                }
-                else{
-                    borderPanel.setVisible(false);
-                    gridBox.setVisible(false);
-                    newDialog.pack();
-                }
+        keepOld.addActionListener(e -> {
+            if (keepOld.isSelected()){
+                borderPanel.setVisible(true);
+                gridBox.setVisible(true);
+                newMazePanel.invalidate();
+                newMazePanel.repaint();
+                newDialog.setSize(new Dimension(500, 400));
+                newDialog.repaint();
+            }
+            else{
+                borderPanel.setVisible(false);
+                gridBox.setVisible(false);
+                newDialog.pack();
             }
         });
 
-        rowSpinner.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int spinnerValue = (Integer)rowSpinner.getValue();
-                int currentRows = newMazePanel.getMaze().getRows();
-                if (spinnerValue> currentRows){
-                    for (int j = currentRows;j< spinnerValue;j++){
-                        newMazePanel.getMaze().addRow(newMazePanel.getOriginalMaze());
-                    }
-                    newMazePanel.invalidate();
-                    newMazePanel.repaint();
-                } else if (spinnerValue< currentRows){
-                    for (int j = spinnerValue;j< currentRows;j++){
-                        newMazePanel.getMaze().removeRow();
-                    }
-                    newMazePanel.invalidate();
-                    newMazePanel.repaint();
+        rowSpinner.addChangeListener(e -> {
+            int spinnerValue = (Integer)rowSpinner.getValue();
+            int currentRows = newMazePanel.getMaze().getRows();
+            if (spinnerValue> currentRows){
+                for (int j = currentRows;j< spinnerValue;j++){
+                    newMazePanel.getMaze().addRow(newMazePanel.getOriginalMaze());
                 }
+                newMazePanel.invalidate();
+                newMazePanel.repaint();
+            } else if (spinnerValue< currentRows){
+                for (int j = spinnerValue;j< currentRows;j++){
+                    newMazePanel.getMaze().removeRow();
+                }
+                newMazePanel.invalidate();
+                newMazePanel.repaint();
             }
         });
 
-        columnSpinner.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int spinnerValue = (Integer)columnSpinner.getValue();
-                int currentColumns = newMazePanel.getMaze().getColumns();
-                if (spinnerValue> currentColumns){
-                    for (int j = currentColumns;j< spinnerValue;j++){
-                        newMazePanel.getMaze().addColumn(newMazePanel.getOriginalMaze());
-                    }
-                    newMazePanel.invalidate();
-                    newMazePanel.repaint();
-                } else if (spinnerValue< currentColumns){
-                    for (int j = spinnerValue;j< currentColumns;j++){
-                        newMazePanel.getMaze().removeColumn();
-                    }
-                    newMazePanel.invalidate();
-                    newMazePanel.repaint();
+        columnSpinner.addChangeListener(e -> {
+            int spinnerValue = (Integer)columnSpinner.getValue();
+            int currentColumns = newMazePanel.getMaze().getColumns();
+            if (spinnerValue> currentColumns){
+                for (int j = currentColumns;j< spinnerValue;j++){
+                    newMazePanel.getMaze().addColumn(newMazePanel.getOriginalMaze());
                 }
+                newMazePanel.invalidate();
+                newMazePanel.repaint();
+            } else if (spinnerValue< currentColumns){
+                for (int j = spinnerValue;j< currentColumns;j++){
+                    newMazePanel.getMaze().removeColumn();
+                }
+                newMazePanel.invalidate();
+                newMazePanel.repaint();
             }
         });
-        buildButton.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (keepOld.isSelected()){
-                    maze = newMazePanel.getMaze();
-                }
-                else{
-                    maze = new Maze((Integer)rowSpinner.getValue(), (Integer)columnSpinner.getValue());
-                }
-                mazePanel.setMaze(maze);
-                if (maze.getStart() != null && (maze.getStart().x< 0 || maze.getStart().y <0 ||
-                        maze.getStart().x>= maze.getRows() || maze.getStart().y>= maze.getColumns())){
-                    maze.setStart(null);
-                }
-                if (maze.getGoal() != null && (maze.getGoal().x<0 || maze.getGoal().y<0 ||
-                        maze.getGoal().x>=maze.getRows() || maze.getGoal().y>= maze.getColumns())){
-                    maze.setGoal(null);
-                }
-                solver = null;
-                directory = null;
-                saved = true;
-                mainFrame.setPreferredSize(mazePanel.getPreferredSize());
-                if (!(mainFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH))
-                {
-                    mainFrame.pack();
-                    mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
-                            screenSize.height/2 - (mainFrame.getHeight()/2));
-                    if((Integer)rowSpinner.getValue()>64||(Integer)columnSpinner.getValue()>64){
-                        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    }
-                }
-                mainFrame.repaint();
-                newDialog.dispose();
+        buildButton.addActionListener(e -> {
+            if (keepOld.isSelected()){
+                maze = newMazePanel.getMaze();
             }
+            else{
+                maze = new Maze((Integer)rowSpinner.getValue(), (Integer)columnSpinner.getValue());
+            }
+            mazePanel.setMaze(maze);
+            if (maze.getStart() != null && (maze.getStart().x< 0 || maze.getStart().y <0 ||
+                    maze.getStart().x>= maze.getRows() || maze.getStart().y>= maze.getColumns())){
+                maze.setStart(null);
+            }
+            if (maze.getGoal() != null && (maze.getGoal().x<0 || maze.getGoal().y<0 ||
+                    maze.getGoal().x>=maze.getRows() || maze.getGoal().y>= maze.getColumns())){
+                maze.setGoal(null);
+            }
+            solver = null;
+            directory = null;
+            saved = true;
+            mainFrame.setPreferredSize(mazePanel.getPreferredSize());
+
+            if (!(mainFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH))
+            {
+                mainFrame.pack();
+                mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
+                        screenSize.height/2 - (mainFrame.getHeight()/2));
+                if((Integer)rowSpinner.getValue()>64||(Integer)columnSpinner.getValue()>64){
+                    mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+            }
+            mainFrame.repaint();
+            newDialog.dispose();
         });
         borderPanel.setVisible(false);
         newPanel.add(Box.createVerticalGlue());

@@ -67,7 +67,7 @@ public class MazePanel extends JPanel{
     private boolean moveable;//can be moved around with cursor
     private Point movementStartingPoint;//from which point movement occured
     private IMaze originalMaze;//old linked maze
-    private Point originalMazeStart;//where the old maze is placed in relation to the current one
+    private final Point originalMazeStart;//where the old maze is placed in relation to the current one
 
 
     /**
@@ -118,7 +118,7 @@ public class MazePanel extends JPanel{
 
     /**
      * Paint all the maze cells accordingly to linked maze data
-     * @param g
+     * @param g graphics
      */
     @Override
     protected void paintComponent(Graphics g){

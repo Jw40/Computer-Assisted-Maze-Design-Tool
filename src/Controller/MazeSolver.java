@@ -51,24 +51,6 @@ public class MazeSolver {
     private boolean dfs;
 
     /**
-     * DFS initialization
-     * @param mazeInput
-     * @param randomStep choose random neighboring MazeBox
-     * @param dfs true: use DFS, false: use BFS
-     * @param mazeData
-     */
-    public void MazeSolverDBFS(int[][] mazeInput, boolean randomStep, boolean dfs, IMaze mazeData) {
-        front = new ArrayList<>();
-        this.randomStep = randomStep;
-        this.dfs = dfs;
-        addFront(x, y);
-    }
-
-
-
-
-
-    /**
      * Create maze from input
      * @param x start x coordinate
      * @param y start y coordinate
@@ -102,6 +84,21 @@ public class MazeSolver {
                 }
             }
         }
+    }
+
+
+    /**
+     * DFS initialization
+     * @param mazeInput
+     * @param randomStep choose random neighboring MazeBox
+     * @param dfs true: use DFS, false: use BFS
+     * @param mazeData
+     */
+    public void MazeSolverDBFS(int[][] mazeInput, boolean randomStep, boolean dfs, IMaze mazeData) {
+        front = new ArrayList<>();
+        this.randomStep = randomStep;
+        this.dfs = dfs;
+        addFront(x, y);
     }
 
     /**
@@ -161,13 +158,7 @@ public class MazeSolver {
         return step;
     }
 
-    /**
-     * Returns the max front set size
-     * @return max front set size
-     */
-    public int getMaxFront(){
-        return maxFront;
-    }
+
 
     /**
      * Visit MazeBox in x, y position
