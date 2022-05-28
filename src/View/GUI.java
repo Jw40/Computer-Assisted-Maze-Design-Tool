@@ -1,31 +1,5 @@
 package View;
 
-/*
- * The MIT License
- *
- * Copyright 2015 Chris Darisaplis
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
 import Controller.*;
 
 import java.awt.BorderLayout;
@@ -34,13 +8,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceAdapter;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
-import java.awt.dnd.DragSourceMotionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -59,7 +26,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -79,11 +45,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**GUI
- *
- * @author Christos Darisaplis
- * @version 1.2
- */
 public class GUI extends Component {
 
 
@@ -94,6 +55,7 @@ public class GUI extends Component {
     private final ImageIcon goalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/goal.png")));
 
+
     private JFrame mainFrame;//main window
     private MazePanel mazePanel;//displays maze
     private boolean saved;//maze saved
@@ -102,7 +64,6 @@ public class GUI extends Component {
     private MazeSolver solver;//solves the open maze
     private Thread runThread;//runs to solve the maze
     private MazeGenerator generator;//generates maze
-
     private boolean generatorMode;//to check whether to reset on File menu click
 
     /**
@@ -114,55 +75,26 @@ public class GUI extends Component {
         solver = null;
         generatorMode = false;
 
-
+        //remove this to change the style of the GUI
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.out.println("Using Java default look&feel");
         }
 
+        //main frame in the gui
         mainFrame = new JFrame("Maze Generator");
         mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout(15, 10));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
+        //create a maze base 16,16
         maze = new Maze(16, 16);
         mazePanel = new MazePanel(maze);
-
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         mainPanel.add(mazePanel);
 
-        DragSource ds = DragSource.getDefaultDragSource();
-
-        DragSourceMotionListener dsml = new DragSourceMotionListener() {
-
-            @Override
-            public void dragMouseMoved(DragSourceDragEvent dsde) {
-                DataFlavor flavor = dsde.getDragSourceContext().getTransferable().getTransferDataFlavors()[0];
-                String data = null;
-                try {
-                    data = dsde.getDragSourceContext().getTransferable().getTransferData(flavor).toString();
-                } catch (UnsupportedFlavorException ex) {
-                    System.out.println("DnD Unsupported Flavor");
-                } catch (IOException ex) {
-                    System.out.println("DnD IOException");
-                }
-                mazePanel.setDnDPreview(data);
-
-            }
-        };
-        ds.addDragSourceMotionListener(dsml);
-        ds.addDragSourceListener(new DragSourceAdapter() {
-            @Override
-            public void dragDropEnd(DragSourceDropEvent dsde) {
-                mazePanel.endPreview();
-            }
-        });
-
-
-
-
+        //Menubar start
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
@@ -171,49 +103,26 @@ public class GUI extends Component {
         JMenuItem saveMazeAs = new JMenuItem("Save As...");
         JMenuItem saveMaze = new JMenuItem("Save");
         JMenuItem importImage = new JMenuItem("Import Image...");
-        saveMazeAs.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveAs();
-            }
-        });
-        saveMaze.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                save();
-            }
-        });
         JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                savePrompt(mainFrame);
-                if (runThread != null){
-                    runThread.interrupt();
-                }
-                mainFrame.dispose();
-            }
-        });
-
-        importImage.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ImageImporter();
-            }
-        });
-
         JMenuItem clear = new JMenuItem("Clear Maze");
-        clear.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mazePanel.getMaze().whiten();
-                mazePanel.repaint();
+        saveMazeAs.addActionListener(e -> saveAs());
+
+        saveMaze.addActionListener(e -> save());
+
+        exit.addActionListener(e -> {
+            savePrompt(mainFrame);
+            if (runThread != null){
+                runThread.interrupt();
             }
+            mainFrame.dispose();
+        });
+
+        importImage.addActionListener(e -> ImageImporter());
+
+        clear.addActionListener(e -> {
+            mazePanel.getMaze().whiten();
+            mazePanel.repaint();
         });
 
         fileMenu.add(newMaze);
@@ -226,36 +135,34 @@ public class GUI extends Component {
         fileMenu.add(clear);
         fileMenu.addSeparator();
         fileMenu.add(exit);
+        //menu bar end
 
 
+
+
+        //Side panel buttons
+        JButton generateNewMazeButton = new JButton("Generate New Maze");
+        JButton solveButton = new JButton("Solve Maze");
+        JButton resetButton = new JButton("Reset");
+        generateNewMazeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateNewMazeButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        resetButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        resetButton.setEnabled(false);
+        resetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        solveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        solveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        //Solution Mertics
         JPanel randomPanel = new JPanel(new BorderLayout());
-        JCheckBox random = new JCheckBox("Choose cells randomly");
+        JCheckBox random = new JCheckBox("Classic Maze");
         randomPanel.add(random);
         randomPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
-
         JPanel commandPanel = new JPanel();
         commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
-
-        JLabel IDLabel = new JLabel("Set depth increment", JLabel.CENTER);
-        IDLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        IDLabel.setVisible(false);
-
-
-
-        JLabel dropDownLabel = new JLabel("Choose Option:");
-        dropDownLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        String[] DropDownMenu = {"Solver", "Maze Generator"};
-        JComboBox<String> algoSelection = new JComboBox<>(DropDownMenu);
-        algoSelection.setAlignmentX(Component.CENTER_ALIGNMENT);
-        algoSelection.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-
-
         JLabel statusLabel = new JLabel("Status: Not Started");
         statusLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel stepInfoLabel = new JLabel("Steps: 0");
         stepInfoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JLabel maxFrontLabel = new JLabel("Max frontier size: 0");
-        maxFrontLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel solutionLabel = new JLabel("Max solution length: 0");
         solutionLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JPanel infoPanel = new JPanel();
@@ -263,182 +170,12 @@ public class GUI extends Component {
         infoPanel.add(statusLabel);
         infoPanel.add(stepInfoLabel);
         infoPanel.add(solutionLabel);
-        infoPanel.add(maxFrontLabel);
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         infoPanel.setBorder(BorderFactory.createTitledBorder(infoPanel.getBorder(),
-                "Information"));
+                "Solution Metrics"));
         infoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
 
-        JLabel stepLabel = new JLabel("Step delay (msec):", JLabel.CENTER);
-        stepLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-
-
-
-
-        JButton runButton = new JButton("Run");
-        JButton stopButton = new JButton("Reset");
-
-        JButton solveButton = new JButton("Solve Maze");
-        runButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
-
-        stopButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mazePanel.setEditable(true);
-                if (runThread != null){
-                    runThread.interrupt();
-                }
-                random.setEnabled(true);
-                algoSelection.setEnabled(true);
-
-                runButton.setEnabled(true);
-                solveButton.setEnabled(true);
-                stopButton.setEnabled(false);
-                clearMaze();
-                statusLabel.setText("Status: Not Started");
-
-            }
-        });
-
-        runButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                    statusLabel.setText("Status: Generating...");
-                    generatorMode = true;
-                    random.setEnabled(false);
-                    algoSelection.setEnabled(false);
-
-                    stopButton.setEnabled(true);
-
-                    solveButton.setEnabled(true);
-                    runButton.setEnabled(false);
-
-                    mazePanel.blacken();
-                    generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
-                                mazePanel.getMaze().getRows(), random.isSelected(),
-                                mazePanel.getMaze());
-                    mazePanel.repaint();
-
-                    runThread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                while(generator.nextStep(0)){
-                                    mazePanel.repaint();
-                                }
-                            } catch (InterruptedException e) {
-                                System.out.println("Interrupted");
-                            }
-
-                            algoSelection.setEnabled(true);
-
-                            statusLabel.setText("Status: Maze generated!");
-
-                            mazePanel.repaint();
-                        }
-                    });
-                    runThread.start();
-            }
-        });
-
-        runButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        stopButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        stopButton.setEnabled(false);
-        stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        solveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        solveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
-        solveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (canSolve()){
-                    statusLabel.setText("Status: Running...");
-                    generatorMode = false;
-                    mazePanel.setEditable(false);
-                    random.setEnabled(false);
-                    algoSelection.setEnabled(false);
-
-                    stopButton.setEnabled(true);
-
-                    solveButton.setEnabled(true);
-                    runButton.setEnabled(false);
-                    if (solver == null){
-                        solver = setSolver(algoSelection.getSelectedItem().toString(),
-                                random.isSelected());
-                    }
-                    runThread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                while (!solver.isSolved() && solver.nextStep(0)){
-                                    mazePanel.repaint();
-                                    mazePanel.getMaze().setSolution(solver.getSolution());
-                                    stepInfoLabel.setText("Steps: "+solver.getSteps());
-                                    solutionLabel.setText("Solution Length: "+
-                                            mazePanel.getMaze().getSolution().size());
-                                    maxFrontLabel.setText("Max frontier size: "+
-                                            solver.getMaxFront());
-                                }
-                            } catch (InterruptedException p) {
-                                System.out.println("Interrupted!");
-                            }
-                            mazePanel.getMaze().setSolution(solver.getSolution());
-                            mazePanel.repaint();
-                            if (mazePanel.getMaze().getSolution() != null &&
-                                    mazePanel.getMaze().getSolution().get(mazePanel.getMaze().getSolution().size() - 1)
-                                            .y == mazePanel.getMaze().getGoal().x && mazePanel.getMaze().getSolution()
-                                    .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y) {
-                                statusLabel.setText("Status: Solved!");
-                            }
-                            else{
-                                statusLabel.setText("Status: No solution found");
-                            }
-                            stepInfoLabel.setText("Steps: "+solver.getSteps());
-                            solutionLabel.setText("Solution Length: "+
-                                    mazePanel.getMaze().getSolution().size());
-                            maxFrontLabel.setText("Max frontier size: "+
-                                    solver.getMaxFront());
-                            solver = null;
-                        }
-                    });
-                    runThread.start();
-                }
-            }
-        });
-
-        algoSelection.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (algoSelection.getSelectedItem().toString().equals("Maze Generator")){
-                    random.setText("Classic maze");
-
-                    random.setSelected(false);
-
-                    mazePanel.repaint();
-                }
-                runButton.setEnabled(true);
-
-                stopButton.setEnabled(false);
-
-                solveButton.setEnabled(true);
-                random.setEnabled(true);
-
-            }
-        });
-
-
-
-
-
+        //Edit Panel - Start Goal Logo
         JPanel editPanel = new JPanel(new GridLayout(1, 3));
         JLabel startLabel = new JLabel(startIcon);
         JLabel goalLabel = new JLabel(goalIcon);
@@ -451,10 +188,136 @@ public class GUI extends Component {
         editPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(
                 Color.BLACK), "Set start point, end point and logo"));
 
+        // Run Panel and Command Panel
+        JPanel runPanel = new JPanel();
+        runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(randomPanel);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(generateNewMazeButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(solveButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        runPanel.add(resetButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        runPanel.setBorder(BorderFactory.createTitledBorder(runPanel.getBorder(),
+                "Maze Generator and Solver"));
+        commandPanel.add(Box.createVerticalGlue());
+        commandPanel.add(runPanel);
+        commandPanel.add(infoPanel);
+        commandPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        commandPanel.add(editPanel);
+        commandPanel.add(Box.createVerticalGlue());
+        commandPanel.setBorder(new EmptyBorder(5, 15, 5, 15));
+
+
+
+
+
+        // Generate, Solve and Reset Buttons ACTION LISTENERS
+
+        generateNewMazeButton.addActionListener(e -> {
+                statusLabel.setText("Status: Generating...");
+                generatorMode = true;
+                random.setEnabled(false);
+                resetButton.setEnabled(false);
+                solveButton.setEnabled(true);
+                generateNewMazeButton.setEnabled(false);
+                mazePanel.blacken();
+                generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
+                            mazePanel.getMaze().getRows(), random.isSelected(),
+                            mazePanel.getMaze());
+                mazePanel.repaint();
+                runThread = new Thread(() -> {
+                    try {
+                        while(generator.nextStep(0)){
+                            mazePanel.repaint();
+                        }
+                    } catch (InterruptedException e1) {
+                        System.out.println("Interrupted");
+                    }
+                    statusLabel.setText("Status: Maze generated!");
+                    mazePanel.repaint();
+                });
+                runThread.start();
+        });
+
+
+        solveButton.addActionListener(e -> {
+            if (canSolve()){
+                statusLabel.setText("Status: Running...");
+                random.setEnabled(false);
+                resetButton.setEnabled(true);
+                solveButton.setEnabled(true);
+                generateNewMazeButton.setEnabled(false);
+                if (solver == null){
+                    solver = setSolver(
+                            random.isSelected());
+                }
+                runThread = new Thread(() -> {
+                    try {
+                        while (!solver.isSolved() && solver.nextStep(0)){
+                            mazePanel.repaint();
+                            mazePanel.getMaze().setSolution(solver.getSolution());
+                            stepInfoLabel.setText("Steps: "+solver.getSteps());
+                            solutionLabel.setText("Solution Length: "+
+                                    mazePanel.getMaze().getSolution().size());
+                        }
+                    } catch (InterruptedException p) {
+                        System.out.println("Interrupted!");
+                    }
+                    mazePanel.getMaze().setSolution(solver.getSolution());
+                    mazePanel.repaint();
+                    if (mazePanel.getMaze().getSolution() != null &&
+                            mazePanel.getMaze().getSolution().get(mazePanel.getMaze().getSolution().size() - 1)
+                                    .y == mazePanel.getMaze().getGoal().x && mazePanel.getMaze().getSolution()
+                            .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y) {
+                        statusLabel.setText("Status: Solved!");
+                    }
+                    else{
+                        statusLabel.setText("Status: No solution found");
+                    }
+                    stepInfoLabel.setText("Steps: "+solver.getSteps());
+                    solutionLabel.setText("Solution Length: "+
+                            mazePanel.getMaze().getSolution().size());
+                    solver = null;
+                });
+                runThread.start();
+            }
+        });
+
+        resetButton.addActionListener(e -> {
+            mazePanel.setEditable(true);
+            if (runThread != null){
+                runThread.interrupt();
+            }
+            random.setEnabled(true);
+            generateNewMazeButton.setEnabled(true);
+            solveButton.setEnabled(true);
+            resetButton.setEnabled(false);
+            clearMaze();
+            statusLabel.setText("Status: Not Started");
+
+        });
+
+        // END
+
+
+        // Start, Goal, Logo ACTION LISTENERS
+
         startLabel.setToolTipText("Start");
         startLabel.setText("S");
-
-
         startLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
@@ -466,42 +329,13 @@ public class GUI extends Component {
                 handler.setDragImage(startIcon.getImage());
                 handler.exportAsDrag(c, e, TransferHandler.COPY);
             }
-
             @Override
             public void mouseEntered(MouseEvent e){
-
             }
-
-
-        });
-
-        logoLabel.setToolTipText("Logo");
-        logoLabel.setText("L");
-
-
-        logoLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e){
-                logoLabel.setTransferHandler(new TransferHandler("text"));
-                startLabel.setTransferHandler(new TransferHandler(null));
-                goalLabel.setTransferHandler(new TransferHandler(null));
-                JComponent c = (JComponent)e.getSource();
-                TransferHandler handler = c.getTransferHandler();
-                handler.setDragImage(logoIcon.getImage());
-                handler.exportAsDrag(c, e, TransferHandler.COPY);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e){
-
-            }
-
         });
 
         goalLabel.setToolTipText("Goal");
         goalLabel.setText("G");
-
-
         goalLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
@@ -515,56 +349,35 @@ public class GUI extends Component {
             }
         });
 
-        JPanel runPanel = new JPanel();
-        runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS));
+        logoLabel.setToolTipText("Logo");
+        logoLabel.setText("L");
+        logoLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e){
+                logoLabel.setTransferHandler(new TransferHandler("text"));
+                startLabel.setTransferHandler(new TransferHandler(null));
+                goalLabel.setTransferHandler(new TransferHandler(null));
+                JComponent c = (JComponent)e.getSource();
+                TransferHandler handler = c.getTransferHandler();
+                handler.setDragImage(logoIcon.getImage());
+                handler.exportAsDrag(c, e, TransferHandler.COPY);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+            }
+        });
 
-        runPanel.add(dropDownLabel);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(algoSelection);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(IDLabel);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        //END
 
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(randomPanel);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(runButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(stopButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(solveButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-
-        runPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        runPanel.setBorder(BorderFactory.createTitledBorder(runPanel.getBorder(),
-                "Maze Generator and Solver"));
-        commandPanel.add(Box.createVerticalGlue());
-        commandPanel.add(runPanel);
-        commandPanel.add(infoPanel);
-        commandPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        commandPanel.add(editPanel);
-        commandPanel.add(Box.createVerticalGlue());
-        commandPanel.setBorder(new EmptyBorder(5, 15, 5, 15));
         fileMenu.addMouseListener(new MouseListener() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(!generatorMode){
-                    stopButton.doClick();
+                    resetButton.doClick();
                 }
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
 
@@ -586,23 +399,16 @@ public class GUI extends Component {
             }
         });
 
-        newMaze.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopButton.doClick();
-                newMaze();
-            }
+        newMaze.addActionListener(e -> {
+            resetButton.doClick();
+            newMaze();
         });
 
-        openMaze.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopButton.doClick();
-                openMaze();
-            }
+        openMaze.addActionListener(e -> {
+            resetButton.doClick();
+            openMaze();
         });
+
         mazePanel.setBorder(new EmptyBorder(10, 10, 10, 20));
         mainFrame.setJMenuBar(menuBar);
         mainFrame.add(mainPanel, BorderLayout.CENTER);
@@ -955,11 +761,10 @@ public class GUI extends Component {
 
     /**
      * Sets up a solver for this maze
-     * @param algorithm type of algorithm to use
      * @param random choose cells randomly
      * @return  sover for this maze
      */
-    private MazeSolver setSolver(String algorithm, boolean random){
+    private MazeSolver setSolver(boolean random){
 
 
             solver = new MazeSolver(mazePanel.getMazeData(), mazePanel.getMaze());
