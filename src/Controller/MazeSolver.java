@@ -34,7 +34,7 @@ import java.util.Collections;
  * MazeSearch solving algorithm structure
  * @author Chris Samarinas
  */
-public abstract class MazeSearch {
+public class MazeSolver {
 
     protected int x, y; // current position
     protected int end_x, end_y; // end position
@@ -43,15 +43,39 @@ public abstract class MazeSearch {
     protected int step; // solver step
     protected ArrayList<Cell> solution; // maze solution
     protected int maxFront; // max front set size
-    protected Maze mazeData;
+    protected IMaze mazeData;
+
+
+    private ArrayList<Cell> front;
+    private boolean randomStep;
+    private boolean dfs;
+
+    /**
+     * DFS initialization
+     * @param mazeInput
+     * @param randomStep choose random neighboring MazeBox
+     * @param dfs true: use DFS, false: use BFS
+     * @param mazeData
+     */
+    public void MazeSolverDBFS(int[][] mazeInput, boolean randomStep, boolean dfs, IMaze mazeData) {
+        front = new ArrayList<>();
+        this.randomStep = randomStep;
+        this.dfs = dfs;
+        addFront(x, y);
+    }
+
+
+
+
 
     /**
      * Create maze from input
-     * @param mazeInput 2D array with 0 and 1 for obstacles
      * @param x start x coordinate
      * @param y start y coordinate
+     * @param mazeInput 2D array with 0 and 1 for obstacles
+     * @param mazeData
      */
-    MazeSearch(int[][] mazeInput, Maze mazeData){
+    public MazeSolver(int[][] mazeInput, IMaze mazeData){
         x= -1;
         y = -1;
         end_x = -1;
@@ -86,7 +110,48 @@ public abstract class MazeSearch {
      * @return true if step performed
      * @throws java.lang.InterruptedException
      */
-    public abstract boolean nextStep(int speed) throws InterruptedException;
+    public boolean nextStep(int speed) throws InterruptedException{
+        if(speed>0) Thread.sleep(speed);
+        if(!front.isEmpty()){
+            Cell box;
+            if(dfs){
+                box = front.get(front.size()-1);
+                front.remove(front.size()-1);
+            }else{
+                box = front.get(0);
+                front.remove(0);
+            }
+
+            if(box.isVisited){
+                return nextStep(0);
+            }
+
+            visit(box.x, box.y);
+
+            if(isSolved()){
+                return false;
+            }
+
+            ArrayList<Integer> directions = new ArrayList<>();
+            directions.add(0); // right
+            directions.add(1); // top
+            directions.add(2); // bottom
+            directions.add(3); // left
+            if(randomStep){
+                Collections.shuffle(directions);
+            }
+
+            for(int i=0;i<4;i++){
+                int direction = directions.get(i);
+                if(direction==0) addFront(x+1, y);
+                else if(direction==1) addFront(x, y-1);
+                else if(direction==2) addFront(x, y+1);
+                else addFront(x-1, y);
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Returns the number of steps
@@ -141,8 +206,22 @@ public abstract class MazeSearch {
      * @param y MazeBox y coordinate
      */
     protected void addFront(int x, int y){
-        //GUI
-        mazeData.getMazeLogic()[y][x].setIsFront(true);
+        if(validPosition(x, y)){
+            if(maze[y][x].isAdded){
+                return;
+            }
+            maze[y][x].isAdded = true;
+            if(step>0){
+                maze[y][x].previous = maze[this.y][this.x];
+            }
+            front.add(maze[y][x]);
+            int fsize = front.size();
+            if(fsize>maxFront){
+                maxFront = fsize;
+            }
+            mazeData.getMazeLogic()[y][x].setIsFront(true);
+        }
+
     }
 
     /**

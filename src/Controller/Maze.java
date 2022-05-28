@@ -18,10 +18,13 @@ public class Maze implements  IMaze{
     private int rows;//rows of this maze
     private int columns;//columns of this maze
     private Cell[][] mazeLogic;//maze data
-    private Point start;//startig poiint
+
+    private Point start;//starting poiint
     private Point goal;//goal point
     private Point current;//current point
     private ArrayList<Cell> solution;//current solution
+    private Point logo;//logo point
+
 
     /**
      * empty constructor
@@ -32,6 +35,7 @@ public class Maze implements  IMaze{
         mazeLogic = null;
         start = null;
         goal = null;
+        logo = null;
         current = null;
         solution = null;
     }
@@ -56,6 +60,7 @@ public class Maze implements  IMaze{
         goal = null;
         current = null;
         solution = null;
+        logo = null;
     }
 
 
@@ -136,6 +141,9 @@ public class Maze implements  IMaze{
                     else if (goal != null && goal.x == i && goal.y == j){
                         printer.print("2 ");
                     }
+                    else if (logo != null && logo.x == i && logo.y == j){
+                        printer.print("4 ");
+                    }
                     else if (mazeLogic[i][j].isObstacle()){
                         printer.print("3 ");
                     }
@@ -196,6 +204,16 @@ public class Maze implements  IMaze{
         }
     }
 
+    public void setLogo(int x, int y){
+        if (logo != null){
+            logo.x = x;
+            logo.y = y;
+        }
+        else{
+            logo = new Point(x, y);
+        }
+    }
+
     /**
      * gets rows
      * @return rows
@@ -235,7 +253,9 @@ public class Maze implements  IMaze{
     public Point getGoal(){
         return goal;
     }
-
+    public Point getLogo(){
+        return logo;
+    }
 
     /**
      * sets current solution
@@ -269,6 +289,7 @@ public class Maze implements  IMaze{
         }
         start = null;
         goal = null;
+        logo = null;
     }
 
 
@@ -277,7 +298,9 @@ public class Maze implements  IMaze{
     public void setStart(Point newStartPoint){
         start = newStartPoint;
     }
-
+    public void setLogo(Point newLogoPoint){
+        logo = newLogoPoint;
+    }
     public void setGoal(Point newGoalPoint){
         goal = newGoalPoint;
     }
@@ -294,7 +317,7 @@ public class Maze implements  IMaze{
         this.current = current;
     }
 
-    public void copyMazeObstacles(Maze otherMaze, int iStart, int jStart){
+    public void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart){
         for (int i = 0;i< rows;i++){
             for (int j = 0;j< columns;j++){
                 if (i + iStart>= otherMaze.getRows() || j + jStart>= otherMaze.getColumns() ||
@@ -320,10 +343,16 @@ public class Maze implements  IMaze{
         else if (otherMaze.getGoal() == null){
             goal = null;
         }
+        if (otherMaze.getLogo() != null && logo == null){
+            logo = new Point(otherMaze.getLogo().x, otherMaze.getLogo().y);
+        }
+        else if (otherMaze.getLogo() == null){
+            logo = null;
+        }
     }
 
 
-    public void addRow(Maze oldMaze){
+    public void addRow(IMaze oldMaze){
         rows++;
         mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){
@@ -334,7 +363,7 @@ public class Maze implements  IMaze{
         copyMazeObstacles(oldMaze, 0, 0);
     }
 
-    public void addColumn(Maze oldMaze){
+    public void addColumn(IMaze oldMaze){
         columns++;
         mazeLogic = new Cell[rows][columns];
         for (int i = 0;i< rows;i++){

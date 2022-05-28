@@ -63,7 +63,11 @@ public interface IMaze {
      * @return maze goal
      */
     Point getGoal();
-
+    /**
+     * gets maze logo point
+     * @return maze logo
+     */
+    Point getLogo();
 
     /**
      * sets current solution
@@ -83,7 +87,7 @@ public interface IMaze {
 
 
 
-
+    void setLogo(Point newLogoPoint);
     void setStart(Point newStartPoint);
 
     void setGoal(Point newGoalPoint);
@@ -94,12 +98,12 @@ public interface IMaze {
 
     void setCurrent(Point current);
 
-    void copyMazeObstacles(Maze otherMaze, int iStart, int jStart);
+    void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart);
 
 
-    void addRow(Maze oldMaze);
+    void addRow(IMaze oldMaze);
 
-    void addColumn(Maze oldMaze);
+    void addColumn(IMaze oldMaze);
 
     void removeRow();
 

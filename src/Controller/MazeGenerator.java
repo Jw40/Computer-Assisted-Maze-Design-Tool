@@ -45,15 +45,16 @@ public final class MazeGenerator {
     private int step; // generator step
     private final boolean classic; // if the generated maze is classic
     private final int vstep; // visit step, 2: classic, 1: randomized
-    private Maze aMaze;
+    private IMaze aMaze;
 
     /**
      * DFS initialization
+     * @param maxSolution maximum solution length (set negative for no limit)
      * @param width maze width >= 4
      * @param height maze height >= 4
-     * @param maxSolution maximum solution length (set negative for no limit)
+     * @param aMaze
      */
-    public MazeGenerator(int width, int height, boolean classic, Maze aMaze) {
+    public MazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         this.classic = classic;
         this.aMaze = aMaze;
         if(classic){
@@ -256,12 +257,4 @@ public final class MazeGenerator {
         }
         return out;
     }
-
-    public int[][] generate(int speed) throws InterruptedException{
-        while(nextStep(speed)){
-            // continue generation
-        }
-        return getMaze();
-    }
-
 }

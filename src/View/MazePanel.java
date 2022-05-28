@@ -25,6 +25,7 @@ package View;
  */
 
 
+import Controller.IMaze;
 import Controller.Maze;
 import Controller.Cell;
 
@@ -51,18 +52,21 @@ import javax.swing.event.MouseInputAdapter;
 public class MazePanel extends JPanel{
     private Point selection;//mouse selection
     private boolean needsRedraw;//redraw flag
-    private Maze aMaze;//linked maze
+    private IMaze aMaze;//linked maze
+
     private MouseAdapter mousePainter;//paints maze cells
     private MouseAdapter mouseSelector;//selects maze cells
+
     private boolean drawArrows;//arrows on solution
     private boolean editable;//can be edited
     private boolean drawgrid;//draw maze grid
     private String text;//used in drag n drop operations
     private boolean previewGoal;//previews drop point of goal (DnD operations)
     private boolean previewStart;//previews drop point of start (DnD operations)
+    private boolean previewLogo;
     private boolean moveable;//can be moved around with cursor
     private Point movementStartingPoint;//from which point movement occured
-    private Maze originalMaze;//old linked maze
+    private IMaze originalMaze;//old linked maze
     private Point originalMazeStart;//where the old maze is placed in relation to the current one
 
 
@@ -70,7 +74,7 @@ public class MazePanel extends JPanel{
      * Default constructor
      * @param aMaze maze linked to the panel
      */
-    public MazePanel (Maze aMaze){
+    public MazePanel (IMaze aMaze){
         super();
         setTransferHandler(new TransferHandler("text"));
         selection = null;
@@ -279,12 +283,24 @@ public class MazePanel extends JPanel{
             g2D.fill(aMaze.getMazeLogic()[aMaze.getGoal().x]
                     [aMaze.getGoal().y].getCell());
         }
-
+        if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0 &&
+                aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
+                aMaze.getLogo().y< aMaze.getColumns()){
+            g2D.setColor(Color.PINK);//draw logo
+            g2D.fill(aMaze.getMazeLogic()[aMaze.getLogo().x]
+                    [aMaze.getLogo().y].getCell());
+        }
 
         if (previewStart && selection != null && !selection.equals(aMaze.getGoal())){
             Color previewYellow = new Color(Color.YELLOW.getRed(),
                     Color.YELLOW.getGreen(), Color.YELLOW.getBlue(), 100);
             g2D.setColor(previewYellow);//draw preview of DnD (start)
+            g2D.fill(aMaze.getMazeLogic()[selection.x][selection.y].getCell());
+        }
+        if (previewLogo && selection != null && !selection.equals(aMaze.getLogo())){
+            Color previewPink = new Color(Color.PINK.getRed(),
+                    Color.PINK.getGreen(), Color.PINK.getBlue(), 100);
+            g2D.setColor(previewPink);//draw preview of DnD (logo)
             g2D.fill(aMaze.getMazeLogic()[selection.x][selection.y].getCell());
         }
 
@@ -325,7 +341,7 @@ public class MazePanel extends JPanel{
      * Link this panel with a new maze
      * @param aMaze maze to link
      */
-    public void setMaze(Maze aMaze){
+    public void setMaze(IMaze aMaze){
         removeMouseMotionListener(mouseSelector);
         removeMouseMotionListener(mousePainter);
         removeMouseListener(mousePainter);
@@ -365,7 +381,7 @@ public class MazePanel extends JPanel{
      * Returns the maze currently linked to this panel
      * @return maze object
      */
-    public Maze getMaze(){
+    public IMaze getMaze(){
         return aMaze;
     }
 
@@ -499,9 +515,16 @@ public class MazePanel extends JPanel{
             if (selection.equals("S")){
                 this.previewGoal = false;
                 this.previewStart = true;
+                this.previewLogo = false;
             }
             else if (selection.equals("G")){
                 this.previewGoal = true;
+                this.previewStart = false;
+                this.previewLogo = false;
+            }
+            else if (selection.equals("L")){
+                this.previewLogo = true;
+                this.previewGoal = false;
                 this.previewStart = false;
             }
             repaint();
@@ -525,6 +548,12 @@ public class MazePanel extends JPanel{
                 aMaze.getMazeLogic()[pointerSelection.x][pointerSelection.y].
                         setIsObstacle(false);
             }
+            if (selection.equals("L") && (aMaze.getLogo() == null ||
+                    !pointerSelection.equals(aMaze.getLogo()))){
+                aMaze.setLogo(pointerSelection);
+                aMaze.getMazeLogic()[pointerSelection.x][pointerSelection.y].
+                        setIsObstacle(true);
+            }
             else if (aMaze.getStart() == null || !pointerSelection.equals(aMaze.getStart())){
                 aMaze.setGoal(pointerSelection);
                 aMaze.getMazeLogic()[pointerSelection.x][pointerSelection.y].
@@ -535,8 +564,11 @@ public class MazePanel extends JPanel{
             if (selection.equals("S")){
                 aMaze.setStart(null);
             }
-            else if (selection.equals("G")){
+            else if (selection.equals("L")){
                 aMaze.setGoal(null);
+            }
+            else if (selection.equals("L")){
+                aMaze.setLogo(null);
             }
         }
 
@@ -670,6 +702,10 @@ public class MazePanel extends JPanel{
                         aMaze.getGoal().x -= i;
                         aMaze.getGoal().y -= j;
                     }
+                    if (aMaze.getLogo() != null){
+                        aMaze.getLogo().x -= i;
+                        aMaze.getLogo().y -= j;
+                    }
                     aMaze.copyMazeObstacles(originalMaze, originalMazeStart.x,
                             originalMazeStart.y);
                     movementStartingPoint = selection;
@@ -699,6 +735,7 @@ public class MazePanel extends JPanel{
     public void endPreview(){
         this.previewGoal = false;
         this.previewStart = false;
+        this.previewLogo = false;
     }
 
     /**
@@ -713,7 +750,7 @@ public class MazePanel extends JPanel{
      * Getter of originalMaze variable
      * @return originalMaze variable
      */
-    public Maze getOriginalMaze() {
+    public IMaze getOriginalMaze() {
         return originalMaze;
     }
 
@@ -721,7 +758,7 @@ public class MazePanel extends JPanel{
      * Setter of originalMaze variable
      * @param newOriginalMaze new value
      */
-    public void setOriginalMaze(Maze newOriginalMaze){
+    public void setOriginalMaze(IMaze newOriginalMaze){
         this.originalMaze = newOriginalMaze;
     }
 

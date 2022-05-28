@@ -43,7 +43,8 @@ public class Cell implements Comparable<Cell>{
     public int so_far;
     public double to_go;
     public boolean isAdded;
-    private Rectangle cell;
+    public Rectangle cell;
+
 
     public Cell(){
         isAdded = false;
