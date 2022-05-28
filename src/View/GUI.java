@@ -31,7 +31,6 @@ import Controller.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -53,7 +52,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -64,7 +62,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -73,17 +70,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**GUI
@@ -100,18 +93,14 @@ public class GUI extends Component {
             "/Icons/logo.png")));
     private final ImageIcon goalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/goal.png")));
-    private final ImageIcon legendIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
-            "/Icons/legend.png")));
-    private final ImageIcon labyIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
-            "/Icons/laby.png")));
+
     private JFrame mainFrame;//main window
     private MazePanel mazePanel;//displays maze
     private boolean saved;//maze saved
     private String directory;//save directory
     private IMaze maze;//open maze, holds static maze data
-    private MazeSearch solver;//solves the open maze
+    private MazeSolver solver;//solves the open maze
     private Thread runThread;//runs to solve the maze
-    private boolean pause;//thread paused
     private MazeGenerator generator;//generates maze
     private boolean helpOpen;//open help window
     private boolean generatorMode;//to check whether to reset on File menu click
@@ -123,7 +112,6 @@ public class GUI extends Component {
         saved = true;
         directory = null;
         solver = null;
-        pause = false;
         helpOpen = false;
         generatorMode = false;
 
@@ -134,7 +122,7 @@ public class GUI extends Component {
             System.out.println("Using Java default look&feel");
         }
 
-        mainFrame = new JFrame("Laby");
+        mainFrame = new JFrame("Maze Generator");
         mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout(15, 10));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -241,97 +229,6 @@ public class GUI extends Component {
         fileMenu.add(exit);
 
 
-
-        JMenu helpMenu  = new JMenu("Help");
-        JMenuItem legend = new JMenuItem("Legend");
-        JMenuItem about = new JMenuItem("About...");
-        helpMenu.add(legend);
-        helpMenu.addSeparator();
-        helpMenu.add(about);
-        menuBar.add(helpMenu);
-        legend.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!helpOpen){
-                    JDialog helpDialog = new JDialog(mainFrame, "Help", false);
-
-                    JLabel iconLabel = new JLabel(legendIcon);
-
-                    helpDialog.add(iconLabel, BorderLayout.CENTER);
-                    helpDialog.pack();
-                    helpDialog.setLocationRelativeTo(mainFrame);
-                    helpDialog.setResizable(false);
-                    helpDialog.setVisible(true);
-                    helpOpen = true;
-                    helpDialog.addWindowListener(new WindowAdapter() {
-
-                        @Override
-                        public void windowClosing(WindowEvent e){
-                            helpOpen = false;
-                        }
-                    });
-                }
-            }
-        });
-
-        about.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JDialog aboutDialog = new JDialog(mainFrame, "About", true);
-
-                JPanel aboutPanel = new JPanel();
-                aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
-                JLabel iconLabel = new JLabel(labyIcon);
-                aboutPanel.add(iconLabel);
-                aboutPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-
-                JLabel aboutLabel = new JLabel("<html> version 1.2 <br><br>"
-                        + "GUI: Chris Darisaplis<br>"
-                        + "Algorithms implementation: Chris Samarinas<br><br>"
-                        + "Aristotle University of Thessaloniki<br>"
-                        + "Faculty of Sciences<br>"
-                        + "Department of Informatics</html>");
-                aboutLabel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-                aboutPanel.add(aboutLabel);
-
-                JEditorPane linkPane= new JEditorPane();
-                linkPane.setContentType("text/html");
-                linkPane.setText("<p align='center'>Source code on <a href='https://github.com/greekdev/Laby/'>GitHub</a>.</p>");
-                linkPane.setEditable(false);
-                linkPane.setOpaque(false);
-                linkPane.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-                linkPane.addHyperlinkListener(new HyperlinkListener() {
-
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent hle) {
-                        if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
-                            System.out.println(hle.getURL());
-                            Desktop desktop = Desktop.getDesktop();
-                            try {
-                                desktop.browse(hle.getURL().toURI());
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                });
-
-                aboutPanel.add(linkPane);
-
-                aboutPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,0));
-                aboutDialog.add(aboutPanel);
-
-
-                aboutDialog.pack();
-                aboutDialog.setLocationRelativeTo(mainFrame);
-                aboutDialog.setResizable(false);
-                aboutDialog.setVisible(true);
-            }
-        });
-
-
         JPanel randomPanel = new JPanel(new BorderLayout());
         JCheckBox random = new JCheckBox("Choose cells randomly");
         randomPanel.add(random);
@@ -343,28 +240,16 @@ public class GUI extends Component {
         JLabel IDLabel = new JLabel("Set depth increment", JLabel.CENTER);
         IDLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         IDLabel.setVisible(false);
-        JSpinner IDSpinner = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
-        IDSpinner.setAlignmentX(Component.CENTER_ALIGNMENT);
-        IDSpinner.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        IDSpinner.setVisible(false);
 
-        JLabel algoLabel = new JLabel("Algorithm");
-        algoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        String[] algorithms = {"DFS", "BFS", "ID", "Best-First", "Hill Climbing",
-                "A*", "Maze Generator (DFS)"};
-        JComboBox<String> algoSelection = new JComboBox<>(algorithms);
+
+
+        JLabel dropDownLabel = new JLabel("Choose Option:");
+        dropDownLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        String[] DropDownMenu = {"Solver", "Maze Generator"};
+        JComboBox<String> algoSelection = new JComboBox<>(DropDownMenu);
         algoSelection.setAlignmentX(Component.CENTER_ALIGNMENT);
         algoSelection.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
-        JPanel distanceSelectionPanel = new JPanel(new GridLayout(0, 1));
-        JLabel distanceLabel = new JLabel("Heuristic Funciton", JLabel.CENTER);
-        String[] distanceFunctions = {"Manhattan", "Euclidean"};
-        JComboBox<String> distanceSelection = new JComboBox<>(distanceFunctions);
-        distanceSelectionPanel.add(distanceLabel);
-        distanceSelectionPanel.add(distanceSelection);
-        distanceSelectionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        distanceSelectionPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        distanceSelectionPanel.setVisible(false);
 
         JLabel statusLabel = new JLabel("Status: Not Started");
         statusLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -387,80 +272,18 @@ public class GUI extends Component {
 
         JLabel stepLabel = new JLabel("Step delay (msec):", JLabel.CENTER);
         stepLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        JSlider speedSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 2000, 1000);
-        speedSlider.setMajorTickSpacing(100);
-        speedSlider.setPaintTicks(true);
-        speedSlider.setPaintLabels(true);
-        JSpinner speedSpinner = new JSpinner(new SpinnerNumberModel(1000, 0,
-                2000, 1));
-        speedSpinner.addChangeListener(new ChangeListener() {
 
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                speedSlider.setValue((Integer)speedSpinner.getValue());
-            }
-        });
-
-
-        Hashtable labelTable = new Hashtable();
-        labelTable.put( new Integer(0), new JLabel("0") );
-        labelTable.put( new Integer(1000), new JLabel("1000"));
-        labelTable.put( new Integer(2000), new JLabel("2000"));
-        speedSlider.setLabelTable( labelTable );
-        speedSlider.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                speedSpinner.setValue(speedSlider.getValue());
-            }
-        });
-        JPanel speedPanel = new JPanel(new GridLayout(1, 2));
-        speedPanel.add(stepLabel);
-        speedPanel.add(speedSpinner);
-        speedPanel.setMaximumSize(new Dimension(9000, 100));
-
-        JCheckBox arrowBox = new JCheckBox("Arrows from predecessors");
-        arrowBox.setAlignmentX(JCheckBox.CENTER_ALIGNMENT);
-
-        arrowBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mazePanel.setDrawArros(arrowBox.isSelected());
-            }
-        });
-
-        JCheckBox gridBox = new JCheckBox("Grid");
-        gridBox.setSelected(true);
-        gridBox.setAlignmentX(JCheckBox.CENTER_ALIGNMENT);
-        gridBox.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mazePanel.setDrawGrid(gridBox.isSelected());
-            }
-        });
 
 
 
         JButton runButton = new JButton("Run");
         JButton stopButton = new JButton("Reset");
-        JButton pauseButton = new JButton("Pause");
-        JButton nextButton = new JButton("Next Step");
+
+        JButton nextButton = new JButton("Solve Maze");
         runButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        pauseButton.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("Status: Paused");
-                pauseButton.setEnabled(false);
-                runButton.setEnabled(true);
-                stopButton.setEnabled(true);
-                nextButton.setEnabled(true);
-                pause = true;
-            }
-        });
+
 
         stopButton.addActionListener(new ActionListener() {
 
@@ -472,64 +295,55 @@ public class GUI extends Component {
                 }
                 random.setEnabled(true);
                 algoSelection.setEnabled(true);
-                IDSpinner.setEnabled(true);
+
                 runButton.setEnabled(true);
                 nextButton.setEnabled(true);
-                speedSlider.setEnabled(true);
-                speedSpinner.setEnabled(true);
-                stopButton.setEnabled(false);
-                pause = false;
                 clearMaze();
-                if (algoSelection.getSelectedItem().equals("Maze Generator (DFS)")){
+                if (algoSelection.getSelectedItem().equals("Maze Generator")){
                     mazePanel.getMaze().whiten();
                 }
                 statusLabel.setText("Status: Not Started");
 
             }
         });
+
         runButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (algoSelection.getSelectedItem().toString().equals("Maze Generator (DFS)")){
+                if (algoSelection.getSelectedItem().toString().equals("Maze Generator")){
                     statusLabel.setText("Status: Generating...");
                     generatorMode = true;
                     random.setEnabled(false);
                     algoSelection.setEnabled(false);
-                    IDSpinner.setEnabled(false);
+
                     stopButton.setEnabled(true);
-                    pauseButton.setEnabled(true);
-                    nextButton.setEnabled(false);
+
+                    nextButton.setEnabled(true);
                     runButton.setEnabled(false);
-                    if (!pause){
-                        mazePanel.blacken();
-                        generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
+
+                    mazePanel.blacken();
+                    generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
                                 mazePanel.getMaze().getRows(), random.isSelected(),
                                 mazePanel.getMaze());
-                        mazePanel.repaint();
-                    }
-                    pause = false;
+                    mazePanel.repaint();
+
                     runThread = new Thread(new Runnable() {
 
                         @Override
                         public void run() {
                             try {
-                                while(generator.nextStep(speedSlider.getValue())){
-                                    if (pause){
-                                        runThread.interrupt();
-                                    }
+                                while(generator.nextStep(0)){
                                     mazePanel.repaint();
                                 }
                             } catch (InterruptedException e) {
                                 System.out.println("Interrupted");
                             }
-                            pauseButton.setEnabled(false);
+
                             algoSelection.setEnabled(true);
-                            if (!pause){
-                                speedSlider.setEnabled(false);
-                                speedSpinner.setEnabled(false);
-                                statusLabel.setText("Status: Maze generated!");
-                            }
+
+                            statusLabel.setText("Status: Maze generated!");
+
                             mazePanel.repaint();
                         }
                     });
@@ -539,30 +353,24 @@ public class GUI extends Component {
                     statusLabel.setText("Status: Running...");
                     generatorMode = false;
                     mazePanel.setEditable(false);
-                    pause = false;
                     random.setEnabled(false);
                     algoSelection.setEnabled(false);
-                    IDSpinner.setEnabled(false);
+
                     stopButton.setEnabled(true);
-                    pauseButton.setEnabled(true);
+
                     nextButton.setEnabled(false);
                     runButton.setEnabled(false);
                     if (solver == null){
                         solver = setSolver(algoSelection.getSelectedItem().toString(),
-                                random.isSelected(), (Integer)IDSpinner.getValue(),
-                                distanceSelection);
+                                random.isSelected());
                     }
                     runThread = new Thread(new Runnable() {
 
                         @Override
                         public void run() {
                             try {
-                                while (!solver.isSolved() && solver.nextStep(speedSlider.
-                                        getValue())){
+                                while (!solver.isSolved() && solver.nextStep(0)){
                                     mazePanel.repaint();
-                                    if (pause){
-                                        runThread.interrupt();
-                                    }
                                     mazePanel.getMaze().setSolution(solver.getSolution());
                                     stepInfoLabel.setText("Steps: "+solver.getSteps());
                                     solutionLabel.setText("Solution Length: "+
@@ -575,20 +383,17 @@ public class GUI extends Component {
                             }
                             mazePanel.getMaze().setSolution(solver.getSolution());
                             mazePanel.repaint();
-                            if (!pause){
+
                                 if (mazePanel.getMaze().getSolution() != null &&
                                         mazePanel.getMaze().getSolution().get(mazePanel.getMaze().getSolution().size() - 1)
                                                 .y == mazePanel.getMaze().getGoal().x && mazePanel.getMaze().getSolution()
-                                        .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y){
+                                        .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y) {
                                     statusLabel.setText("Status: Solved!");
                                 }
-                                else{
+                                else
+                                {
                                     statusLabel.setText("Status: No solution found");
                                 }
-
-                                pauseButton.setEnabled(false);
-                                speedSlider.setEnabled(false);
-                                speedSpinner.setEnabled(false);
                                 stepInfoLabel.setText("Steps: "+solver.getSteps());
                                 solutionLabel.setText("Solution Length: "+
                                         mazePanel.getMaze().getSolution().size());
@@ -598,154 +403,117 @@ public class GUI extends Component {
 
                             }
 
-                        }
+
                     });
                     runThread.start();
 
                 }
             }
         });
+
         runButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        pauseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pauseButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        pauseButton.setEnabled(false);
         stopButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         stopButton.setEnabled(false);
         stopButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         nextButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+
+
+
+
+
+
         nextButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("Status: Paused");
-                if (algoSelection.getSelectedItem().toString().equals("Maze Generator (DFS)")){
-                    if (!pause){
-                        stopButton.setEnabled(true);
-                        mazePanel.blacken();
-                        generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
-                                mazePanel.getMaze().getRows(), random.isSelected(),
-                                mazePanel.getMaze());
-                        mazePanel.repaint();
-                    }
-                    pause = true;
-                    try {
-                        if (!generator.nextStep(0)){
-                            runButton.setEnabled(false);
-                            pauseButton.setEnabled(false);
-                            speedSlider.setEnabled(false);
-                            speedSpinner.setEnabled(false);
-                            random.setEnabled(false);
-                            nextButton.setEnabled(false);
-                            stopButton.setEnabled(true);
-                        }
-                    } catch (InterruptedException n) {
-                        System.out.println("Interrupted");
-                    }
-                    random.setEnabled(false);
-                    mazePanel.repaint();
-                }
-                else if (canSolve()){
+                if (canSolve()){
+                    statusLabel.setText("Status: Running...");
+                    generatorMode = false;
                     mazePanel.setEditable(false);
                     random.setEnabled(false);
                     algoSelection.setEnabled(false);
-                    IDSpinner.setEnabled(false);
+
                     stopButton.setEnabled(true);
+
+                    nextButton.setEnabled(false);
+                    runButton.setEnabled(false);
                     if (solver == null){
                         solver = setSolver(algoSelection.getSelectedItem().toString(),
-                                random.isSelected(), (Integer)IDSpinner.getValue(),
-                                distanceSelection);
-                        try {
-                            solver.nextStep(0);
-                            mazePanel.getMaze().setSolution(solver.getSolution());
-
-                        } catch (InterruptedException p) {
-                            System.out.println("Interrupted!");
-                        }
+                                random.isSelected());
                     }
-                    try {
-                        if (!solver.isSolved()){
-                            solver.nextStep(0);
+                    runThread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                while (!solver.isSolved() && solver.nextStep(0)){
+                                    mazePanel.repaint();
+                                    mazePanel.getMaze().setSolution(solver.getSolution());
+                                    stepInfoLabel.setText("Steps: "+solver.getSteps());
+                                    solutionLabel.setText("Solution Length: "+
+                                            mazePanel.getMaze().getSolution().size());
+                                    maxFrontLabel.setText("Max frontier size: "+
+                                            solver.getMaxFront());
+                                }
+                            } catch (InterruptedException p) {
+                                System.out.println("Interrupted!");
+                            }
                             mazePanel.getMaze().setSolution(solver.getSolution());
-                            stepInfoLabel.setText("Steps: "+solver.getSteps());
-                            solutionLabel.setText("Solution Length: "+
-                                    mazePanel.getMaze().getSolution().size());
-                            maxFrontLabel.setText("Max frontier size: "+
-                                    solver.getMaxFront());
-                        }
-                        else {
+                            mazePanel.repaint();
+
                             if (mazePanel.getMaze().getSolution() != null &&
                                     mazePanel.getMaze().getSolution().get(mazePanel.getMaze().getSolution().size() - 1)
                                             .y == mazePanel.getMaze().getGoal().x && mazePanel.getMaze().getSolution()
-                                    .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y){
+                                    .get(mazePanel.getMaze().getSolution().size() - 1).x == mazePanel.getMaze().getGoal().y) {
                                 statusLabel.setText("Status: Solved!");
                             }
-                            else{
+                            else
+                            {
                                 statusLabel.setText("Status: No solution found");
                             }
-                            nextButton.setEnabled(false);
-                            runButton.setEnabled(false);
-                            speedSlider.setEnabled(false);
-                            speedSpinner.setEnabled(false);
                             stepInfoLabel.setText("Steps: "+solver.getSteps());
                             solutionLabel.setText("Solution Length: "+
                                     mazePanel.getMaze().getSolution().size());
                             maxFrontLabel.setText("Max frontier size: "+
                                     solver.getMaxFront());
+                            solver = null;
+
                         }
-                        mainFrame.repaint();
-                    } catch (InterruptedException po){
-                        System.out.println("interrupted!");
-                    }
+
+
+                    });
+                    runThread.start();
+
                 }
             }
-
         });
+
+
+
+
+
 
         algoSelection.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (algoSelection.getSelectedItem().toString().equals("ID")){
-                    IDLabel.setVisible(true);
-                    IDSpinner.setVisible(true);
-                }
-                else{
-                    IDLabel.setVisible(false);
-                    IDSpinner.setVisible(false);
-                }
-                if (algoSelection.getSelectedItem().toString().equals("Best-First")
-                        ||algoSelection.getSelectedItem().toString().equals("Hill Climbing")
-                        ||algoSelection.getSelectedItem().toString().equals("A*")){
-                    randomPanel.setVisible(false);
-                    distanceSelectionPanel.setVisible(true);
-                }
-                else{
-                    randomPanel.setVisible(true);
-                    distanceSelectionPanel.setVisible(false);
-                }
-                if (algoSelection.getSelectedItem().toString().equals("Maze Generator (DFS)")){
+                if (algoSelection.getSelectedItem().toString().equals("Maze Generator")){
                     random.setText("Classic maze");
-                    arrowBox.setVisible(false);
+
                     random.setSelected(false);
 
                     mazePanel.repaint();
                 }
-                else{
-                    random.setText("Choose next cells randomly");
-                    random.setSelected(false);
-                    arrowBox.setVisible(true);
-                    mazePanel.repaint();
-                }
-                pause = false;
                 runButton.setEnabled(true);
-                IDSpinner.setEnabled(true);
+
                 stopButton.setEnabled(false);
-                pauseButton.setEnabled(false);
+
                 nextButton.setEnabled(true);
                 random.setEnabled(true);
-                speedSlider.setEnabled(true);
-                speedSpinner.setEnabled(true);
+
             }
         });
 
@@ -818,43 +586,49 @@ public class GUI extends Component {
             }
         });
 
+
+
+
+
+
+
+
+
+
         JPanel runPanel = new JPanel();
         runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS));
 
-        runPanel.add(algoLabel);
+        runPanel.add(dropDownLabel);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(algoSelection);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(IDLabel);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(IDSpinner);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(randomPanel);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(distanceSelectionPanel);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(runButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(pauseButton);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(stopButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(nextButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        runPanel.add(speedPanel);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(speedSlider);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(gridBox);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(arrowBox);
+
         runPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         runPanel.setBorder(BorderFactory.createTitledBorder(runPanel.getBorder(),
-                "Run Panel"));
-
-
+                "Maze Generator and Solver"));
         commandPanel.add(Box.createVerticalGlue());
         commandPanel.add(runPanel);
         commandPanel.add(infoPanel);
@@ -862,7 +636,6 @@ public class GUI extends Component {
         commandPanel.add(editPanel);
         commandPanel.add(Box.createVerticalGlue());
         commandPanel.setBorder(new EmptyBorder(5, 15, 5, 15));
-
         fileMenu.addMouseListener(new MouseListener() {
 
             @Override
@@ -893,6 +666,18 @@ public class GUI extends Component {
             }
         });
 
+
+
+
+
+
+
+
+
+
+
+
+
         newMaze.addActionListener(new ActionListener() {
 
             @Override
@@ -902,6 +687,10 @@ public class GUI extends Component {
             }
         });
 
+
+
+
+
         openMaze.addActionListener(new ActionListener() {
 
             @Override
@@ -910,8 +699,6 @@ public class GUI extends Component {
                 openMaze();
             }
         });
-
-
         mazePanel.setBorder(new EmptyBorder(10, 10, 10, 20));
         mainFrame.setJMenuBar(menuBar);
         mainFrame.add(mainPanel, BorderLayout.CENTER);
@@ -927,10 +714,6 @@ public class GUI extends Component {
                 mainFrame.dispose();
             }
         });
-
-
-
-
         mainFrame.setMinimumSize(new Dimension(800, 650));
         mainFrame.setPreferredSize(new Dimension(800, 650));
         mainFrame.pack();
@@ -938,6 +721,7 @@ public class GUI extends Component {
                 screenSize.height/2 - (mainFrame.getHeight()/2));
         mainFrame.setVisible(true);
     }
+
 
 
     /**
@@ -962,7 +746,6 @@ public class GUI extends Component {
                     directory = filename;
                     saved = true;
                 }
-
             }
             else{
                 mazePanel.getMaze().saveMaze(filename + ".txt");
@@ -970,8 +753,6 @@ public class GUI extends Component {
                 saved = true;
             }
         }
-
-
     }
 
     /**
@@ -1177,7 +958,6 @@ public class GUI extends Component {
                     maze.setGoal(null);
                 }
                 solver = null;
-                pause = false;
                 directory = null;
                 saved = true;
                 mainFrame.setPreferredSize(mazePanel.getPreferredSize());
@@ -1195,8 +975,6 @@ public class GUI extends Component {
             }
         });
         borderPanel.setVisible(false);
-
-
         newPanel.add(Box.createVerticalGlue());
         newPanel.add(rowPanel);
         newPanel.add(columnPanel);
@@ -1206,21 +984,19 @@ public class GUI extends Component {
         newPanel.add(borderPanel);
         newPanel.add(buttonPanel);
         newPanel.add(Box.createVerticalGlue());
-
-
         newDialog.add(newPanel);
         newDialog.setMaximumSize(new Dimension(500, 500));
         newDialog.setLocationRelativeTo(mainFrame);
         newDialog.pack();
-
         newDialog.setVisible(true);
     }
+
+
 
     /**
      * Opens a maze from a text file
      * @return true if the maze opens successfully, false otherwise
      */
-
     public void ImageImporter() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -1228,7 +1004,6 @@ public class GUI extends Component {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-
             try {
                 JPanel panel = new JPanel();
                 panel.setBounds(0, 0, 1000, 1400);
@@ -1239,13 +1014,8 @@ public class GUI extends Component {
                 mainFrame.setSize(400, 400);
                 mainFrame.setLayout(null);
                 mainFrame.setVisible(true);
-
-
-            } catch (IOException ignored) {
-            }
-
+            } catch (IOException ignored) {}
         }
-
     }
 
 
@@ -1274,7 +1044,6 @@ public class GUI extends Component {
             mainFrame.repaint();
             directory = filename;
             saved = true;
-            pause = false;
             flag = true;
         }
         return flag;
@@ -1285,16 +1054,15 @@ public class GUI extends Component {
      * Sets up a solver for this maze
      * @param algorithm type of algorithm to use
      * @param random choose cells randomly
-     * @param depth ID depth
      * @return  sover for this maze
      */
-    private MazeSearch setSolver (String algorithm, boolean random, int depth,
-                                  JComboBox<String> distanceFunction){
+    private MazeSolver setSolver(String algorithm, boolean random){
 
-        if (algorithm.equals("BFS")){
-            solver = new MazeSolverDBFS(mazePanel.getMazeData(), random, false,
+
+            solver = new MazeSolver(mazePanel.getMazeData(), mazePanel.getMaze());
+            solver.MazeSolverDBFS(mazePanel.getMazeData(), random, false,
                     mazePanel.getMaze());
-        }
+        
         return solver;
     }
 
@@ -1328,12 +1096,7 @@ public class GUI extends Component {
                 mazePanel.getMaze().setCurrent(null);
                 mainFrame.repaint();
                 solver = null;
-                pause = false;
             }
         }
-
     }
-
-
-
 }
