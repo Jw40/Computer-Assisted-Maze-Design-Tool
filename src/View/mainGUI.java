@@ -84,6 +84,7 @@ public class mainGUI extends Component {
         JMenuItem autogen;
         JMenuItem edit;
         JMenu database;
+        JMenuItem importImage;
 
         JMenuItem open, save, saveAs, mazePref, export, exit, about, createNew;
 
@@ -100,6 +101,7 @@ public class mainGUI extends Component {
         open = new JMenuItem("Open");
         save = new JMenuItem("Save");
         saveAs = new JMenuItem("Save As");
+        importImage = new JMenuItem("Import Image");
         export = new JMenuItem("Export Maze");
         exit = new JMenuItem("Exit");
 
@@ -120,6 +122,8 @@ public class mainGUI extends Component {
         mazeWindow.setSize(400, 400);
         mazeWindow.setLayout(null);
         mazeWindow.setVisible(true);
+
+
 
         open.addActionListener(e -> OpenFileChooser());
         saveAs.addActionListener(e -> {
@@ -145,7 +149,9 @@ public class mainGUI extends Component {
 
         about.addActionListener(e -> about());
         exit.addActionListener(e -> System.exit(0));
+        importImage.addActionListener(e ->ImageImporter());
     }
+
 
     /**
      * Used to create new GUI
@@ -185,6 +191,35 @@ public class mainGUI extends Component {
 
 
     }
+
+
+    public void ImageImporter() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+
+            try {
+                JPanel panel = new JPanel();
+                panel.setBounds(0, 0, 1000, 1400);
+                BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
+                JLabel pic = new JLabel(new ImageIcon(img));
+                panel.add(pic);
+                mainFrame.add(panel);
+                mainFrame.setSize(400, 400);
+                mainFrame.setLayout(null);
+                mainFrame.setVisible(true);
+
+
+            } catch (IOException ignored) {
+            }
+
+        }
+
+    }
+
 
     public void captureScreen(String fileName) throws Exception {
         // TODO - Change mazewindow to jpanel of the maze when it's implimented
