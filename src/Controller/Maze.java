@@ -32,7 +32,7 @@ public class Maze implements IMaze{
      * space between wall and dot
      */
     private static final int DOT_MARGIN = 5;
-    private int MazeSize;
+    public int MazeSize;
     /**
      * array containing all the cells in the maze
      */
@@ -52,9 +52,9 @@ public class Maze implements IMaze{
      */
 //    public enum Difficulty{ Child, Easy, Intermediate, Hard};
 
-    private String author;
-    private String mazeName;
-    private LocalDate dateCreated;
+    public String author;
+    public String mazeName;
+    public LocalDate dateCreated;
     private int mazeSizeX;
     private int mazeSizeY;
    // private Difficulty difficulty;

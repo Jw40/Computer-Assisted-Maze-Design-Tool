@@ -9,6 +9,8 @@ public class MazeCollections {
 
     //implement this as a class between the GUI to add/delete for database etc
 
+
+
     /**
      * Used to add a maze to the database
      */
