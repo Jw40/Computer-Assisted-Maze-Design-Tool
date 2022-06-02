@@ -43,3 +43,24 @@ Notes:
 - Added JavaDocs comments for every method 
 - Generated JavaDocs
  
+Version 1.5
+Notes:
+05/05/2022
+- Added Logo implementation
+- Added Database Connection
+- Changed to GUI
+
+Version 2.0
+Notes:
+26/05/2022
+- Added new implmentation for maze generation 
+- Added new implementation for maze solving
+- Added new implementation for the GUI
+
+Version 2.1
+Notes:
+3/06/2022
+- Database connection in new implementation
+- Added Jdocs for new implementation 
+- Removed redundant methods from Controller 
+- Removed redundant methods from View
