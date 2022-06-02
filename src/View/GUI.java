@@ -16,28 +16,10 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.TransferHandler;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -103,6 +85,19 @@ public class GUI extends Component {
         JMenuItem exit = new JMenuItem("Exit");
         JMenuItem clear = new JMenuItem("Clear Maze");
 
+        fileMenu.add(newMaze);
+        fileMenu.add(openMaze);
+        fileMenu.addSeparator();
+        fileMenu.add(saveMaze);
+        fileMenu.add(saveMazeAs);
+        fileMenu.add(importImage);
+        fileMenu.addSeparator();
+        fileMenu.add(clear);
+        fileMenu.addSeparator();
+        fileMenu.add(exit);
+        //menu bar end
+
+        //menu bar action listeners
         saveMazeAs.addActionListener(e -> saveAs());
 
         saveMaze.addActionListener(e -> save());
@@ -122,25 +117,13 @@ public class GUI extends Component {
             mazePanel.repaint();
         });
 
-        fileMenu.add(newMaze);
-        fileMenu.add(openMaze);
-        fileMenu.addSeparator();
-        fileMenu.add(saveMaze);
-        fileMenu.add(saveMazeAs);
-        fileMenu.add(importImage);
-        fileMenu.addSeparator();
-        fileMenu.add(clear);
-        fileMenu.addSeparator();
-        fileMenu.add(exit);
-        //menu bar end
-
-
 
 
         //Side panel buttons
         JButton generateNewMazeButton = new JButton("Generate New Maze");
         JButton solveButton = new JButton("Solve Maze");
-        JButton resetButton = new JButton("Reset");
+        JButton resetButton = new JButton("Reset Solution Path");
+        JButton clearButton = new JButton("Clear Maze");
         generateNewMazeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         generateNewMazeButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         resetButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
@@ -148,8 +131,13 @@ public class GUI extends Component {
         resetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         solveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         solveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        clearButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        clearButton.setEnabled(false);
+        clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Solution Mertics
+        JTextField textField = new JTextField("Author Name: ", 1);
+
+        //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
         JCheckBox random = new JCheckBox("Classic Maze");
         randomPanel.add(random);
@@ -196,11 +184,16 @@ public class GUI extends Component {
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(generateNewMazeButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(clearButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(textField);
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(solveButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(resetButton);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -230,6 +223,7 @@ public class GUI extends Component {
                 random.setEnabled(true);
                 resetButton.setEnabled(true);
                 solveButton.setEnabled(true);
+                clearButton.setEnabled((true));
                 generateNewMazeButton.setEnabled(true);
                 mazePanel.blacken();
                 generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
@@ -257,10 +251,10 @@ public class GUI extends Component {
                 random.setEnabled(false);
                 resetButton.setEnabled(true);
                 solveButton.setEnabled(true);
+                clearButton.setEnabled((true));
                 generateNewMazeButton.setEnabled(false);
                 if (solver == null){
-                    solver = setSolver(
-                            random.isSelected());
+                    solver = setSolver();
                 }
                 runThread = new Thread(() -> {
                     try {
@@ -299,6 +293,7 @@ public class GUI extends Component {
             if (runThread != null){
                 runThread.interrupt();
             }
+            clearButton.setEnabled(true);
             random.setEnabled(true);
             generateNewMazeButton.setEnabled(true);
             solveButton.setEnabled(true);
@@ -308,6 +303,21 @@ public class GUI extends Component {
 
         });
 
+        clearButton.addActionListener(e -> {
+            mazePanel.setEditable(true);
+            if (runThread != null){
+                runThread.interrupt();
+            }
+            clearButton.setEnabled(true);
+            random.setEnabled(true);
+            generateNewMazeButton.setEnabled(true);
+            solveButton.setEnabled(true);
+            resetButton.setEnabled(false);
+            clearMaze();
+            statusLabel.setText("Status: Not Started");
+            mazePanel.getMaze().whitenThisMaze();
+            mazePanel.repaint();
+        });
         // END
 
 
@@ -538,7 +548,8 @@ public class GUI extends Component {
         buttonPanel.add(cancelButton);
 
         MazePanel newMazePanel = new MazePanel(new Maze(mazePanel.getMaze().getRows(),
-                mazePanel.getMaze().getColumns()));
+                mazePanel.getMaze().getColumns(), "Steve Smith", "Maze Name", LocalDate.now()));
+        System.out.println(newMazePanel);
         newMazePanel.setMaximumSize(new Dimension(500, 500));
         newMazePanel.setEditable(false);
         newMazePanel.setMoveable(true);
@@ -583,12 +594,12 @@ public class GUI extends Component {
             int spinnerValue = (Integer)rowSpinner.getValue();
             int currentRows = newMazePanel.getMaze().getRows();
             if (spinnerValue> currentRows){
-                /*
+
                 for (int j = currentRows;j< spinnerValue;j++){
                     newMazePanel.getMaze().addRow(newMazePanel.getOriginalMaze());
                 }
 
-                 */
+
                 newMazePanel.invalidate();
                 newMazePanel.repaint();
             } else if (spinnerValue< currentRows){
@@ -623,7 +634,8 @@ public class GUI extends Component {
                 maze = newMazePanel.getMaze();
             }
             else{
-                maze = new Maze((Integer)rowSpinner.getValue(), (Integer)columnSpinner.getValue());
+                maze = new Maze((Integer)rowSpinner.getValue(), (Integer)columnSpinner.getValue(), "Steve Smith", "Maze Name", LocalDate.now());
+                System.out.println(maze.ToString());
             }
             mazePanel.setMaze(maze);
             if (maze.getStart() != null && (maze.getStart().x< 0 || maze.getStart().y <0 ||
@@ -729,16 +741,12 @@ public class GUI extends Component {
 
     /**
      * Sets up a solver for this maze
-     * @param random choose cells randomly
      * @return  sover for this maze
      */
-    private MazeSolver setSolver(boolean random){
-
-
-            solver = new MazeSolver(mazePanel.getMazeData(), mazePanel.getMaze());
-            solver.MazeSolverDBFS(mazePanel.getMazeData(), random, false,
-                    mazePanel.getMaze());
-
+    private MazeSolver setSolver()
+    {
+        solver = new MazeSolver(mazePanel.getMazeData(), mazePanel.getMaze());
+        solver.MazeSolverBFSInit();
         return solver;
     }
 

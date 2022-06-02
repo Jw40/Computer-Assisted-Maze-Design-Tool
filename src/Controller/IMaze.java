@@ -7,26 +7,19 @@ public interface IMaze {
     /**
      * Saves this maze to a text file
      * @param path file path
-     * @return true if completed without IO errors
      */
-    boolean saveMaze (String path);
-
-
-
-    /**
-     * Set start of this maze
-     * @param x row
-     * @param y column
-     */
-    void setStart(int x, int y);
-
-
+    void saveMaze (String path);
 
     /**
      * gets rows
      * @return rows
      */
     int getRows();
+
+    /**
+     * @return Maze details to string
+     */
+    String ToString();
 
     /**
      * gets columns
@@ -74,26 +67,63 @@ public interface IMaze {
     void whitenThisMaze();
 
 
-
+    /**
+     * @param newLogoPoint used to set the logo variable for the maze
+     */
     void setLogo(Point newLogoPoint);
+
+    /**
+     * @param newStartPoint used to set the start variable for the maze
+     */
     void setStart(Point newStartPoint);
 
+    /**
+     * @param newGoalPoint used to set the goal variable for the maze
+     */
     void setGoal(Point newGoalPoint);
 
+    /**
+     * @return used to get the solution array for this maze
+     */
     ArrayList<Cell> getSolution();
 
+    /**
+     * @return used to get the current point in the maze
+     */
     Point getCurrent();
 
+    /**
+     * @param current used to set the current point in the maze
+     */
     void setCurrent(Point current);
 
+    /**
+     * @param otherMaze .
+     * @param iStart .
+     * @param jStart .
+     */
     void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart);
 
 
+    /**
+     * @param oldMaze last maze in gui
+     *                adds new row
+     */
     void addRow(IMaze oldMaze);
 
+    /**
+     * @param oldMaze last maze in the gui
+     *                adds new column
+     */
     void addColumn(IMaze oldMaze);
 
+    /**
+     * remove a row from the maze
+     */
     void removeRow();
 
+    /**
+     * remove a column from a maze
+     */
     void removeColumn();
 }

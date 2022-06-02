@@ -1,7 +1,3 @@
-package Controller;
-
-
-
 /*
  * The MIT License
  *
@@ -26,13 +22,23 @@ package Controller;
  * THE SOFTWARE.
  */
 
+/*
+    Disclaimer - This source code has been modified/referenced from
+                   the following project:
+
+                    Title of program: Laby
+                    Author(s): Chris Darisaplis, Chris Samarinas
+                    Date: 05/12/2015
+                    Code version: 1.2
+                    Type: Source Code
+                    Web address: https://github.com/algoprog/Laby
+ */
+
+package Controller;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * DFS maze generator
- * @author Chris Samarinas
- */
+
 public final class MazeGenerator {
 
     private int x, y; // current position
@@ -49,10 +55,9 @@ public final class MazeGenerator {
 
     /**
      * DFS initialization
-     * @param maxSolution maximum solution length (set negative for no limit)
      * @param width maze width >= 4
      * @param height maze height >= 4
-     * @param aMaze
+     * @param aMaze this maze
      */
     public MazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         this.classic = classic;

@@ -1,7 +1,3 @@
-package Controller;
-
-
-
 /*
  * The MIT License
  *
@@ -26,14 +22,24 @@ package Controller;
  * THE SOFTWARE.
  */
 
+/*
+    Disclaimer - This source code has been modified/referenced from
+                   the following project:
+
+                    Title of program: Laby
+                    Author(s): Chris Darisaplis, Chris Samarinas
+                    Date: 05/12/2015
+                    Code version: 1.2
+                    Type: Source Code
+                    Web address: https://github.com/algoprog/Laby
+ */
+
+package Controller;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * MazeSearch solving algorithm structure
- * @author Chris Samarinas
- */
 public class MazeSolver {
 
     protected int x, y; // current position
@@ -45,17 +51,18 @@ public class MazeSolver {
     protected int maxFront; // max front set size
     protected IMaze mazeData;
 
-
     private ArrayList<Cell> front;
     private boolean randomStep;
     private boolean dfs;
+
 
     /**
      * Create maze from input
      * @param mazeInput 2D array with 0 and 1 for obstacles
      * @param mazeData
      */
-    public MazeSolver(int[][] mazeInput, IMaze mazeData){
+    public MazeSolver(int[][] mazeInput, IMaze mazeData)
+    {
         x= -1;
         y = -1;
         end_x = -1;
@@ -86,18 +93,16 @@ public class MazeSolver {
 
 
     /**
-     * DFS initialization
-     * @param mazeInput
-     * @param randomStep choose random neighboring MazeBox
-     * @param dfs true: use DFS, false: use BFS
-     * @param mazeData
+     * BFS initialization
      */
-    public void MazeSolverDBFS(int[][] mazeInput, boolean randomStep, boolean dfs, IMaze mazeData) {
+    public void MazeSolverBFSInit()
+    {
         front = new ArrayList<>();
-        this.randomStep = randomStep;
-        this.dfs = dfs;
+        this.randomStep = false;
+        this.dfs = false;
         addFront(x, y);
     }
+
 
     /**
      * Perform the next step of search
@@ -105,7 +110,8 @@ public class MazeSolver {
      * @return true if step performed
      * @throws java.lang.InterruptedException
      */
-    public boolean nextStep(int speed) throws InterruptedException{
+    public boolean nextStep(int speed) throws InterruptedException
+    {
         if(speed>0) Thread.sleep(speed);
         if(!front.isEmpty()){
             Cell box;
@@ -148,14 +154,32 @@ public class MazeSolver {
         return false;
     }
 
-    /**
-     * Returns the number of steps
-     * @return number of steps
-     */
-    public int getSteps(){
-        return step;
-    }
 
+    /**
+     * Add MazeBox in x, y position to front set
+     * @param x MazeBox x coordinate
+     * @param y MazeBox y coordinate
+     */
+    protected void addFront(int x, int y)
+    {
+        if(validPosition(x, y))
+        {
+            if(maze[y][x].isAdded)
+            {
+                return;
+            }
+            maze[y][x].isAdded = true;
+            if(step>0)
+            {
+                maze[y][x].previous = maze[this.y][this.x];
+            }
+            front.add(maze[y][x]);
+            int fsize = front.size();
+            if(fsize>maxFront){
+                maxFront = fsize;
+            }
+        }
+    }
 
 
     /**
@@ -164,7 +188,8 @@ public class MazeSolver {
      * @param y MazeBox y coordinate
      * @return true if MazeBox is visited
      */
-    protected boolean visit(int x, int y){
+    protected boolean visit(int x, int y)
+    {
         if(!validPosition(x, y)){
             return false;
         }
@@ -178,45 +203,25 @@ public class MazeSolver {
         return true;
     }
 
+
     /**
      * If MazeBox can be visited in x, y position
      * @param x MazeBox x coordinate
      * @param y MazeBox y coordinate
      * @return true if MazeBox can be visited in x, y position
      */
-    protected boolean validPosition(int x, int y){
+    protected boolean validPosition(int x, int y)
+    {
         return x>=0 && x<width && y>=0 && y<height && !maze[y][x].isObstacle();
     }
 
-    /**
-     * Add MazeBox in x, y position to front set
-     * @param x MazeBox x coordinate
-     * @param y MazeBox y coordinate
-     */
-    protected void addFront(int x, int y){
-        if(validPosition(x, y)){
-            if(maze[y][x].isAdded){
-                return;
-            }
-            maze[y][x].isAdded = true;
-            if(step>0){
-                maze[y][x].previous = maze[this.y][this.x];
-            }
-            front.add(maze[y][x]);
-            int fsize = front.size();
-            if(fsize>maxFront){
-                maxFront = fsize;
-            }
-
-        }
-
-    }
 
     /**
      * Get current maze solution
      * @return ArrayList with current MazeBox solution (MazeBox items)
      */
-    public ArrayList<Cell> getSolution(){
+    public ArrayList<Cell> getSolution()
+    {
         solution.clear();
         if(step==0) return null;
         Cell box = maze[y][x];
@@ -232,25 +237,24 @@ public class MazeSolver {
         return solution;
     }
 
-    /**
-     * Solve the maze
-     * @param speed
-     * @return
-     * @throws InterruptedException
-     */
-    public ArrayList<Cell> solve(int speed) throws InterruptedException{
-        while(nextStep(speed)){
-            // continue tree search
-        }
-        if(isSolved()) return getSolution();
-        return null;
-    }
 
     /**
      * Checks if the maze is solved
      * @return true if solution is found
      */
-    public boolean isSolved(){
+    public boolean isSolved()
+    {
         return x==end_x && y==end_y;
     }
+
+
+    /**
+     * Returns the number of steps
+     * @return number of steps
+     */
+    public int getSteps()
+    {
+        return step;
+    }
+
 }

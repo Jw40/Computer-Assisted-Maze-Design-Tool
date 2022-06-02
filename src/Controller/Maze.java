@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -56,6 +57,10 @@ public class Maze implements  IMaze
     private Point current;//current point
     private ArrayList<Cell> solution;//current solution
     private Point logo;//logo point
+    public String authorName;//author of the maze
+    public String mazeName;//name of the maze
+    public LocalDate creationDate;//creation date of the maze
+    public LocalDate editDate;//last edit date
 
     //Constructor 1
     /**
@@ -74,6 +79,34 @@ public class Maze implements  IMaze
     }
 
     //Constructor 2
+    /**
+     * Builds a new empty maze of specific dimensions
+     * @param rows number of rows in the maze
+     * @param columns number of columns in the maze
+     *                add maze with author name
+     */
+    public Maze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
+    {
+        this.creationDate = creationDate;
+        this.mazeName = mazeName;
+        this.authorName = authorName;
+        this.rows = rows;
+        this.columns = columns;
+        cellArray = new Cell[rows][columns];
+        for (int i = 0;i< rows;i++)
+        {
+            for (int j = 0;j< columns;j++)
+            {
+                cellArray[i][j] = new Cell();
+            }
+        }
+        start = null;
+        goal = null;
+        current = null;
+        solution = null;
+        logo = null;
+    }
+    //Constructor 3
     /**
      * Builds a new empty maze of specific dimensions
      * @param rows number of rows in the maze
@@ -156,12 +189,10 @@ public class Maze implements  IMaze
         }
     }
 
-
     /**
      * @param path file path
-     * @return if true no errors, else throw Exception e
      */
-    public boolean saveMaze (String path)
+    public void saveMaze (String path)
     {
         try (PrintWriter printer = new PrintWriter(new FileWriter(path)))
         {
@@ -197,28 +228,15 @@ public class Maze implements  IMaze
         }catch (Exception e)
         {
             System.out.println("Output issue!");
-            return false;
         }
-        return true;
     }
 
-
     /**
-     * Set start of this maze
-     * @param x row
-     * @param y column
+     * @return Maze details to string
      */
-    public void setStart(int x, int y)
+    public String ToString()
     {
-        if (start != null)
-        {
-            start.x = x;
-            start.y = y;
-        }
-        else
-        {
-            start = new Point(x, y);
-        }
+        return "Maze Name: " + mazeName + " Author Name: " + authorName + " Creation Date: " + creationDate;
     }
 
 
@@ -284,6 +302,9 @@ public class Maze implements  IMaze
         return goal;
     }
 
+    /**
+     * @return the logo
+     */
     public Point getLogo()
     {
         return logo;
@@ -332,36 +353,59 @@ public class Maze implements  IMaze
     }
 
 
+    /**
+     * @param newStartPoint used to set the start variable for the maze
+     */
     public void setStart(Point newStartPoint)
     {
         start = newStartPoint;
     }
 
+    /**
+     * @param newLogoPoint used to set the logo variable for the maze
+     */
     public void setLogo(Point newLogoPoint)
     {
         logo = newLogoPoint;
     }
 
+    /**
+     * @param newGoalPoint used to set the goal variable for the maze
+     */
     public void setGoal(Point newGoalPoint)
     {
         goal = newGoalPoint;
     }
 
+    /**
+     * @return used to get the solution array for this maze
+     */
     public ArrayList<Cell> getSolution()
     {
         return solution;
     }
 
+    /**
+     * @return used to get the current point in the maze
+     */
     public Point getCurrent()
     {
         return current;
     }
 
+    /**
+     * @param current used to set the current point in the maze
+     */
     public void setCurrent(Point current)
     {
         this.current = current;
     }
 
+    /**
+     * @param otherMaze .
+     * @param iStart .
+     * @param jStart .
+     */
     public void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart)
     {
         for (int i = 0; i< rows; i++)
@@ -406,7 +450,11 @@ public class Maze implements  IMaze
         }
     }
 
-
+    //used for building a new maze
+    /**
+     * @param oldMaze last maze in gui
+     *                adds new row
+     */
     public void addRow(IMaze oldMaze)
     {
         rows++;
@@ -421,6 +469,10 @@ public class Maze implements  IMaze
         copyMazeObstacles(oldMaze, 0, 0);
     }
 
+    /**
+     * @param oldMaze last maze in the gui
+     *                adds new column
+     */
     public void addColumn(IMaze oldMaze)
     {
         columns++;
@@ -435,6 +487,9 @@ public class Maze implements  IMaze
         copyMazeObstacles(oldMaze, 0, 0);
     }
 
+    /**
+     * remove a row from the maze
+     */
     public void removeRow()
     {
         Maze temp = new Maze(rows, columns);
@@ -461,6 +516,9 @@ public class Maze implements  IMaze
         copyMazeObstacles(temp, 0, 0);
     }
 
+    /**
+     * remove a column from a maze
+     */
     public void removeColumn(){
         Maze temp = new Maze(rows, columns);
         temp.copyMazeObstacles(this, 0, 0);

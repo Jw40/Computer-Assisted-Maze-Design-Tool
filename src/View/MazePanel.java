@@ -196,7 +196,7 @@ public class MazePanel extends JPanel{
 
 
 
-        g2D.setColor(Color.GREEN);//draw solution so far
+        g2D.setColor(Color.PINK);//draw solution so far
         Cell previous = null;
         Cell aSolutionBox = null;
         if (aMaze.getSolution() != null){
