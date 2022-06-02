@@ -53,5 +53,5 @@ public class Database {
     private static final String CREATE_MAZE_PREFS =
             "CREATE TABLE IF NOT EXISTS maze_Prefs ("
                 + "idx INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE"
-                + ""
+                + "asdfasdf"
 }
