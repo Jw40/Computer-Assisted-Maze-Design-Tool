@@ -12,13 +12,6 @@ public interface IMaze {
     boolean saveMaze (String path);
 
 
-    /**
-     * Set if a cell is obstacle
-     * @param x row
-     * @param y column
-     * @param obstacle obstacle or not
-     */
-    void isObstacle(int x, int y, boolean obstacle);
 
     /**
      * Set start of this maze
@@ -27,12 +20,7 @@ public interface IMaze {
      */
     void setStart(int x, int y);
 
-    /**
-     * Set goal of this maze
-     * @param x row
-     * @param y column
-     */
-    void setGoal(int x, int y);
+
 
     /**
      * gets rows
@@ -50,7 +38,7 @@ public interface IMaze {
      * get an array with all the maze's cells
      * @return 2d array
      */
-    Cell[][] getMazeLogic();
+    Cell[][] getCellArray();
 
     /**
      * gets maze start
@@ -78,12 +66,12 @@ public interface IMaze {
     /**
      * Sets all cells as obstacles
      */
-    void blacken();
+    void blackenThisMaze();
 
     /**
      * Clears this maze
      */
-    void whiten();
+    void whitenThisMaze();
 
 
 

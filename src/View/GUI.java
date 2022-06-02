@@ -8,8 +8,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -41,8 +39,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GUI extends Component {
@@ -122,7 +118,7 @@ public class GUI extends Component {
         importImage.addActionListener(e -> ImageImporter());
 
         clear.addActionListener(e -> {
-            mazePanel.getMaze().whiten();
+            mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
         });
 
@@ -587,9 +583,12 @@ public class GUI extends Component {
             int spinnerValue = (Integer)rowSpinner.getValue();
             int currentRows = newMazePanel.getMaze().getRows();
             if (spinnerValue> currentRows){
+                /*
                 for (int j = currentRows;j< spinnerValue;j++){
                     newMazePanel.getMaze().addRow(newMazePanel.getOriginalMaze());
                 }
+
+                 */
                 newMazePanel.invalidate();
                 newMazePanel.repaint();
             } else if (spinnerValue< currentRows){
@@ -765,10 +764,11 @@ public class GUI extends Component {
      * Clears this maze,
      */
     private void clearMaze(){
-        for (int i = 0;i< mazePanel.getMaze().getRows();i++){
-            for (int j = 0;j< mazePanel.getMaze().getColumns();j++){
-                mazePanel.getMaze().getMazeLogic()[i][j].setIsFront(false);
-                mazePanel.getMaze().getMazeLogic()[i][j].isVisited = false;
+        for (int i = 0; i < mazePanel.getMaze().getRows(); i++)
+        {
+            for (int j = 0; j < mazePanel.getMaze().getColumns(); j++)
+            {
+                mazePanel.getMaze().getCellArray()[i][j].isVisited = false;
                 mazePanel.getMaze().setSolution(new ArrayList<>());
                 mazePanel.getMaze().setCurrent(null);
                 mainFrame.repaint();

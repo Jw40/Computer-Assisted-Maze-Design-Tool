@@ -184,16 +184,16 @@ public final class MazeGenerator {
             int wx, wy;
             wx = (maze[y][x].previous.x+x)/2; // wall x
             wy = (maze[y][x].previous.y+y)/2; // wall y
-            maze[wy][wx].setIsObstacle(false);
+            maze[wy][wx].thisCellIsObstacle(false);
             // Code for GUI - make wx, wy white
-            aMaze.getMazeLogic()[wy][wx].setIsObstacle(false);
+            aMaze.getCellArray()[wy][wx].thisCellIsObstacle(false);
         }
         this.x = x;
         this.y = y;
         maze[y][x].isVisited = true;
-        maze[y][x].setIsObstacle(false);
+        maze[y][x].thisCellIsObstacle(false);
         step++;
-        aMaze.getMazeLogic()[y][x].setIsObstacle(false);
+        aMaze.getCellArray()[y][x].thisCellIsObstacle(false);
         return true;
     }
 

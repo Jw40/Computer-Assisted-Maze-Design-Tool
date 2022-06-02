@@ -52,8 +52,6 @@ public class MazeSolver {
 
     /**
      * Create maze from input
-     * @param x start x coordinate
-     * @param y start y coordinate
      * @param mazeInput 2D array with 0 and 1 for obstacles
      * @param mazeData
      */
@@ -72,7 +70,7 @@ public class MazeSolver {
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
                 maze[i][j] = new Cell();
-                maze[i][j].setIsObstacle(mazeInput[i][j]==3);
+                maze[i][j].thisCellIsObstacle(mazeInput[i][j]==3);
                 maze[i][j].x = j;
                 maze[i][j].y = i;
                 if(mazeInput[i][j]==1){
@@ -175,8 +173,7 @@ public class MazeSolver {
         maze[y][x].isVisited = true;
         step++;
         //GUI
-        mazeData.getMazeLogic()[y][x].isVisited = true;
-        mazeData.getMazeLogic()[y][x].setIsFront(false);
+        mazeData.getCellArray()[y][x].isVisited = true;
         mazeData.setCurrent(new Point(y, x));
         return true;
     }
@@ -210,7 +207,7 @@ public class MazeSolver {
             if(fsize>maxFront){
                 maxFront = fsize;
             }
-            mazeData.getMazeLogic()[y][x].setIsFront(true);
+
         }
 
     }

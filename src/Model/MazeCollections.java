@@ -1,6 +1,7 @@
 package Model;
 
-import Controller.Maze;
+import Controller.IMaze;
+
 
 /**
  * Used to for pre prepared SQL statements to add, search, edit, export and save mazes to the database
@@ -24,7 +25,7 @@ public class MazeCollections {
      * @param maze maze object
      *
      */
-    public void searchMaze(Maze maze)
+    public void searchMaze(IMaze maze)
     {
         return;
 
@@ -34,7 +35,7 @@ public class MazeCollections {
      * Used to edit a maze
      * @param maze maze object
      */
-    public void editMaze(Maze maze)
+    public void editMaze(IMaze maze)
     {
 
         return;

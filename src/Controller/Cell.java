@@ -1,5 +1,3 @@
-package Controller;
-
 /*
  * The MIT License
  *
@@ -24,83 +22,99 @@ package Controller;
  * THE SOFTWARE.
  */
 
+/*
+    Disclaimer - This source code has been modified/referenced from
+                   the following project:
+
+                    Title of program: Laby
+                    Author(s): Chris Darisaplis, Chris Samarinas
+                    Date: 05/12/2015
+                    Code version: 1.2
+                    Type: Source Code
+                    Web address: https://github.com/algoprog/Laby
+ */
+
+package Controller;
 import java.awt.Rectangle;
 
 
-
-/**Individual maze cell
- *
- * @author Chris Samarinas
+ /**
+ * Used to create an Individual maze cell, using java.awt.Rectangle
  */
-public class Cell implements Comparable<Cell>{
+public class Cell implements Comparable<Cell> {
 
-    private boolean obstacle;
-    public boolean isVisited;
-    private boolean solution;
-    public Cell previous;
+    public Rectangle cell;
     public int x;
     public int y;
-    public int so_far;
-    public double to_go;
+
+    public boolean isVisited;
     public boolean isAdded;
-    public Rectangle cell;
+    public Cell previous;
+    private boolean IsObstacle;
 
-
-    public Cell(){
+     /**
+      * Set all variables of each cell to be false or null
+      */
+    public Cell()
+    {
         isAdded = false;
-        obstacle = false;
+        IsObstacle = false;
         isVisited = false;
         previous = null;
     }
 
-    @Override
-    public int compareTo(Cell o) {
-        if(so_far+to_go>o.so_far+o.to_go) return 1;
-        else if(so_far+to_go==o.so_far+o.to_go) return 0;
-        else return -1;
+    /**
+     * @return IsObstacle which will either be true or false
+     */
+    public boolean isObstacle()
+    {
+        return IsObstacle;
     }
 
-
-
-    public void setIsObstacle(boolean b) {
-        this.obstacle = b;
+    /**
+     * @param isObstacle bool which sets the cell to an obstacle or not
+     * if @param isObstacle is true, the cell is Obstacle
+     * otherwise false and the cell is not an Obstacle
+     */
+    public void thisCellIsObstacle(boolean isObstacle)
+    {
+        this.IsObstacle = isObstacle;
     }
 
-    public boolean isObstacle() {
-        return obstacle;
-    }
-
-    public void putCell(Rectangle cell) {
+    /**
+     * @param cell the cell to be placed in the maze
+     *        updates the this.cell variable
+     */
+    public void placeCell(Rectangle cell)
+    {
         this.cell = cell;
     }
 
-    public Rectangle getCell() {
+     /**
+      * @return return the current cell
+      */
+    public Rectangle getCell()
+    {
         return cell;
     }
 
-    public boolean isVisited() {
+     /**
+      * @return return true if the cell has been visited in the search
+      */
+    public boolean isVisited()
+    {
         return isVisited;
     }
 
-    public boolean isSolution() {
-        return solution;
-    }
-
-    public void setSolution(boolean solution) {
-        this.solution = solution;
-    }
-    private boolean front;
-
-
-
-
-
-    public boolean isIsFront() {
-        return front;
-    }
-
-    public void setIsFront(boolean isFront) {
-        this.front = isFront;
-    }
-
-}
+     /**
+      * @param o this cell
+      * @return 0
+      *  this method is to keep the compiler happy
+      *  as it needs this method to implement the parent class
+      */
+     @Override
+     public int compareTo(Cell o)
+     {
+         return 0;
+     }
+ }
