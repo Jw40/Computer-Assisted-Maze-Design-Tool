@@ -10,14 +10,11 @@ import java.awt.*;
 import javax.swing.JFileChooser;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import javax.imageio.ImageIO;
-import javax.swing.border.EmptyBorder;
-import java.awt.Graphics;
 
 /**
  * Responsible for displaying the GUI elements that the user will be interacting with inclusive of buttons, panels, and search/data insertion elements.
