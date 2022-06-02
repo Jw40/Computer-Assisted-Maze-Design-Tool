@@ -1,0 +1,259 @@
+package Controller;
+
+
+
+/*
+ * The MIT License
+ *
+ * Copyright 2015 Chris Samarinas
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+
+/**
+ * MazeSearch solving algorithm structure
+ * @author Chris Samarinas
+ */
+public class MazeSolver {
+
+    protected int x, y; // current position
+    protected int end_x, end_y; // end position
+    protected Cell[][] maze; // the maze boxes
+    protected int width, height; // maze dimensions
+    protected int step; // solver step
+    protected ArrayList<Cell> solution; // maze solution
+    protected int maxFront; // max front set size
+    protected IMaze mazeData;
+
+
+    private ArrayList<Cell> front;
+    private boolean randomStep;
+    private boolean dfs;
+
+    /**
+     * Create maze from input
+     * @param x start x coordinate
+     * @param y start y coordinate
+     * @param mazeInput 2D array with 0 and 1 for obstacles
+     * @param mazeData
+     */
+    public MazeSolver(int[][] mazeInput, IMaze mazeData){
+        x= -1;
+        y = -1;
+        end_x = -1;
+        end_y = -1;
+        maxFront = 0;
+        solution = new ArrayList<>();
+        step = 0;
+        width = mazeInput[0].length;
+        height = mazeInput.length;
+        maze = new Cell[height][width];
+        this.mazeData = mazeData;
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                maze[i][j] = new Cell();
+                maze[i][j].setIsObstacle(mazeInput[i][j]==3);
+                maze[i][j].x = j;
+                maze[i][j].y = i;
+                if(mazeInput[i][j]==1){
+                    x = j;
+                    y = i;
+                }else if(mazeInput[i][j]==2){
+                    end_x = j;
+                    end_y = i;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * DFS initialization
+     * @param mazeInput
+     * @param randomStep choose random neighboring MazeBox
+     * @param dfs true: use DFS, false: use BFS
+     * @param mazeData
+     */
+    public void MazeSolverDBFS(int[][] mazeInput, boolean randomStep, boolean dfs, IMaze mazeData) {
+        front = new ArrayList<>();
+        this.randomStep = randomStep;
+        this.dfs = dfs;
+        addFront(x, y);
+    }
+
+    /**
+     * Perform the next step of search
+     * @param speed in milliseconds
+     * @return true if step performed
+     * @throws java.lang.InterruptedException
+     */
+    public boolean nextStep(int speed) throws InterruptedException{
+        if(speed>0) Thread.sleep(speed);
+        if(!front.isEmpty()){
+            Cell box;
+            if(dfs){
+                box = front.get(front.size()-1);
+                front.remove(front.size()-1);
+            }else{
+                box = front.get(0);
+                front.remove(0);
+            }
+
+            if(box.isVisited){
+                return nextStep(0);
+            }
+
+            visit(box.x, box.y);
+
+            if(isSolved()){
+                return false;
+            }
+
+            ArrayList<Integer> directions = new ArrayList<>();
+            directions.add(0); // right
+            directions.add(1); // top
+            directions.add(2); // bottom
+            directions.add(3); // left
+            if(randomStep){
+                Collections.shuffle(directions);
+            }
+
+            for(int i=0;i<4;i++){
+                int direction = directions.get(i);
+                if(direction==0) addFront(x+1, y);
+                else if(direction==1) addFront(x, y-1);
+                else if(direction==2) addFront(x, y+1);
+                else addFront(x-1, y);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns the number of steps
+     * @return number of steps
+     */
+    public int getSteps(){
+        return step;
+    }
+
+
+
+    /**
+     * Visit MazeBox in x, y position
+     * @param x MazeBox x coordinate
+     * @param y MazeBox y coordinate
+     * @return true if MazeBox is visited
+     */
+    protected boolean visit(int x, int y){
+        if(!validPosition(x, y)){
+            return false;
+        }
+        this.x = x;
+        this.y = y;
+        maze[y][x].isVisited = true;
+        step++;
+        //GUI
+        mazeData.getMazeLogic()[y][x].isVisited = true;
+        mazeData.getMazeLogic()[y][x].setIsFront(false);
+        mazeData.setCurrent(new Point(y, x));
+        return true;
+    }
+
+    /**
+     * If MazeBox can be visited in x, y position
+     * @param x MazeBox x coordinate
+     * @param y MazeBox y coordinate
+     * @return true if MazeBox can be visited in x, y position
+     */
+    protected boolean validPosition(int x, int y){
+        return x>=0 && x<width && y>=0 && y<height && !maze[y][x].isObstacle();
+    }
+
+    /**
+     * Add MazeBox in x, y position to front set
+     * @param x MazeBox x coordinate
+     * @param y MazeBox y coordinate
+     */
+    protected void addFront(int x, int y){
+        if(validPosition(x, y)){
+            if(maze[y][x].isAdded){
+                return;
+            }
+            maze[y][x].isAdded = true;
+            if(step>0){
+                maze[y][x].previous = maze[this.y][this.x];
+            }
+            front.add(maze[y][x]);
+            int fsize = front.size();
+            if(fsize>maxFront){
+                maxFront = fsize;
+            }
+            mazeData.getMazeLogic()[y][x].setIsFront(true);
+        }
+
+    }
+
+    /**
+     * Get current maze solution
+     * @return ArrayList with current MazeBox solution (MazeBox items)
+     */
+    public ArrayList<Cell> getSolution(){
+        solution.clear();
+        if(step==0) return null;
+        Cell box = maze[y][x];
+        int c = 0;
+        while(c<2){
+            solution.add(box);
+            if(box!=null) box = box.previous;
+            if(box==null || box.previous==null){
+                c++;
+            }
+        }
+        Collections.reverse(solution);
+        return solution;
+    }
+
+    /**
+     * Solve the maze
+     * @param speed
+     * @return
+     * @throws InterruptedException
+     */
+    public ArrayList<Cell> solve(int speed) throws InterruptedException{
+        while(nextStep(speed)){
+            // continue tree search
+        }
+        if(isSolved()) return getSolution();
+        return null;
+    }
+
+    /**
+     * Checks if the maze is solved
+     * @return true if solution is found
+     */
+    public boolean isSolved(){
+        return x==end_x && y==end_y;
+    }
+}
