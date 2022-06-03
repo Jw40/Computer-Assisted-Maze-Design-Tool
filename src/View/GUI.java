@@ -236,6 +236,7 @@ public class GUI extends Component {
                     System.out.println(maze.ToString());
                 });
 
+        //
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
                 statusLabel.setText("Status: Generating...");
