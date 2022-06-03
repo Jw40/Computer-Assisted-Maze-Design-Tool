@@ -10,15 +10,15 @@ import java.util.Properties;
 public class DBConnection {
 
     /**
-     * The singleton instance of the database connection.
+     * This class represents the connection to the Maria Database
+     * Adapted from
      */
     private static Connection instance = null;
 
     /**
      * Constructor intializes the connection.
      */
-//    private DBConnection() {
-    public static void main(String[] args) {
+    private DBConnection() {
 
         Properties prop = new Properties();
         FileInputStream inStream = null;

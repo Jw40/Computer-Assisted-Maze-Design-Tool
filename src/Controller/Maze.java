@@ -275,6 +275,7 @@ public class Maze implements  IMaze
         return columns;
     }
 
+<<<<<<< Updated upstream
     /**
      * get an array with all the maze's cells
      * @return 2d array
@@ -283,6 +284,15 @@ public class Maze implements  IMaze
     {
         return cellArray;
     }
+=======
+    private String author;
+    public String mazeName;
+    private LocalDate dateCreated;
+    private int mazeSizeX;
+    private int mazeSizeY;
+   // private Difficulty difficulty;
+    private Logo adultLogo;
+>>>>>>> Stashed changes
 
     /**
      * gets maze start
