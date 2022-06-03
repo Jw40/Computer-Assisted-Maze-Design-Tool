@@ -2,12 +2,7 @@ package View;
 
 import Controller.*;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -47,8 +42,7 @@ public class GUI extends Component {
     /**
      * Constructor, builds GUI
      */
-    public GUI()
-    {
+    public GUI() throws AWTException {
         saved = true;
         directory = null;
         solver = null;
@@ -145,6 +139,9 @@ public class GUI extends Component {
         JButton SaveToDatabaseButton = new JButton("Save to Database");
         SaveToDatabaseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         SaveToDatabaseButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        JButton SaveImage = new JButton("Save Maze as image");
+        SaveImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        SaveImage.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
@@ -211,6 +208,8 @@ public class GUI extends Component {
         runPanel.add(CreatedText);
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(SaveToDatabaseButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(SaveImage);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -230,11 +229,7 @@ public class GUI extends Component {
 
 
 
-        SaveToDatabaseButton.addActionListener(e -> {
-                    maze = new Maze(mazePanel.getMaze().getRows(),
-                            mazePanel.getMaze().getColumns(), AuthorField.getText(), MazeName.getText(), LocalDate.now());
-                    System.out.println(maze.ToString());
-                });
+
 
         //
         // Generate, Solve and Reset Buttons ACTION LISTENERS
@@ -265,6 +260,35 @@ public class GUI extends Component {
                 runThread.start();
         });
 
+        SaveImage.addActionListener(e -> {
+
+                Point p = mainPanel.getLocationOnScreen();
+                Dimension dim = mainPanel.getSize();
+                Rectangle rect = new Rectangle(p, dim);
+            Robot robot = null;
+            try {
+                robot = new Robot();
+            } catch (AWTException ex) {
+                throw new RuntimeException(ex);
+            }
+            BufferedImage image = robot.createScreenCapture(rect);
+
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                    fileChooser.setDialogTitle("Choose a location to save maze");
+                    int result = fileChooser.showSaveDialog(this);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File fileToSave = fileChooser.getSelectedFile();
+                        try {
+                            ImageIO.write(image, "jpg", new File(fileToSave.getAbsolutePath() + ".jpg"));
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                    }
+
+
+                });
 
         solveButton.addActionListener(e -> {
             if (canSolve()){
@@ -338,6 +362,12 @@ public class GUI extends Component {
             statusLabel.setText("Status: Not Started");
             mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
+        });
+
+        SaveToDatabaseButton.addActionListener(e -> {
+            maze = new Maze(mazePanel.getMaze().getRows(),
+                    mazePanel.getMaze().getColumns(), AuthorField.getText(), MazeName.getText(), LocalDate.now());
+            System.out.println(maze.ToString());
         });
         // END
 
