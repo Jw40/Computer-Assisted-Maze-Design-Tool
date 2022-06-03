@@ -135,8 +135,15 @@ public class GUI extends Component {
         clearButton.setEnabled(false);
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextField textField = new JTextField("Author Name: ", 1);
-
+        JTextField AuthorField = new JTextField("", 1);
+        JLabel AuthorLabel = new JLabel("Author Name:");
+        JTextField MazeName = new JTextField("", 1);
+        JLabel MazeLabel = new JLabel("Maze Name:");
+        JTextField CreatedText = new JTextField("", 1);
+        JLabel CreatedLabel = new JLabel("Created on:");
+        JButton SaveToDatabaseButton = new JButton("Save to Database");
+        SaveToDatabaseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        SaveToDatabaseButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
         JCheckBox random = new JCheckBox("Classic Maze");
@@ -186,14 +193,22 @@ public class GUI extends Component {
         runPanel.add(generateNewMazeButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(clearButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(textField);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(solveButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(resetButton);
-
+        runPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        runPanel.add(AuthorLabel);
+        runPanel.add(AuthorField);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(MazeLabel);
+        runPanel.add(MazeName);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(CreatedLabel);
+        runPanel.add(CreatedText);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(SaveToDatabaseButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
