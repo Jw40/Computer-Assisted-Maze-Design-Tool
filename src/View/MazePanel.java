@@ -279,11 +279,13 @@ public class MazePanel extends JPanel{
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
                 aMaze.getLogo().y< aMaze.getColumns()){
             g2D.setColor(Color.ORANGE);//draw logo
+
 //            System.out.println(aMaze.getLogo().x);
 //            System.out.println(cellHeight);
 //            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x * cellWidth, aMaze.getLogo().y * cellHeight,cellWidth, cellHeight, Color.BLUE, null);
             ImageIcon img;
             img = new ImageIcon("/Icons/logo.png");
+
             g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x]
                     [aMaze.getLogo().y].getCell());
         }
