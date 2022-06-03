@@ -131,6 +131,31 @@ public class Maze implements  IMaze
         logo = null;
     }
 
+
+    public void KidMaze()
+    {
+        int rows = 10;
+        int columns = 14;
+
+        this.rows = rows;
+        this.columns = columns;
+        cellArray = new Cell[rows][columns];
+        for (int i = 0;i< rows;i++)
+        {
+            for (int j = 0;j< columns;j++)
+            {
+                cellArray[i][j] = new Cell();
+            }
+        }
+        start = null;
+        goal = null;
+        current = null;
+        solution = null;
+        logo = null;
+
+
+    }
+
     //Constructor 3
     /**
      * Builds a new maze from a text file
