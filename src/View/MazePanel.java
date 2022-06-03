@@ -288,7 +288,7 @@ public class MazePanel extends JPanel{
             g2D.setColor(Color.ORANGE);//draw logo
             System.out.println(aMaze.getLogo().x);
             System.out.println(cellHeight);
-            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x * cellWidth, aMaze.getLogo().y * cellHeight,cellWidth, cellHeight, Color.BLUE, null);
+            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x , aMaze.getLogo().y,cellWidth, cellHeight, Color.BLUE, null);
             g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x]
                     [aMaze.getLogo().y].getCell());
         }

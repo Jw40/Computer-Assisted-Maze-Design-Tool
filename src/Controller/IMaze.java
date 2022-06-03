@@ -126,4 +126,10 @@ public interface IMaze {
      * remove a column from a maze
      */
     void removeColumn();
+
+    void setLogo(int x, int y);
+
+    int getLogoY();
+
+    int getLogoX();
 }

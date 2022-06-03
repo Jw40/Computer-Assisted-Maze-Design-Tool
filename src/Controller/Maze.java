@@ -269,8 +269,8 @@ public class Maze implements  IMaze
      * @param x .
      * @param y .
      */
-    /*
-    public void setLogo(int x, int y)
+
+    public void setLogoXY(int x, int y)
     {
         if (logo != null){
             logo.x = x;
@@ -280,7 +280,14 @@ public class Maze implements  IMaze
             logo = new Point(x, y);
         }
     }
-     */
+    public int getLogoX()
+    {
+        return logo.x;
+    }
+    public int getLogoY()
+    {
+        return logo.y;
+    }
 
     /**
      * gets rows
@@ -381,6 +388,7 @@ public class Maze implements  IMaze
     /**
      * @param newStartPoint used to set the start variable for the maze
      */
+    @Override
     public void setStart(Point newStartPoint)
     {
         start = newStartPoint;
@@ -389,6 +397,7 @@ public class Maze implements  IMaze
     /**
      * @param newLogoPoint used to set the logo variable for the maze
      */
+    @Override
     public void setLogo(Point newLogoPoint)
     {
         logo = newLogoPoint;
@@ -397,6 +406,7 @@ public class Maze implements  IMaze
     /**
      * @param newGoalPoint used to set the goal variable for the maze
      */
+    @Override
     public void setGoal(Point newGoalPoint)
     {
         goal = newGoalPoint;
@@ -413,6 +423,7 @@ public class Maze implements  IMaze
     /**
      * @return used to get the current point in the maze
      */
+    @Override
     public Point getCurrent()
     {
         return current;
@@ -421,6 +432,7 @@ public class Maze implements  IMaze
     /**
      * @param current used to set the current point in the maze
      */
+    @Override
     public void setCurrent(Point current)
     {
         this.current = current;
@@ -431,6 +443,7 @@ public class Maze implements  IMaze
      * @param iStart .
      * @param jStart .
      */
+    @Override
     public void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart)
     {
         for (int i = 0; i< rows; i++)
@@ -480,6 +493,7 @@ public class Maze implements  IMaze
      * @param oldMaze last maze in gui
      *                adds new row
      */
+    @Override
     public void addRow(IMaze oldMaze)
     {
         rows++;
@@ -498,6 +512,7 @@ public class Maze implements  IMaze
      * @param oldMaze last maze in the gui
      *                adds new column
      */
+    @Override
     public void addColumn(IMaze oldMaze)
     {
         columns++;
@@ -515,6 +530,7 @@ public class Maze implements  IMaze
     /**
      * remove a row from the maze
      */
+    @Override
     public void removeRow()
     {
         Maze temp = new Maze(rows, columns);
@@ -544,6 +560,7 @@ public class Maze implements  IMaze
     /**
      * remove a column from a maze
      */
+    @Override
     public void removeColumn(){
         Maze temp = new Maze(rows, columns);
         temp.copyMazeObstacles(this, 0, 0);
@@ -566,4 +583,11 @@ public class Maze implements  IMaze
         }
         copyMazeObstacles(temp, 0, 0);
     }
+
+    @Override
+    public void setLogo(int x, int y) {
+
+    }
+
+
 }
