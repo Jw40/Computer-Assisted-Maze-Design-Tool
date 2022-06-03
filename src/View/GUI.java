@@ -134,16 +134,18 @@ public class GUI extends Component {
         clearButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         clearButton.setEnabled(false);
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         JTextField AuthorField = new JTextField("", 1);
         JLabel AuthorLabel = new JLabel("Author Name:");
         JTextField MazeName = new JTextField("", 1);
         JLabel MazeLabel = new JLabel("Maze Name:");
         JTextField CreatedText = new JTextField("", 1);
+        CreatedText.setEnabled(false);
+        CreatedText.setText(LocalDate.now().toString());
         JLabel CreatedLabel = new JLabel("Created on:");
         JButton SaveToDatabaseButton = new JButton("Save to Database");
         SaveToDatabaseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         SaveToDatabaseButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+
         //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
         JCheckBox random = new JCheckBox("Classic Maze");
@@ -228,10 +230,13 @@ public class GUI extends Component {
 
 
 
-
+        SaveToDatabaseButton.addActionListener(e -> {
+                    maze = new Maze(mazePanel.getMaze().getRows(),
+                            mazePanel.getMaze().getColumns(), AuthorField.getText(), MazeName.getText(), LocalDate.now());
+                    System.out.println(maze.ToString());
+                });
 
         // Generate, Solve and Reset Buttons ACTION LISTENERS
-
         generateNewMazeButton.addActionListener(e -> {
                 statusLabel.setText("Status: Generating...");
                 generatorMode = true;
