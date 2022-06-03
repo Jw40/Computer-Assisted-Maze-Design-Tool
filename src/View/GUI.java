@@ -29,7 +29,7 @@ public class GUI extends Component {
             "/Icons/goal.png")));
 
 
-    private JFrame mainFrame;//main window
+    private final JFrame mainFrame;//main window
     private MazePanel mazePanel;//displays maze
     private boolean saved;//maze saved
     private String directory;//save directory
@@ -67,7 +67,7 @@ public class GUI extends Component {
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         mainPanel.add(mazePanel);
 
-        //Menubar start
+        //Menu bar start
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
@@ -115,11 +115,14 @@ public class GUI extends Component {
 
         //Side panel buttons
         JButton generateNewMazeButton = new JButton("Generate New Maze");
+        JButton generateNewKidsButton = new JButton("Create Kids Maze");
         JButton solveButton = new JButton("Solve Maze");
         JButton resetButton = new JButton("Reset Solution Path");
         JButton clearButton = new JButton("Clear Maze");
         generateNewMazeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         generateNewMazeButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        generateNewKidsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateNewKidsButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         resetButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         resetButton.setEnabled(false);
         resetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -145,8 +148,7 @@ public class GUI extends Component {
 
         //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
-        JCheckBox random = new JCheckBox("Classic Maze");
-        randomPanel.add(random);
+
         randomPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
         JPanel commandPanel = new JPanel();
         commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
@@ -184,12 +186,13 @@ public class GUI extends Component {
         runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
         runPanel.add(randomPanel);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(generateNewMazeButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        runPanel.add(generateNewKidsButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(clearButton);
 
@@ -230,21 +233,26 @@ public class GUI extends Component {
 
 
 
+        generateNewKidsButton.addActionListener(e -> {
+            maze.KidMaze();
+            mazePanel.repaint();
+        });
 
         //
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
                 statusLabel.setText("Status: Generating...");
                 generatorMode = true;
-                random.setEnabled(true);
-                resetButton.setEnabled(true);
+                //random.setEnabled(true);
+                resetButton.setEnabled(false);
                 solveButton.setEnabled(true);
                 clearButton.setEnabled((true));
                 generateNewMazeButton.setEnabled(true);
                 mazePanel.blacken();
                 generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
-                            mazePanel.getMaze().getRows(), random.isSelected(),
+                            mazePanel.getMaze().getRows(), true,
                             mazePanel.getMaze());
+                //mazePanel.getMaze().setLogo(0,0);
                 mazePanel.repaint();
                 runThread = new Thread(() -> {
                     try {
@@ -265,7 +273,7 @@ public class GUI extends Component {
                 Point p = mainPanel.getLocationOnScreen();
                 Dimension dim = mainPanel.getSize();
                 Rectangle rect = new Rectangle(p, dim);
-            Robot robot = null;
+            Robot robot;
             try {
                 robot = new Robot();
             } catch (AWTException ex) {
@@ -293,7 +301,7 @@ public class GUI extends Component {
         solveButton.addActionListener(e -> {
             if (canSolve()){
                 statusLabel.setText("Status: Running...");
-                random.setEnabled(false);
+
                 resetButton.setEnabled(true);
                 solveButton.setEnabled(true);
                 clearButton.setEnabled((true));
@@ -339,7 +347,7 @@ public class GUI extends Component {
                 runThread.interrupt();
             }
             clearButton.setEnabled(true);
-            random.setEnabled(true);
+
             generateNewMazeButton.setEnabled(true);
             solveButton.setEnabled(true);
             resetButton.setEnabled(false);
@@ -354,7 +362,7 @@ public class GUI extends Component {
                 runThread.interrupt();
             }
             clearButton.setEnabled(true);
-            random.setEnabled(true);
+
             generateNewMazeButton.setEnabled(true);
             solveButton.setEnabled(true);
             resetButton.setEnabled(false);
@@ -394,6 +402,7 @@ public class GUI extends Component {
 
         goalLabel.setToolTipText("Goal");
         goalLabel.setText("G");
+        mazePanel.setText("G");
         goalLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
@@ -409,6 +418,7 @@ public class GUI extends Component {
 
         logoLabel.setToolTipText("Logo");
         logoLabel.setText("L");
+        mazePanel.setText("L");
         logoLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
@@ -616,14 +626,7 @@ public class GUI extends Component {
         gridBox.setSelected(mazePanel.getDrawGrid());
         gridBox.setVisible(false);
 
-        gridBox.addActionListener(e -> {
-            if (gridBox.isSelected()){
-                newMazePanel.setDrawGrid(true);
-            }
-            else{
-                newMazePanel.setDrawGrid(false);
-            }
-        });
+        gridBox.addActionListener(e -> newMazePanel.setDrawGrid(gridBox.isSelected()));
 
         keepOld.addActionListener(e -> {
             if (keepOld.isSelected()){
@@ -735,7 +738,6 @@ public class GUI extends Component {
 
     /**
      * Opens a maze from a text file
-     * @return true if the maze opens successfully, false otherwise
      */
     public void ImageImporter() {
         JFileChooser fileChooser = new JFileChooser();
@@ -792,7 +794,7 @@ public class GUI extends Component {
 
     /**
      * Sets up a solver for this maze
-     * @return  sover for this maze
+     * @return  solver for this maze
      */
     private MazeSolver setSolver()
     {
@@ -802,7 +804,7 @@ public class GUI extends Component {
     }
 
     /**
-     * Checks if this maze is solveable
+     * Checks if this maze is solvable
      * @return true if this maze can be solved, false otherwise
      */
     private boolean canSolve(){

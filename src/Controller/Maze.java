@@ -112,6 +112,7 @@ public class Maze implements  IMaze
      * @param rows number of rows in the maze
      * @param columns number of columns in the maze
      */
+
     public Maze(int rows, int columns)
     {
         this.rows = rows;
@@ -217,6 +218,7 @@ public class Maze implements  IMaze
     /**
      * @param path file path
      */
+    @Override
     public void saveMaze (String path)
     {
         try (PrintWriter printer = new PrintWriter(new FileWriter(path)))
@@ -259,6 +261,7 @@ public class Maze implements  IMaze
     /**
      * @return Maze details to string
      */
+    @Override
     public String ToString()
     {
         return "Maze Name: " + mazeName + " Author Name: " + authorName + " Creation Date: " + creationDate;
@@ -270,6 +273,7 @@ public class Maze implements  IMaze
      * @param y .
      */
 
+    @Override
     public void setLogoXY(int x, int y)
     {
         if (logo != null){
@@ -280,10 +284,12 @@ public class Maze implements  IMaze
             logo = new Point(x, y);
         }
     }
+    @Override
     public int getLogoX()
     {
         return logo.x;
     }
+    @Override
     public int getLogoY()
     {
         return logo.y;
@@ -293,6 +299,7 @@ public class Maze implements  IMaze
      * gets rows
      * @return rows
      */
+    @Override
     public int getRows()
     {
         return rows;
@@ -302,6 +309,7 @@ public class Maze implements  IMaze
      * gets columns
      * @return columns
      */
+    @Override
     public int getColumns()
     {
         return columns;
@@ -311,6 +319,7 @@ public class Maze implements  IMaze
      * get an array with all the maze's cells
      * @return 2d array
      */
+    @Override
     public Cell[][] getCellArray()
     {
         return cellArray;
@@ -320,6 +329,7 @@ public class Maze implements  IMaze
      * gets maze start
      * @return maze start
      */
+    @Override
     public Point getStart()
     {
         return start;
@@ -329,6 +339,7 @@ public class Maze implements  IMaze
      * gets maze goal
      * @return maze goal
      */
+    @Override
     public Point getGoal()
     {
         return goal;
@@ -337,6 +348,7 @@ public class Maze implements  IMaze
     /**
      * @return the logo
      */
+    @Override
     public Point getLogo()
     {
         return logo;
@@ -346,44 +358,11 @@ public class Maze implements  IMaze
      * sets current solution
      * @param solution new solution
      */
+    @Override
     public void setSolution(ArrayList<Cell> solution)
     {
         this.solution = solution;
     }
-
-    /**
-     * Sets all cells as obstacles
-     */
-    public void blackenThisMaze()
-    {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                cellArray[i][j].thisCellIsObstacle(true);
-            }
-        }
-        start = null;
-        goal = null;
-    }
-
-    /**
-     * Clears this maze
-     */
-    public void whitenThisMaze()
-    {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns ; j++)
-            {
-                cellArray[i][j].thisCellIsObstacle(false);
-            }
-        }
-        start = null;
-        goal = null;
-        logo = null;
-    }
-
 
     /**
      * @param newStartPoint used to set the start variable for the maze
@@ -415,6 +394,7 @@ public class Maze implements  IMaze
     /**
      * @return used to get the solution array for this maze
      */
+    @Override
     public ArrayList<Cell> getSolution()
     {
         return solution;
@@ -437,6 +417,42 @@ public class Maze implements  IMaze
     {
         this.current = current;
     }
+
+    /**
+     * Sets all cells as obstacles
+     */
+    @Override
+    public void blackenThisMaze()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                cellArray[i][j].thisCellIsObstacle(true);
+            }
+        }
+        start = null;
+        goal = null;
+    }
+
+    /**
+     * Clears this maze
+     */
+    @Override
+    public void whitenThisMaze()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns ; j++)
+            {
+                cellArray[i][j].thisCellIsObstacle(false);
+            }
+        }
+        start = null;
+        goal = null;
+        logo = null;
+    }
+
 
     /**
      * @param otherMaze .
