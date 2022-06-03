@@ -39,10 +39,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
 /**Displays a maze as a colored grid
@@ -68,6 +66,8 @@ public class MazePanel extends JPanel{
     private Point movementStartingPoint;//from which point movement occured
     private IMaze originalMaze;//old linked maze
     private final Point originalMazeStart;//where the old maze is placed in relation to the current one
+    private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+            "/Icons/logo.png")));
 
 
     /**
@@ -285,7 +285,10 @@ public class MazePanel extends JPanel{
         if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0 &&
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
                 aMaze.getLogo().y< aMaze.getColumns()){
-            g2D.setColor(Color.PINK);//draw logo
+            g2D.setColor(Color.ORANGE);//draw logo
+            System.out.println(aMaze.getLogo().x);
+            System.out.println(cellHeight);
+            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x * cellWidth, aMaze.getLogo().y * cellHeight,cellWidth, cellHeight, Color.BLUE, null);
             g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x]
                     [aMaze.getLogo().y].getCell());
         }
@@ -444,14 +447,6 @@ public class MazePanel extends JPanel{
         }
     }
 
-    /**
-     * Settter of drawArrows variable
-     * @param arrows new value
-     */
-    public void setDrawArros(boolean arrows){
-        this.drawArrows = arrows;
-        repaint();
-    }
 
     /**
      * Setter of editable variable
