@@ -29,14 +29,7 @@ import Controller.IMaze;
 import Controller.Maze;
 import Controller.Cell;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -286,9 +279,13 @@ public class MazePanel extends JPanel{
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
                 aMaze.getLogo().y< aMaze.getColumns()){
             g2D.setColor(Color.ORANGE);//draw logo
-            System.out.println(aMaze.getLogo().x);
-            System.out.println(cellHeight);
-            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x , aMaze.getLogo().y,cellWidth, cellHeight, Color.BLUE, null);
+
+//            System.out.println(aMaze.getLogo().x);
+//            System.out.println(cellHeight);
+//            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x * cellWidth, aMaze.getLogo().y * cellHeight,cellWidth, cellHeight, Color.BLUE, null);
+            ImageIcon img;
+            img = new ImageIcon("/Icons/logo.png");
+
             g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x]
                     [aMaze.getLogo().y].getCell());
         }
