@@ -95,6 +95,7 @@ public final class MazeGenerator {
         start_y = rand(height-1);
         x = start_x;
         y = start_y;
+
         addFront(start_x, start_y);
     }
 

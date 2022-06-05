@@ -29,14 +29,7 @@ import Controller.IMaze;
 import Controller.Maze;
 import Controller.Cell;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -274,6 +267,8 @@ public class MazePanel extends JPanel{
             g2D.setColor(Color.YELLOW);//draw start
             g2D.fill(aMaze.getCellArray()[aMaze.getStart().x]
                     [aMaze.getStart().y].getCell());
+            System.out.println(aMaze.getStart().x);
+            System.out.println(aMaze.getStart().y);
         }
         if (aMaze.getGoal() != null && aMaze.getGoal().x>= 0 &&
                 aMaze.getGoal().y>=0 && aMaze.getGoal().x<aMaze.getRows() &&
@@ -282,16 +277,27 @@ public class MazePanel extends JPanel{
             g2D.fill(aMaze.getCellArray()[aMaze.getGoal().x]
                     [aMaze.getGoal().y].getCell());
         }
-        if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0 &&
+        if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0  &&
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
                 aMaze.getLogo().y< aMaze.getColumns()){
             g2D.setColor(Color.ORANGE);//draw logo
+
             System.out.println(aMaze.getLogo().x);
-            System.out.println(cellHeight);
-            g2D.drawImage(logoIcon.getImage(), aMaze.getLogo().x * cellWidth, aMaze.getLogo().y * cellHeight,cellWidth, cellHeight, Color.BLUE, null);
-            g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x]
-                    [aMaze.getLogo().y].getCell());
+            System.out.println(aMaze.getLogo().y);
+            Rectangle a = aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
+
+            //int x = (int) aMaze.getLogo().getX()  + cellHeight + cellWidth;
+            //int y = (int) aMaze.getLogo().getY() + cellHeight + cellWidth;
+            //Point pointer = this.getMousePosition();
+            g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
+                    ,cellWidth, cellHeight, Color.BLUE, this);
+            ImageIcon img;
+            img = new ImageIcon("/Icons/logo.png");
+
+            //g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell());
+
         }
+
 
         if (previewStart && selection != null && !selection.equals(aMaze.getGoal())){
             Color previewYellow = new Color(Color.YELLOW.getRed(),
@@ -532,6 +538,7 @@ public class MazePanel extends JPanel{
      *
      * @param selection string reperesenting user selection (start or goal)
      */
+
     public void setText(String selection){
         Point pointerSelection = calculatePointerSelection();
 
@@ -554,6 +561,7 @@ public class MazePanel extends JPanel{
                         thisCellIsObstacle(false);
             }
         }
+
         else if (editable){
             if (selection.equals("S")){
                 aMaze.setStart(null);
@@ -570,6 +578,7 @@ public class MazePanel extends JPanel{
 
 
     }
+
 
     /**
      * dummy, required for drag n drop operations

@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public interface IMaze {
+    void KidMaze();
+
     /**
      * Saves this maze to a text file
      * @param path file path
@@ -126,4 +128,12 @@ public interface IMaze {
      * remove a column from a maze
      */
     void removeColumn();
+
+    void setLogo(int x, int y);
+
+    int getLogoY();
+
+    void setLogoXY(int x, int y);
+
+    int getLogoX();
 }
