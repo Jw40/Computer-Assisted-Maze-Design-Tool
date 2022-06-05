@@ -64,3 +64,12 @@ Notes:
 - Added Jdocs for new implementation 
 - Removed redundant methods from Controller 
 - Removed redundant methods from View
+
+Version 2.2
+Notes:
+6/06/2022
+- Add Kids Maze
+- Add logo
+- Enable Logo importing
+- Enable Start,Goal and Logo points to be set when generating a maze
+
