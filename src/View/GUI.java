@@ -289,15 +289,10 @@ public class GUI extends Component {
             int y = maze.getColumns();
 
             mazePanel.drawLogo();
-            if (x != y) {
+
                 maze.setGoal(x - 2, y - 2);
                 maze.setStart(1, 1);
-            }
-            else
-            {
-                maze.setGoal(x-2, y-2);
-                maze.setStart(1, 1);
-            }
+
                 mazePanel.repaint();
                 runThread = new Thread(() -> {
                     try {
