@@ -61,6 +61,7 @@ public class Maze implements  IMaze
     public String mazeName;//name of the maze
     public LocalDate creationDate;//creation date of the maze
     public LocalDate editDate;//last edit date
+    public boolean iskidsmaze = false;
 
     //Constructor 1
     /**
@@ -129,7 +130,28 @@ public class Maze implements  IMaze
         goal = null;
         current = null;
         solution = null;
-        logo = null;
+        //Point startPoint = new Point(cellArray[15][15].x, cellArray[15][15].y);
+        //setGoal(cellArray.length-2,cellArray.length-2);
+        //Point endPoint = new Point(cellArray[0][0].x, cellArray[0][0].y);
+        //setStart(1,1);
+        //logo = null;
+    }
+
+    @Override
+    public boolean isKidsMaze()
+    {
+        return iskidsmaze;
+    }
+
+
+    @Override
+    public void setStart(int x, int y) {
+        start = new Point(x,y);
+    }
+
+    @Override
+    public void setGoal(int x, int y) {
+        goal = new Point(x,y);
     }
 
 
@@ -153,6 +175,7 @@ public class Maze implements  IMaze
         current = null;
         solution = null;
         logo = null;
+        iskidsmaze = true;
 
 
     }
@@ -315,7 +338,7 @@ public class Maze implements  IMaze
         return columns;
     }
 
-<<<<<<< Updated upstream
+
     /**
      * get an array with all the maze's cells
      * @return 2d array
@@ -325,15 +348,7 @@ public class Maze implements  IMaze
     {
         return cellArray;
     }
-=======
-    private String author;
-    public String mazeName;
-    private LocalDate dateCreated;
-    private int mazeSizeX;
-    private int mazeSizeY;
-   // private Difficulty difficulty;
-    private Logo adultLogo;
->>>>>>> Stashed changes
+
 
     /**
      * gets maze start
@@ -373,6 +388,8 @@ public class Maze implements  IMaze
     {
         this.solution = solution;
     }
+
+
 
     /**
      * @param newStartPoint used to set the start variable for the maze
@@ -428,6 +445,16 @@ public class Maze implements  IMaze
         this.current = current;
     }
 
+    /**
+     * Sets a cell a as obstacles
+     */
+    @Override
+    public void blackenThisCell(int x, int y)
+    {
+
+                cellArray[x][y].thisCellIsObstacle(true);
+
+    }
     /**
      * Sets all cells as obstacles
      */

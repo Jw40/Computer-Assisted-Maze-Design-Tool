@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Maze;
 import Controller.Maze.*;
 
 public class DBDataSource {
@@ -8,6 +9,8 @@ public class DBDataSource {
      */
 
     // DBStrategy File or TradingDataSource
-    void mazeName(Maze mazeName);
+    void mazeName(Maze mazeName) {
+
+    }
 
 }

@@ -80,7 +80,11 @@ public class Cell implements Comparable<Cell> {
     {
         this.IsObstacle = isObstacle;
     }
+    public void blackenThisCell(Rectangle a)
+    {
+         thisCellIsObstacle(true);
 
+    }
     /**
      * @param cell the cell to be placed in the maze
      *        updates the this.cell variable

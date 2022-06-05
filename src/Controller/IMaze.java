@@ -4,6 +4,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public interface IMaze {
+    void setStart(int x, int y);
+
+    void setGoal(int x, int y);
+
     void KidMaze();
 
     /**
@@ -57,6 +61,10 @@ public interface IMaze {
      * @param solution new solution
      */
     void setSolution(ArrayList<Cell> solution);
+
+
+
+    void blackenThisCell(int x, int y);
 
     /**
      * Sets all cells as obstacles
@@ -136,4 +144,6 @@ public interface IMaze {
     void setLogoXY(int x, int y);
 
     int getLogoX();
+
+    boolean isKidsMaze();
 }

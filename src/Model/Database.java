@@ -54,11 +54,11 @@ public class Database {
      */
     private static final String CREATE_MAZE_PREFS =
             "CREATE TABLE IF NOT EXISTS maze_Prefs ("
-<<<<<<< Updated upstream
+
                     + "idx INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE"
-                    + "asdfasdf";
-}
-=======
+                    + "asdfasdf"
+
+
                 + "idx INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE";
 
 
@@ -75,9 +75,11 @@ public class Database {
     public Database() {
         try {
             // Creating tables
-            Statement statement = connection.createStatement();
-            statement.execute
+            //Statement statement = connection.createStatement();
+            //statement.execute
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
->>>>>>> Stashed changes
+
