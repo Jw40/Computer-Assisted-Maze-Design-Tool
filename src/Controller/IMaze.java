@@ -114,7 +114,6 @@ public interface IMaze {
      */
     void copyMazeObstacles(IMaze otherMaze, int iStart, int jStart);
 
-
     /**
      * @param oldMaze last maze in gui
      *                adds new row
@@ -137,13 +136,4 @@ public interface IMaze {
      */
     void removeColumn();
 
-    void setLogo(int x, int y);
-
-    int getLogoY();
-
-    void setLogoXY(int x, int y);
-
-    int getLogoX();
-
-    boolean isKidsMaze();
 }

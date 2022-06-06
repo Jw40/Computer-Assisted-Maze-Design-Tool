@@ -130,57 +130,9 @@ public class Maze implements  IMaze
         goal = null;
         current = null;
         solution = null;
-        //Point startPoint = new Point(cellArray[15][15].x, cellArray[15][15].y);
-        //setGoal(cellArray.length-2,cellArray.length-2);
-        //Point endPoint = new Point(cellArray[0][0].x, cellArray[0][0].y);
-        //setStart(1,1);
-        //logo = null;
     }
 
-    @Override
-    public boolean isKidsMaze()
-    {
-        return iskidsmaze;
-    }
-
-
-    @Override
-    public void setStart(int x, int y) {
-        start = new Point(x,y);
-    }
-
-    @Override
-    public void setGoal(int x, int y) {
-        goal = new Point(x,y);
-    }
-
-
-    public void KidMaze()
-    {
-        int rows = 10;
-        int columns = 14;
-
-        this.rows = rows;
-        this.columns = columns;
-        cellArray = new Cell[rows][columns];
-        for (int i = 0;i< rows;i++)
-        {
-            for (int j = 0;j< columns;j++)
-            {
-                cellArray[i][j] = new Cell();
-            }
-        }
-        start = null;
-        goal = null;
-        current = null;
-        solution = null;
-        logo = null;
-        iskidsmaze = true;
-
-
-    }
-
-    //Constructor 3
+    //Constructor 4
     /**
      * Builds a new maze from a text file
      * @param path file path else throws IOException e
@@ -239,7 +191,56 @@ public class Maze implements  IMaze
     }
 
     /**
+     * create a kids maze
+     * less rows and more columns
+     */
+    public void KidMaze()
+    {
+        int rows = 10;
+        int columns = 14;
+
+        this.rows = rows;
+        this.columns = columns;
+        cellArray = new Cell[rows][columns];
+        for (int i = 0;i< rows;i++)
+        {
+            for (int j = 0;j< columns;j++)
+            {
+                cellArray[i][j] = new Cell();
+            }
+        }
+        start = null;
+        goal = null;
+        current = null;
+        solution = null;
+        logo = null;
+        iskidsmaze = true;
+    }
+
+
+    /**
+     * @param x x cord on maze
+     * @param y y cord on maze
+     *          set the start point for the maze with x,y
+     */
+    @Override
+    public void setStart(int x, int y) {
+        start = new Point(x,y);
+    }
+
+    /**
+     * @param x x cord on maze
+     * @param y y cord on maze
+     *          set the goal point for the maze with x,y
+     */
+    @Override
+    public void setGoal(int x, int y) {
+        goal = new Point(x,y);
+    }
+
+    /**
      * @param path file path
+     *             save the maze as a txt file
      */
     @Override
     public void saveMaze (String path)
@@ -288,34 +289,6 @@ public class Maze implements  IMaze
     public String ToString()
     {
         return "Maze Name: " + mazeName + " Author Name: " + authorName + " Creation Date: " + creationDate;
-    }
-
-
-    /** set the logo
-     * @param x .
-     * @param y .
-     */
-
-    @Override
-    public void setLogoXY(int x, int y)
-    {
-        if (logo != null){
-            logo.x = x;
-            logo.y = y;
-        }
-        else{
-            logo = new Point(x, y);
-        }
-    }
-    @Override
-    public int getLogoX()
-    {
-        return logo.x;
-    }
-    @Override
-    public int getLogoY()
-    {
-        return logo.y;
     }
 
     /**
@@ -371,33 +344,29 @@ public class Maze implements  IMaze
     }
 
     /**
-     * @return the logo
-     */
-    @Override
-    public Point getLogo()
-    {
-        return logo;
-    }
-
-    /**
-     * sets current solution
-     * @param solution new solution
-     */
-    @Override
-    public void setSolution(ArrayList<Cell> solution)
-    {
-        this.solution = solution;
-    }
-
-
-
-    /**
      * @param newStartPoint used to set the start variable for the maze
      */
     @Override
     public void setStart(Point newStartPoint)
     {
         start = newStartPoint;
+    }
+
+    /**
+     * @param newGoalPoint used to set the goal variable for the maze
+     */
+    @Override
+    public void setGoal(Point newGoalPoint)
+    {
+        goal = newGoalPoint;
+    }
+    /**
+     * @return the logo
+     */
+    @Override
+    public Point getLogo()
+    {
+        return logo;
     }
 
     /**
@@ -410,13 +379,15 @@ public class Maze implements  IMaze
     }
 
     /**
-     * @param newGoalPoint used to set the goal variable for the maze
+     * sets current solution
+     * @param solution new solution
      */
     @Override
-    public void setGoal(Point newGoalPoint)
+    public void setSolution(ArrayList<Cell> solution)
     {
-        goal = newGoalPoint;
+        this.solution = solution;
     }
+
 
     /**
      * @return used to get the solution array for this maze
@@ -446,15 +417,14 @@ public class Maze implements  IMaze
     }
 
     /**
-     * Sets a cell a as obstacles
+     * Sets a single cell a as obstacles
      */
     @Override
     public void blackenThisCell(int x, int y)
     {
-
-                cellArray[x][y].thisCellIsObstacle(true);
-
+        cellArray[x][y].thisCellIsObstacle(true);
     }
+
     /**
      * Sets all cells as obstacles
      */
@@ -636,11 +606,4 @@ public class Maze implements  IMaze
         }
         copyMazeObstacles(temp, 0, 0);
     }
-
-    @Override
-    public void setLogo(int x, int y) {
-
-    }
-
-
 }
