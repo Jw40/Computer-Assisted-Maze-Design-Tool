@@ -97,6 +97,11 @@ public final class MazeGenerator {
         y = start_y;
 
         addFront(start_x, start_y);
+        int x = aMaze.getRows();
+        int y = aMaze.getColumns();
+        aMaze.setGoal(x-2, y-2);
+        aMaze.setStart(1, 1);
+
     }
 
     /**

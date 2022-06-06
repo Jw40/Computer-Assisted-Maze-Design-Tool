@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.Statement;
+
 /**
  *  implement pre defined sql commands and other database collection related stuff
  *
@@ -52,6 +54,32 @@ public class Database {
      */
     private static final String CREATE_MAZE_PREFS =
             "CREATE TABLE IF NOT EXISTS maze_Prefs ("
+
                     + "idx INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE"
-                    + "asdfasdf";
+                    + "asdfasdf"
+
+
+                + "idx INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE";
+
+
+
+
+
+
+
+
+    /**
+     * Constructor for Creating the SQL Tables
+     */
+
+    public Database() {
+        try {
+            // Creating tables
+            //Statement statement = connection.createStatement();
+            //statement.execute
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+

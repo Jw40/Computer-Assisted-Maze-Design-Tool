@@ -61,7 +61,7 @@ public class GUI extends Component {
         mainFrame.setLayout(new BorderLayout(15, 10));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //create a maze base 16,16
-        maze = new Maze(16, 16);
+        maze = new Maze(18, 18);
         mazePanel = new MazePanel(maze);
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -115,7 +115,8 @@ public class GUI extends Component {
 
         //Side panel buttons
         JButton generateNewMazeButton = new JButton("Generate New Maze");
-        JButton generateNewKidsButton = new JButton("Create Kids Maze");
+        JButton generateNewKidsButton = new JButton("Kids Maze Template");
+        JButton generateNewAdultButton = new JButton("Adult Maze Template");
         JButton solveButton = new JButton("Solve Maze");
         JButton resetButton = new JButton("Reset Solution Path");
         JButton clearButton = new JButton("Clear Maze");
@@ -123,19 +124,25 @@ public class GUI extends Component {
         generateNewMazeButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         generateNewKidsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         generateNewKidsButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        generateNewAdultButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateNewAdultButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         resetButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         resetButton.setEnabled(false);
         resetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         solveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         solveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         clearButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-        clearButton.setEnabled(false);
+        clearButton.setEnabled(true);
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         JTextField AuthorField = new JTextField("", 1);
+        AuthorField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+
         JLabel AuthorLabel = new JLabel("Author Name:");
         JTextField MazeName = new JTextField("", 1);
+        MazeName.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         JLabel MazeLabel = new JLabel("Maze Name:");
         JTextField CreatedText = new JTextField("", 1);
+        CreatedText.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
         CreatedText.setEnabled(false);
         CreatedText.setText(LocalDate.now().toString());
         JLabel CreatedLabel = new JLabel("Created on:");
@@ -192,17 +199,22 @@ public class GUI extends Component {
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(generateNewMazeButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        runPanel.add(generateNewKidsButton);
+        runPanel.add(generateNewAdultButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(generateNewKidsButton);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(clearButton);
 
-        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(solveButton);
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(resetButton);
-        runPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        runPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         runPanel.add(AuthorLabel);
+        runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        AuthorField.setSize(500,500);
         runPanel.add(AuthorField);
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         runPanel.add(MazeLabel);
         runPanel.add(MazeName);
@@ -233,14 +245,35 @@ public class GUI extends Component {
 
 
 
-        generateNewKidsButton.addActionListener(e -> {
-            maze.KidMaze();
+        generateNewAdultButton.addActionListener(e -> {
+            clearMaze();
+            mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
+            maze = new Maze(18, 18);
+            mazePanel.setMaze((maze));
+            clearButton.setEnabled((true));
+            //mazePanel.repaint();
+        });
+
+        generateNewKidsButton.addActionListener(e -> {
+            clearMaze();
+            mazePanel.getMaze().whitenThisMaze();
+            mazePanel.repaint();
+            maze.KidMaze();
+            mazePanel.setMaze((maze));
+            clearButton.setEnabled((true));
+            int x = maze.getRows();
+            int y = maze.getColumns();
+
+
+            //mazePanel.repaint();
         });
 
         //
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
+                maze = mazePanel.getMaze();
+
                 statusLabel.setText("Status: Generating...");
                 generatorMode = true;
                 //random.setEnabled(true);
@@ -252,10 +285,18 @@ public class GUI extends Component {
                 generator = new MazeGenerator(mazePanel.getMaze().getColumns(),
                             mazePanel.getMaze().getRows(), true,
                             mazePanel.getMaze());
-                //mazePanel.getMaze().setLogo(0,0);
+            int x = maze.getRows();
+            int y = maze.getColumns();
+
+            mazePanel.drawLogo();
+
+                maze.setGoal(x - 2, y - 2);
+                maze.setStart(1, 1);
+
                 mazePanel.repaint();
                 runThread = new Thread(() -> {
                     try {
+
                         while(generator.nextStep(0)){
                             mazePanel.repaint();
                         }
@@ -265,6 +306,8 @@ public class GUI extends Component {
                     statusLabel.setText("Status: Maze generated!");
                     mazePanel.repaint();
                 });
+            mazePanel.repaint();
+
                 runThread.start();
         });
 
@@ -305,6 +348,8 @@ public class GUI extends Component {
                 resetButton.setEnabled(true);
                 solveButton.setEnabled(true);
                 clearButton.setEnabled((true));
+                generateNewAdultButton.setEnabled((false));
+                generateNewKidsButton.setEnabled((false));
                 generateNewMazeButton.setEnabled(false);
                 if (solver == null){
                     solver = setSolver();
@@ -343,11 +388,13 @@ public class GUI extends Component {
 
         resetButton.addActionListener(e -> {
             mazePanel.setEditable(true);
+
             if (runThread != null){
                 runThread.interrupt();
             }
             clearButton.setEnabled(true);
-
+            generateNewAdultButton.setEnabled((true));
+            generateNewKidsButton.setEnabled((true));
             generateNewMazeButton.setEnabled(true);
             solveButton.setEnabled(true);
             resetButton.setEnabled(false);
@@ -358,6 +405,8 @@ public class GUI extends Component {
 
         clearButton.addActionListener(e -> {
             mazePanel.setEditable(true);
+            generateNewKidsButton.setEnabled(true);
+            generateNewAdultButton.setEnabled(true);
             if (runThread != null){
                 runThread.interrupt();
             }
@@ -757,12 +806,15 @@ public class GUI extends Component {
                 JPanel panel = new JPanel();
                 panel.setBounds(0, 0, 1000, 1400);
                 BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
-                JLabel pic = new JLabel(new ImageIcon(img));
-                panel.add(pic);
-                mazePanel.add(panel);
-                mainFrame.setSize(400, 400);
-                mainFrame.setLayout(null);
-                mainFrame.setVisible(true);
+                mazePanel.setTempTimage(img);
+                mazePanel.setImgPath(selectedFile.getAbsolutePath());
+                mazePanel.repaint();
+                //JLabel pic = new JLabel(new ImageIcon(img));
+                //panel.add(pic);
+                //mazePanel.add(panel);
+                //mainFrame.setSize(400, 400);
+                //mainFrame.setLayout(null);
+                //mainFrame.setVisible(true);
             } catch (IOException ignored) {}
         }
     }
