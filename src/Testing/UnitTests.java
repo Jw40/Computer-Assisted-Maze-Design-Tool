@@ -1,14 +1,18 @@
 package Testing;
 
 import Controller.*;
-
+import View.*
 public class UnitTests {
-    // Checks if the maze object has been created.
-        public Maze MazeCreated(Maze maze)
-        {
+    // Checks if the maze object has been saved.
 
-            return maze;
-        }
+    public void TestSaveAs(){
+    try {
+        saveAs();
+    }
+
+
+    }
+
 
 
 }

@@ -494,31 +494,38 @@ public class GUI extends Component {
     /**
      * Saves maze to a specific location
      */
-    private void saveAs (){
-        JFileChooser chooser =  new JFileChooser();
-        chooser.setDialogTitle("Save As");
-        chooser.setAcceptAllFileFilterUsed(false);
-        chooser.addChoosableFileFilter(new FileNameExtensionFilter("Text files (.txt)", "txt"));
-        int selection = chooser.showSaveDialog(mainFrame);
-        if (selection == JFileChooser.APPROVE_OPTION){
-            String filename = chooser.getSelectedFile().getPath();
-            if (chooser.getSelectedFile().exists()){
-                String[] options = {"Yes", "No"};
-                int n = JOptionPane.showOptionDialog(chooser, "This file already"
-                                + "exists. Overwrite?",
-                        "Confirm Overwrite", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE, null, options, options[1]);
-                if (n == 0){
-                    mazePanel.getMaze().saveMaze(filename);
-                    directory = filename;
+    private void saveAs () {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Save As");
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.addChoosableFileFilter(new FileNameExtensionFilter("Text files (.txt)", "txt"));
+            int selection = chooser.showSaveDialog(mainFrame);
+            if (selection == JFileChooser.APPROVE_OPTION) {
+                String filename = chooser.getSelectedFile().getPath();
+                if (chooser.getSelectedFile().exists()) {
+                    String[] options = {"Yes", "No"};
+                    int n = JOptionPane.showOptionDialog(chooser, "This file already"
+                                    + "exists. Overwrite?",
+                            "Confirm Overwrite", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+                    if (n == 0) {
+                        mazePanel.getMaze().saveMaze(filename);
+                        directory = filename;
+                        saved = true;
+                    }
+                } else {
+                    mazePanel.getMaze().saveMaze(filename + ".txt");
+                    directory = filename + ".txt";
                     saved = true;
                 }
             }
-            else{
-                mazePanel.getMaze().saveMaze(filename + ".txt");
-                directory = filename + ".txt";
-                saved = true;
-            }
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("Maze was not saved to specific directory");
+            System.out.println(e.getMessage());
         }
     }
 
