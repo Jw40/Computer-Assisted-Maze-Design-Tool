@@ -24,6 +24,17 @@ package View;
  * THE SOFTWARE.
  */
 
+/*
+    Disclaimer - This source code has been modified/referenced from
+                   the following project:
+
+                    Title of program: Laby
+                    Author(s): Chris Darisaplis, Chris Samarinas
+                    Date: 05/12/2015
+                    Code version: 1.2
+                    Type: Source Code
+                    Web address: https://github.com/algoprog/Laby
+ */
 
 import Controller.IMaze;
 import Controller.Maze;

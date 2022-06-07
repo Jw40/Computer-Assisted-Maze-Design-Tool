@@ -1,17 +1,12 @@
 package Testing;
 
 import Controller.*;
-import View.*
+import View.*;
 public class UnitTests {
     // Checks if the maze object has been saved.
 
-    public void TestSaveAs(){
-    try {
-        saveAs();
-    }
-
-
-    }
+    //we actaully need to put unit tests in here and keep them
+    //i wrote a few before but now they are gone
 
 
 

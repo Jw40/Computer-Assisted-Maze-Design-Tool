@@ -39,11 +39,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+/**
+ * Used to generate the maze grid using a cell array
+ * aMaze provides abstraction
+ */
 public final class MazeGenerator {
 
     private int x, y; // current position
     private int start_x, start_y; // start position
-    private int nstart_x, nstart_y; // start candidate position
     private int end_x, end_y; // end position
     private Cell[][] maze; // the maze boxes
     private final ArrayList<Cell> front;
@@ -237,7 +240,7 @@ public final class MazeGenerator {
     }
 
     /**
-     * Add MazeBox in x, y position to front set
+     * Add Cell in x, y position to front set
      * @param x MazeBox x coordinate
      * @param y MazeBox y coordinate
      */
@@ -252,7 +255,7 @@ public final class MazeGenerator {
         return 0;
     }
 
-    /**
+    /** could delete this if we dont want, no usages found
      * Gets generated maze
      * @return 2D array with maze (0: empty, 1: start, 2: end, 3: obstacle)
      */
