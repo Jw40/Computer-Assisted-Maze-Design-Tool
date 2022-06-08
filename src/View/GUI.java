@@ -853,12 +853,6 @@ public class GUI extends Component {
                     mazePanel.setTempTimage(img);
                     mazePanel.setImgPath(selectedFile.getAbsolutePath());
                     mazePanel.repaint();
-                    //JLabel pic = new JLabel(new ImageIcon(img));
-                    //panel.add(pic);
-                    //mazePanel.add(panel);
-                    //mainFrame.setSize(400, 400);
-                    //mainFrame.setLayout(null);
-                    //mainFrame.setVisible(true);
                 } catch (IOException ignored) {
                 }
             }

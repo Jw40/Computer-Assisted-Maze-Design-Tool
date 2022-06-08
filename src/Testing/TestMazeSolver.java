@@ -20,8 +20,11 @@ class TestMazeSolver extends MazeSolver {
 
     @BeforeEach
     void setUp() {
-        MazeSolver MazeSolver = new MazeSolver();
+
+
     }
+
+
 
     @AfterEach
     void tearDown() {
