@@ -40,6 +40,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Maze Solver used to find the path from the start to the goal
+ * uses a breathd first search
+ * returns the the GUI class to display to the screen
+ */
 public class MazeSolver {
 
     protected int x, y; // current position
@@ -77,7 +82,7 @@ public class MazeSolver {
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
                 maze[i][j] = new Cell();
-                maze[i][j].thisCellIsObstacle(mazeInput[i][j]==3);
+                maze[i][j].SetIsObstacle(mazeInput[i][j]==3);
                 maze[i][j].x = j;
                 maze[i][j].y = i;
                 if(mazeInput[i][j]==1){
@@ -94,6 +99,7 @@ public class MazeSolver {
 
     /**
      * BFS initialization
+     * initalize variables
      */
     public void MazeSolverBFSInit()
     {

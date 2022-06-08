@@ -24,6 +24,17 @@ package View;
  * THE SOFTWARE.
  */
 
+/*
+    Disclaimer - This source code has been modified/referenced from
+                   the following project:
+
+                    Title of program: Laby
+                    Author(s): Chris Darisaplis, Chris Samarinas
+                    Date: 05/12/2015
+                    Code version: 1.2
+                    Type: Source Code
+                    Web address: https://github.com/algoprog/Laby
+ */
 
 import Controller.IMaze;
 import Controller.Maze;
@@ -33,12 +44,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-/**Displays a maze as a colored grid
- * @author Christos Darisaplis
- * @version 1.2
+
+/**
+ * JPanel for the Maze to display on the main GUI frame
  */
 public class MazePanel extends JPanel{
     private Point selection;//mouse selection
@@ -48,7 +60,7 @@ public class MazePanel extends JPanel{
     private MouseAdapter mousePainter;//paints maze cells
     private MouseAdapter mouseSelector;//selects maze cells
 
-    private boolean drawArrows;//arrows on solution
+    private final boolean drawArrows;//arrows on solution
     private boolean editable;//can be edited
     private boolean drawgrid;//draw maze grid
     private String text;//used in drag n drop operations
@@ -59,9 +71,11 @@ public class MazePanel extends JPanel{
     private Point movementStartingPoint;//from which point movement occured
     private IMaze originalMaze;//old linked maze
     private final Point originalMazeStart;//where the old maze is placed in relation to the current one
-    private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
-            "/Icons/logo.png")));
-
+    public String imagePath = "/Icons/logo.png";
+    private ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+            imagePath)));
+    Graphics2D g2D;
+    BufferedImage tempImage;
 
     /**
      * Default constructor
@@ -88,7 +102,18 @@ public class MazePanel extends JPanel{
 
 
     }
+    public void setTempTimage( BufferedImage a)
+    {
+        tempImage = a;
+    }
 
+    /**
+     * @param path set the image path
+     */
+    public void setImgPath(String path)
+    {
+        imagePath = path;
+    }
     /**
      * Needs repaint
      */
@@ -116,7 +141,7 @@ public class MazePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);//initialize
-        Graphics2D g2D;
+
         g2D = (Graphics2D)g.create();
 
         int width, height;//calculate width and height along with offsets
@@ -175,13 +200,13 @@ public class MazePanel extends JPanel{
                     g2D.setColor(Color.BLACK);//draw obstacle
                     g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
-                /*
-                if (aMaze.getMazeLogic()[i][j].isVisited()){
-                    g2D.setColor(Color.RED);//draw visited
-                    g2D.fill(aMaze.getMazeLogic()[i][j].getCell());
+
+                if (aMaze.getCellArray()[i][j].isVisited()){ //REMOVE THIS TO REMOVE THE TILES TRAVERSED
+                    g2D.setColor(Color.pink);//draw visited
+                    g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
 
-                 */
+
 
             }
 
@@ -189,7 +214,7 @@ public class MazePanel extends JPanel{
 
 
 
-        g2D.setColor(Color.PINK);//draw solution so far
+        g2D.setColor(Color.red);//draw solution so far
         Cell previous = null;
         Cell aSolutionBox = null;
         if (aMaze.getSolution() != null){
@@ -280,17 +305,26 @@ public class MazePanel extends JPanel{
         if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0  &&
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
                 aMaze.getLogo().y< aMaze.getColumns()){
-            g2D.setColor(Color.ORANGE);//draw logo
+            g2D.setColor(Color.magenta);//draw logo
 
             System.out.println(aMaze.getLogo().x);
             System.out.println(aMaze.getLogo().y);
             Rectangle a = aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
 
+            aMaze.blackenThisCell(aMaze.getLogo().x, aMaze.getLogo().y);
+            aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
             //int x = (int) aMaze.getLogo().getX()  + cellHeight + cellWidth;
             //int y = (int) aMaze.getLogo().getY() + cellHeight + cellWidth;
             //Point pointer = this.getMousePosition();
-            g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
-                    ,cellWidth, cellHeight, Color.BLUE, this);
+            if(tempImage == null) {
+                g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
+                        , cellWidth, cellHeight, Color.white, this);
+            }
+            else if (tempImage != null)
+            {
+                g2D.drawImage(tempImage, (int) a.getX(), (int) a.getY()
+                        , cellWidth, cellHeight, Color.white, this);
+            }
             ImageIcon img;
             img = new ImageIcon("/Icons/logo.png");
 
@@ -336,13 +370,47 @@ public class MazePanel extends JPanel{
                     bottomRightCell.x + cellWidth, bottomLeftCell.x, upperLeftCell.x}, new int[]{upperLeftCell.y,
                     upperRightCell.y, bottomRightCell.y + cellHeight, bottomLeftCell.y + cellWidth, upperLeftCell.y}, 5);
         }
-
-
-
-
-
         g2D.dispose();
+    }
 
+    /**
+     * draw logo to screen when the user presses the generte new maze button
+     */
+    public void drawLogo()
+    {
+
+        int width, height;//calculate width and height along with offsets
+        width = getWidth();
+        height = getHeight();
+        int cellWidth, cellHeight;
+        cellWidth = width/aMaze.getColumns();
+        cellHeight = height/aMaze.getRows();
+        int x = aMaze.getRows();
+        int y = aMaze.getColumns();
+
+        Random rand = new Random();
+        int upperbound = 0;
+        if(x > y)
+        {
+            upperbound = y;
+        }
+        else if(y > x)
+        {
+            upperbound = x;
+        }
+        else
+        {
+            upperbound = x;
+        }
+
+        int int_random = rand.nextInt(2, upperbound-2);
+        int int_random2 = rand.nextInt(2, upperbound-2);
+
+        Point newPoint = new Point(int_random,int_random2);
+        aMaze.setLogo(newPoint);
+
+        g2D.drawImage(logoIcon.getImage(), int_random, int_random2
+                ,cellWidth, cellHeight, Color.BLUE, this);
     }
 
     /**
@@ -455,7 +523,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Setter of editable variable
+     * Set to true for variable is editable else false
      * @param editable new value
      */
     public void setEditable(boolean editable){
@@ -463,7 +531,7 @@ public class MazePanel extends JPanel{
     }
 
     /**
-     * Calculates on which maze cell the pointer hovers on, used on DnD operations
+     * Calculates on which maze cell the pointer hovers on
      * @return point indicating maze cell
      */
     private Point calculatePointerSelection(){
@@ -547,18 +615,21 @@ public class MazePanel extends JPanel{
                     !pointerSelection.equals(aMaze.getGoal()))){
                 aMaze.setStart(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(false);
+                        SetIsObstacle(false);
             }
+
             if (selection.equals("L") && (aMaze.getLogo() == null ||
                     !pointerSelection.equals(aMaze.getLogo()))){
                 aMaze.setLogo(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(true);
+                        SetIsObstacle(true);
             }
+
+
             else if (aMaze.getStart() == null || !pointerSelection.equals(aMaze.getStart())){
                 aMaze.setGoal(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(false);
+                        SetIsObstacle(false);
             }
         }
 
@@ -636,12 +707,12 @@ public class MazePanel extends JPanel{
                                 && !aMaze.getCellArray()[selection.x][selection.y].
                                 isObstacle()){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(true);
+                                    SetIsObstacle(true);
                         }
                         else if (aMaze.getCellArray()[selection.x][selection.y].
                                 isObstacle()){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(false);
+                                    SetIsObstacle(false);
                         }
                         else if (aMaze.getStart() != null && aMaze.getStart().
                                 equals(selection)){
@@ -654,7 +725,7 @@ public class MazePanel extends JPanel{
                     }
                     else if (SwingUtilities.isRightMouseButton(e)){
                         aMaze.getCellArray()[selection.x][selection.y].
-                                thisCellIsObstacle(false);
+                                SetIsObstacle(false);
                     }
                 }
                 repaint();
@@ -666,7 +737,7 @@ public class MazePanel extends JPanel{
                     if (SwingUtilities.isLeftMouseButton(e)){
                         if (!selection.equals(aMaze.getStart()) && !selection.equals(aMaze.getGoal())){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(true);
+                                    SetIsObstacle(true);
                         }
                         else if (selection.equals(aMaze.getStart())){
                             text = "S";
@@ -687,7 +758,7 @@ public class MazePanel extends JPanel{
                     }
                     else if (SwingUtilities.isRightMouseButton(e)){
                         aMaze.getCellArray()[selection.x][selection.y].
-                                thisCellIsObstacle(false);
+                                SetIsObstacle(false);
                     }
                 }
                 if (moveable && movementStartingPoint != null &&
@@ -732,14 +803,7 @@ public class MazePanel extends JPanel{
         };
     }
 
-    /**
-     * Ends any and all previews of DnD operations
-     */
-    public void endPreview(){
-        this.previewGoal = false;
-        this.previewStart = false;
-        this.previewLogo = false;
-    }
+
 
     /**
      * Setter of moveable variable
