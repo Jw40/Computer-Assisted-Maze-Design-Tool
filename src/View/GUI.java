@@ -111,7 +111,7 @@ public class GUI extends Component {
         JMenuItem openMaze = new JMenuItem("Open Maze...");
         JMenuItem saveMazeAs = new JMenuItem("Save As...");
         JMenuItem saveMaze = new JMenuItem("Save");
-        JMenuItem importImage = new JMenuItem("Import Image...");
+        JMenuItem importImage = new JMenuItem("Import Logo...");
         JMenuItem exit = new JMenuItem("Exit");
         JMenuItem clear = new JMenuItem("Clear Maze");
 

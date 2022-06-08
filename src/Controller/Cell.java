@@ -50,7 +50,7 @@ public class Cell implements Comparable<Cell> {
     public boolean isVisited;
     public boolean isAdded;
     public Cell previous;
-    private boolean IsObstacle;
+    protected boolean IsObstacle;
 
      /**
       * Set all variables of each cell to be false or null
@@ -76,15 +76,11 @@ public class Cell implements Comparable<Cell> {
      * if @param isObstacle is true, the cell is Obstacle
      * otherwise false and the cell is not an Obstacle
      */
-    public void thisCellIsObstacle(boolean isObstacle)
+    public void SetIsObstacle(boolean isObstacle)
     {
         this.IsObstacle = isObstacle;
     }
-    public void blackenThisCell(Rectangle a)
-    {
-         thisCellIsObstacle(true);
 
-    }
     /**
      * @param cell the cell to be placed in the maze
      *        updates the this.cell variable

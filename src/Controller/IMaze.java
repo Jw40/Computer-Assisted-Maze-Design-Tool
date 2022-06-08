@@ -4,10 +4,23 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public interface IMaze {
+    /**
+     * @param x x pos
+     * @param y y pos
+     *          set start variable
+     */
     void setStart(int x, int y);
 
+    /**
+     * @param x x pos
+     * @param y y pos
+     *          set goal variable
+     */
     void setGoal(int x, int y);
 
+    /**
+     * Create a kids maze with less less rows
+     */
     void KidMaze();
 
     /**

@@ -43,7 +43,7 @@ import java.util.Collections;
  * Used to generate the maze grid using a cell array
  * aMaze provides abstraction
  */
-public final class MazeGenerator {
+public class MazeGenerator {
 
     private int x, y; // current position
     private int start_x, start_y; // start position
@@ -198,16 +198,16 @@ public final class MazeGenerator {
             int wx, wy;
             wx = (maze[y][x].previous.x+x)/2; // wall x
             wy = (maze[y][x].previous.y+y)/2; // wall y
-            maze[wy][wx].thisCellIsObstacle(false);
+            maze[wy][wx].SetIsObstacle(false);
             // Code for GUI - make wx, wy white
-            aMaze.getCellArray()[wy][wx].thisCellIsObstacle(false);
+            aMaze.getCellArray()[wy][wx].SetIsObstacle(false);
         }
         this.x = x;
         this.y = y;
         maze[y][x].isVisited = true;
-        maze[y][x].thisCellIsObstacle(false);
+        maze[y][x].SetIsObstacle(false);
         step++;
-        aMaze.getCellArray()[y][x].thisCellIsObstacle(false);
+        aMaze.getCellArray()[y][x].SetIsObstacle(false);
         return true;
     }
 

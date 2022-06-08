@@ -165,21 +165,21 @@ public class Maze implements  IMaze
                         input = scanner.nextInt();
                         if (input == 0)
                         {
-                            cellArray[i][j].thisCellIsObstacle(false);
+                            cellArray[i][j].SetIsObstacle(false);
                         }
                         else if (input == 1)
                         {
-                            cellArray[i][j].thisCellIsObstacle(false);
+                            cellArray[i][j].SetIsObstacle(false);
                             start = new Point(i, j);
                         }
                         else if (input == 2)
                         {
-                            cellArray[i][j].thisCellIsObstacle(false);
+                            cellArray[i][j].SetIsObstacle(false);
                             goal = new Point(i, j);
                         }
                         else
                         {
-                            cellArray[i][j].thisCellIsObstacle(true);
+                            cellArray[i][j].SetIsObstacle(true);
                         }
                     }
                 }
@@ -422,7 +422,7 @@ public class Maze implements  IMaze
     @Override
     public void blackenThisCell(int x, int y)
     {
-        cellArray[x][y].thisCellIsObstacle(true);
+        cellArray[x][y].SetIsObstacle(true);
     }
 
     /**
@@ -435,7 +435,7 @@ public class Maze implements  IMaze
         {
             for (int j = 0; j < columns; j++)
             {
-                cellArray[i][j].thisCellIsObstacle(true);
+                cellArray[i][j].SetIsObstacle(true);
             }
         }
         start = null;
@@ -452,7 +452,7 @@ public class Maze implements  IMaze
         {
             for (int j = 0; j < columns ; j++)
             {
-                cellArray[i][j].thisCellIsObstacle(false);
+                cellArray[i][j].SetIsObstacle(false);
             }
         }
         start = null;
@@ -476,11 +476,11 @@ public class Maze implements  IMaze
                 if (i + iStart>= otherMaze.getRows() || j + jStart>= otherMaze.getColumns() ||
                         i + iStart<0 || j + jStart< 0)
                 {
-                    cellArray[i][j].thisCellIsObstacle(false);
+                    cellArray[i][j].SetIsObstacle(false);
                 }
                 else
                 {
-                    cellArray[i][j].thisCellIsObstacle(otherMaze.getCellArray()[i + iStart]
+                    cellArray[i][j].SetIsObstacle(otherMaze.getCellArray()[i + iStart]
                             [j + jStart].isObstacle());
                 }
             }

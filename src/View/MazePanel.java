@@ -48,9 +48,9 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
-/**Displays a maze as a colored grid
- * @author Christos Darisaplis
- * @version 1.2
+
+/**
+ * JPanel for the Maze to display on the main GUI frame
  */
 public class MazePanel extends JPanel{
     private Point selection;//mouse selection
@@ -106,9 +106,12 @@ public class MazePanel extends JPanel{
     {
         tempImage = a;
     }
+
+    /**
+     * @param path set the image path
+     */
     public void setImgPath(String path)
     {
-        imagePath = "";
         imagePath = path;
     }
     /**
@@ -197,13 +200,13 @@ public class MazePanel extends JPanel{
                     g2D.setColor(Color.BLACK);//draw obstacle
                     g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
-                /*
-                if (aMaze.getMazeLogic()[i][j].isVisited()){
-                    g2D.setColor(Color.RED);//draw visited
-                    g2D.fill(aMaze.getMazeLogic()[i][j].getCell());
+
+                if (aMaze.getCellArray()[i][j].isVisited()){ //REMOVE THIS TO REMOVE THE TILES TRAVERSED
+                    g2D.setColor(Color.pink);//draw visited
+                    g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
 
-                 */
+
 
             }
 
@@ -367,13 +370,7 @@ public class MazePanel extends JPanel{
                     bottomRightCell.x + cellWidth, bottomLeftCell.x, upperLeftCell.x}, new int[]{upperLeftCell.y,
                     upperRightCell.y, bottomRightCell.y + cellHeight, bottomLeftCell.y + cellWidth, upperLeftCell.y}, 5);
         }
-
-
-
-
-
         g2D.dispose();
-
     }
 
     /**
@@ -526,7 +523,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Setter of editable variable
+     * Set to true for variable is editable else false
      * @param editable new value
      */
     public void setEditable(boolean editable){
@@ -534,7 +531,7 @@ public class MazePanel extends JPanel{
     }
 
     /**
-     * Calculates on which maze cell the pointer hovers on, used on DnD operations
+     * Calculates on which maze cell the pointer hovers on
      * @return point indicating maze cell
      */
     private Point calculatePointerSelection(){
@@ -618,21 +615,21 @@ public class MazePanel extends JPanel{
                     !pointerSelection.equals(aMaze.getGoal()))){
                 aMaze.setStart(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(false);
+                        SetIsObstacle(false);
             }
 
             if (selection.equals("L") && (aMaze.getLogo() == null ||
                     !pointerSelection.equals(aMaze.getLogo()))){
                 aMaze.setLogo(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(true);
+                        SetIsObstacle(true);
             }
 
 
             else if (aMaze.getStart() == null || !pointerSelection.equals(aMaze.getStart())){
                 aMaze.setGoal(pointerSelection);
                 aMaze.getCellArray()[pointerSelection.x][pointerSelection.y].
-                        thisCellIsObstacle(false);
+                        SetIsObstacle(false);
             }
         }
 
@@ -710,12 +707,12 @@ public class MazePanel extends JPanel{
                                 && !aMaze.getCellArray()[selection.x][selection.y].
                                 isObstacle()){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(true);
+                                    SetIsObstacle(true);
                         }
                         else if (aMaze.getCellArray()[selection.x][selection.y].
                                 isObstacle()){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(false);
+                                    SetIsObstacle(false);
                         }
                         else if (aMaze.getStart() != null && aMaze.getStart().
                                 equals(selection)){
@@ -728,7 +725,7 @@ public class MazePanel extends JPanel{
                     }
                     else if (SwingUtilities.isRightMouseButton(e)){
                         aMaze.getCellArray()[selection.x][selection.y].
-                                thisCellIsObstacle(false);
+                                SetIsObstacle(false);
                     }
                 }
                 repaint();
@@ -740,7 +737,7 @@ public class MazePanel extends JPanel{
                     if (SwingUtilities.isLeftMouseButton(e)){
                         if (!selection.equals(aMaze.getStart()) && !selection.equals(aMaze.getGoal())){
                             aMaze.getCellArray()[selection.x][selection.y].
-                                    thisCellIsObstacle(true);
+                                    SetIsObstacle(true);
                         }
                         else if (selection.equals(aMaze.getStart())){
                             text = "S";
@@ -761,7 +758,7 @@ public class MazePanel extends JPanel{
                     }
                     else if (SwingUtilities.isRightMouseButton(e)){
                         aMaze.getCellArray()[selection.x][selection.y].
-                                thisCellIsObstacle(false);
+                                SetIsObstacle(false);
                     }
                 }
                 if (moveable && movementStartingPoint != null &&
@@ -806,14 +803,7 @@ public class MazePanel extends JPanel{
         };
     }
 
-    /**
-     * Ends any and all previews of DnD operations
-     */
-    public void endPreview(){
-        this.previewGoal = false;
-        this.previewStart = false;
-        this.previewLogo = false;
-    }
+
 
     /**
      * Setter of moveable variable
