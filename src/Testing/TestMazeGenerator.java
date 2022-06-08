@@ -4,6 +4,7 @@ import Controller.IMaze;
 import Controller.MazeGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class TestMazeGenerator extends MazeGenerator {
 
@@ -21,6 +22,12 @@ class TestMazeGenerator extends MazeGenerator {
 
     @BeforeEach
     void setUp() {
+    }
+
+    @Test
+    public void testMaze()
+    {
+
     }
 
     @AfterEach

@@ -60,7 +60,7 @@ public class MazePanel extends JPanel{
     private MouseAdapter mousePainter;//paints maze cells
     private MouseAdapter mouseSelector;//selects maze cells
 
-    private boolean drawArrows;//arrows on solution
+    private final boolean drawArrows;//arrows on solution
     private boolean editable;//can be edited
     private boolean drawgrid;//draw maze grid
     private String text;//used in drag n drop operations
