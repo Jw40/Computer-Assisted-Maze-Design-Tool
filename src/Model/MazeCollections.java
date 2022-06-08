@@ -30,7 +30,7 @@ public class MazeCollections {
         return;
 
     }
-
+x
     /**
      * Used to edit a maze
      * @param maze maze object

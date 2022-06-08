@@ -1,13 +1,19 @@
 package Model;
+// Can't resolve being able to use
 
-import Controller.Maze.*;
+import Controller.IMaze;
+import Controller.Maze;
 
-public class DBDataSource {
+public abstract class DBDataSource {
     /*
     Interface for DBStatements that controls access to the database and it's required statements
      */
 
     // DBStrategy File or TradingDataSource
-    void mazeName(Maze mazeName);
+    // Instantiating getting the mazeName
+    void getMazeName(Maze mazeName);
+
+
+
 
 }
