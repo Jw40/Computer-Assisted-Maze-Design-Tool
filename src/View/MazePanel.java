@@ -292,8 +292,6 @@ public class MazePanel extends JPanel{
             g2D.setColor(Color.YELLOW);//draw start
             g2D.fill(aMaze.getCellArray()[aMaze.getStart().x]
                     [aMaze.getStart().y].getCell());
-            System.out.println(aMaze.getStart().x);
-            System.out.println(aMaze.getStart().y);
         }
         if (aMaze.getGoal() != null && aMaze.getGoal().x>= 0 &&
                 aMaze.getGoal().y>=0 && aMaze.getGoal().x<aMaze.getRows() &&
@@ -307,15 +305,11 @@ public class MazePanel extends JPanel{
                 aMaze.getLogo().y< aMaze.getColumns()){
             g2D.setColor(Color.magenta);//draw logo
 
-            System.out.println(aMaze.getLogo().x);
-            System.out.println(aMaze.getLogo().y);
+
             Rectangle a = aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
 
             aMaze.blackenThisCell(aMaze.getLogo().x, aMaze.getLogo().y);
             aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
-            //int x = (int) aMaze.getLogo().getX()  + cellHeight + cellWidth;
-            //int y = (int) aMaze.getLogo().getY() + cellHeight + cellWidth;
-            //Point pointer = this.getMousePosition();
             if(tempImage == null) {
                 g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
@@ -373,6 +367,12 @@ public class MazePanel extends JPanel{
         g2D.dispose();
     }
 
+    /**
+     * Returns total number of cells present in a maze
+     */
+    public int TotalCells(){
+        return aMaze.getColumns() * aMaze.getRows();
+    }
     /**
      * draw logo to screen when the user presses the generte new maze button
      */

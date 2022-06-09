@@ -84,6 +84,8 @@ public interface IMaze {
      */
     void blackenThisMaze();
 
+    int countBlacken();
+
     /**
      * Clears this maze
      */
