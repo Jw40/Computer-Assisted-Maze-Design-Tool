@@ -7,12 +7,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ *
+ * This class represents the connection to the Maria Database
+ * Adapted from
+ */
 public class DBConnection {
 
-    /**
-     * This class represents the connection to the Maria Database
-     * Adapted from
-     */
+
     private static Connection instance = null;
 
     /**
