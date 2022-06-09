@@ -7,8 +7,6 @@ USE maze302project;
 
 DROP TABLE IF EXISTS maze302project.user;
 DROP TABLE IF EXISTS maze302project.user_prefs;
-
-
 -- Create tables.
 
 CREATE TABLE user (
@@ -21,7 +19,7 @@ CREATE TABLE user (
 
 CREATE TABLE IF NOT EXISTS user_prefs (
     maze_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-    mazeName VARCHAR(5),
+    mazeName VARCHAR(30),
     dateCreated DATE,
 
     FOREIGN KEY (maze_id) REFERENCES user(idx)
@@ -41,22 +39,9 @@ VALUES
 INSERT INTO user_prefs (mazeName, dateCreated)
 VALUES
   ('my Maze', '2000-12-2'),
-  ('maze2', '2022-02-22');
+  ('maze2', '2022-02-22').
+  ('sample maze', '2022-05-10');
 
+-- Test Queries
 
-
--- Add initial entries.
-
-INSERT INTO
-  user (username, password)
-VALUES
-  ('person', 'password'),
-  ('me', '123'),
-  ('dex', 'password');
-
-INSERT INTO
-  user_prefs (mazeName, dateCreated)
-VALUES
-  ('my Maze', 'DATE', 10000),
-  ('maze2', 'LOCALDATE', 10000);
-
+SELECT * FROM user_prefs;
