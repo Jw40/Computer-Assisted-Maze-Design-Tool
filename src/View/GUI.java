@@ -54,6 +54,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * main Gui class
+ * to display to the screen
+ */
 public class GUI extends Component {
 
 
@@ -66,7 +70,10 @@ public class GUI extends Component {
 
 
     private final JFrame mainFrame;//main window
-    private MazePanel mazePanel;//displays maze
+    /**
+     * displays maze
+     */
+    private MazePanel mazePanel;
     private boolean saved;//maze saved
     private String directory;//save directory
     private IMaze maze;//open maze, holds static maze data
@@ -78,7 +85,7 @@ public class GUI extends Component {
     /**
      * Constructor, builds GUI
      */
-    public GUI() throws AWTException {
+    public GUI() {
         saved = true;
         directory = null;
         solver = null;
@@ -96,6 +103,7 @@ public class GUI extends Component {
         mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout(15, 10));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         //create a maze base 16,16
         maze = new Maze(18, 18);
         mazePanel = new MazePanel(maze);
@@ -252,7 +260,7 @@ public class GUI extends Component {
 
         // Run Panel and Command Panel
         JPanel runPanel = new JPanel();
-        runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS));
+        runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS ));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -601,8 +609,8 @@ public class GUI extends Component {
                 mainFrame.dispose();
             }
         });
-        mainFrame.setMinimumSize(new Dimension(800, 650));
-        mainFrame.setPreferredSize(new Dimension(800, 650));
+        mainFrame.setMinimumSize(new Dimension(800, 800));
+        mainFrame.setPreferredSize(new Dimension(800, 800));
         mainFrame.pack();
         mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
                 screenSize.height/2 - (mainFrame.getHeight()/2));
