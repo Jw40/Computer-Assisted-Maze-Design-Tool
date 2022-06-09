@@ -48,7 +48,14 @@ import java.util.Collections;
 public class MazeSolver {
 
     protected int x, y; // current position
-    protected int end_x, end_y; // end position
+    /**
+     * end pos x
+     */
+    protected int end_x;
+    /**
+     * end pos y
+     */
+    protected int end_y; // end position
     protected Cell[][] maze; // the maze boxes
     protected int width, height; // maze dimensions
     protected int step; // solver step
@@ -64,7 +71,7 @@ public class MazeSolver {
     /**
      * Create maze from input
      * @param mazeInput 2D array with 0 and 1 for obstacles
-     * @param mazeData
+     * @param mazeData this maze data
      */
     public MazeSolver(int[][] mazeInput, IMaze mazeData)
     {
@@ -114,7 +121,7 @@ public class MazeSolver {
      * Perform the next step of search
      * @param speed in milliseconds
      * @return true if step performed
-     * @throws java.lang.InterruptedException
+     * @throws java.lang.InterruptedException a
      */
     public boolean nextStep(int speed) throws InterruptedException
     {

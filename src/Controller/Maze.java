@@ -76,6 +76,9 @@ public class Maze implements  IMaze
      * creation date of the maze
      */
     public LocalDate creationDate;
+    /**
+     * last edit date
+     */
     public LocalDate editDate;//last edit date
     /**
      * setting for kids maze or flase if adult maze

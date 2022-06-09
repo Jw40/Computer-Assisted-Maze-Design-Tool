@@ -71,6 +71,9 @@ public class MazePanel extends JPanel{
     private Point movementStartingPoint;//from which point movement occured
     private IMaze originalMaze;//old linked maze
     private final Point originalMazeStart;//where the old maze is placed in relation to the current one
+    /**
+     * path of temp logo icon
+     */
     public String imagePath = "/Icons/logo.png";
     private ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             imagePath)));
@@ -102,6 +105,11 @@ public class MazePanel extends JPanel{
 
 
     }
+
+    /**
+     * @param a the logo icon to be set
+     *          sets the logo icon over the temp logo icon
+     */
     public void setTempTimage( BufferedImage a)
     {
         tempImage = a;
@@ -367,8 +375,9 @@ public class MazePanel extends JPanel{
         g2D.dispose();
     }
 
+
     /**
-     * Returns total number of cells present in a maze
+     * @return total number of cells present in a maze
      */
     public int TotalCells(){
         return aMaze.getColumns() * aMaze.getRows();
@@ -602,7 +611,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Sets start & goal with drag n drop
+     * Sets start and goal with drag n drop
      *
      * @param selection string reperesenting user selection (start or goal)
      */
@@ -652,8 +661,8 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * dummy, required for drag n drop operations
-     * @return
+     *
+     * @return  dummy, required for drag n drop operations
      */
     public String getText(){
         return this.text;
