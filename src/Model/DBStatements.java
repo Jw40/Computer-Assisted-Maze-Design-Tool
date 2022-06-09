@@ -17,7 +17,7 @@ public class DBStatements extends DBDataSource {
     /**
      * A SQL Statement to find a user.
      */
-    private PreparedStatement insertUser;
+    private static PreparedStatement insertData;
 
     /**
      * A SQL Statement to get maze size
@@ -27,13 +27,13 @@ public class DBStatements extends DBDataSource {
     public DBStatements() {
         Connection connection = DBConnection.getInstance();
         try {
-
-            insertUser = connection.prepareStatement(DBQueries.INSERT_USER);
-
-
-
+            Statement statement = connection.createStatement();
+//            insertData = connection.prepareStatement(DBQueries.INSERT_DATA);
+            insertData = connection.prepareStatement(DBQueries.INSERT_DATA);
+//            connection.nativeSQL(INSERT_DATA);
         } catch (SQLException sqlex) {
         System.err.println("Access to the database was denied. Ensure MySQL server is running.");
     }
     }
 }
+

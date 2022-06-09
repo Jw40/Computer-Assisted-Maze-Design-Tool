@@ -12,8 +12,8 @@ public class DBQueries {
      * SQL Query to Insert a user into the database
      * Username and password along with an ID number that is given automatically
      */
-    public static final String INSERT_USER =
-            "INSERT INTO user (username, password) VALUES (?, ?);"; // IDX is auto incrementing
+    public static final String INSERT_DATA =
+            "INSERT INTO user_data (mazeData, authorName, mazeName, creationDate) VALUES (?, ?, ?, ?);"; // IDX is auto incrementing
 
     /*
      * SQL Query to Search a user in the database by their username
