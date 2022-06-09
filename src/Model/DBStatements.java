@@ -24,6 +24,9 @@ public class DBStatements extends DBDataSource {
      */
     private PreparedStatement mazeSize;
 
+    /**
+     * Constructor for DBStatement
+     */
     public DBStatements() {
         Connection connection = DBConnection.getInstance();
         try {

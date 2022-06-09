@@ -3,6 +3,9 @@ package Controller;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * To provide abstraction and inheritance for the maze class
+ */
 public interface IMaze {
     /**
      * @param x x pos
@@ -76,7 +79,12 @@ public interface IMaze {
     void setSolution(ArrayList<Cell> solution);
 
 
-
+    /**
+     * blacken this indivual cell of this maze, used for logo to blacken the cell underneath the logo
+     * @param x pos x
+     * @param y pos y
+     *
+     */
     void blackenThisCell(int x, int y);
 
     /**
@@ -84,6 +92,10 @@ public interface IMaze {
      */
     void blackenThisMaze();
 
+    /**
+     * count the black tiles on the maze for solution metrics
+     * @return the count of black tiles on the maze
+     */
     int countBlacken();
 
     /**

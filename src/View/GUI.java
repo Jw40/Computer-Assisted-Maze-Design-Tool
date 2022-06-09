@@ -54,6 +54,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * main Gui class
+ * to display to the screen
+ */
 public class GUI extends Component {
 
 
@@ -66,7 +70,10 @@ public class GUI extends Component {
 
 
     private final JFrame mainFrame;//main window
-    private MazePanel mazePanel;//displays maze
+    /**
+     * displays maze
+     */
+    private MazePanel mazePanel;
     private boolean saved;//maze saved
     private String directory;//save directory
     private IMaze maze;//open maze, holds static maze data
@@ -78,7 +85,7 @@ public class GUI extends Component {
     /**
      * Constructor, builds GUI
      */
-    public GUI() throws AWTException {
+    public GUI() {
         saved = true;
         directory = null;
         solver = null;

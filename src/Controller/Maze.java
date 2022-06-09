@@ -45,6 +45,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contructors
+ * the author name and maze name and the creation date are stored in this object
+ */
 public class Maze implements  IMaze
 {
 
@@ -53,12 +57,21 @@ public class Maze implements  IMaze
     private Cell[][] cellArray;//maze data
 
     private Point start;//starting point
+    /**
+     * goal point
+     */
     private Point goal;//goal point
     private Point current;//current point
     private ArrayList<Cell> solution;//current solution
     private Point logo;//logo point
-    public String authorName;//author of the maze
-    public String mazeName;//name of the maze
+    /**
+     * author of the maze
+     */
+    public String authorName;
+    /**
+     * name of the maze
+     */
+    public String mazeName;
     public LocalDate creationDate;//creation date of the maze
     public LocalDate editDate;//last edit date
     public boolean iskidsmaze = false;
@@ -80,11 +93,17 @@ public class Maze implements  IMaze
     }
 
     //Constructor 2
+
     /**
-     * Builds a new empty maze of specific dimensions
-     * @param rows number of rows in the maze
-     * @param columns number of columns in the maze
-     *                add maze with author name
+     *      * Builds a new empty maze of specific dimensions
+     *      * @param rows number of rows in the maze
+     *      * @param columns number of columns in the maze
+     *      *                add maze with author name
+     * @param rows x
+     * @param columns y
+     * @param authorName name of author
+     * @param mazeName name of maze
+     * @param creationDate creationg date of maze
      */
     public Maze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
     {

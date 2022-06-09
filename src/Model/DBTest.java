@@ -4,7 +4,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Test database
+ */
 public class DBTest {
+    /**
+     * @param args test
+     */
     public static void main(String[] args) {
         // Start connection to the MariaDB
         Connection connection = DBConnection.getInstance();
