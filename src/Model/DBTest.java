@@ -19,5 +19,8 @@ public class DBTest {
         } catch (SQLException sqlex) {
             System.err.println("Access to the database was denied. Ensure MySQL server is running.");
         }
+
+        DBStatements statements = new DBStatements();
+        statements.run();
     }
 }
