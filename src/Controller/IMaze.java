@@ -163,4 +163,9 @@ public interface IMaze {
      */
     void removeColumn();
 
+    /**
+     * @return return true if this is a kids maze
+     */
+    boolean getIsKidsMaze();
+
 }

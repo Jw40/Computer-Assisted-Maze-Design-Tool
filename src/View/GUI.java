@@ -328,6 +328,7 @@ public class GUI extends Component {
             mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
             maze.KidMaze();
+            System.out.println(maze.getIsKidsMaze());
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));
             int x = maze.getRows();
@@ -341,7 +342,7 @@ public class GUI extends Component {
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
                 maze = mazePanel.getMaze();
-
+                System.out.println(maze.getIsKidsMaze());
                 statusLabel.setText("Status: Generating...");
                 generatorMode = true;
                 //random.setEnabled(true);
@@ -910,6 +911,39 @@ public class GUI extends Component {
         }
     }
 
+    /**
+     * Opens a maze from a text file
+     */
+    public void KidsIconImporter() {
+
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                try {
+                    JPanel panel = new JPanel();
+                    panel.setBounds(0, 0, 1000, 1400);
+                    BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
+                    mazePanel.setTempTimage(img);
+                    mazePanel.setImgPath(selectedFile.getAbsolutePath());
+                    mazePanel.repaint();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("Issues occured when importing an image");
+
+            System.out.println(e.getMessage());
+
+
+        }
+    }
 
     private boolean openMaze(){
         boolean flag = false;

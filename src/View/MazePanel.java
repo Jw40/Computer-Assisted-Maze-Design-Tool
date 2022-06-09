@@ -79,6 +79,7 @@ public class MazePanel extends JPanel{
             imagePath)));
     Graphics2D g2D;
     BufferedImage tempImage;
+    BufferedImage KidsIcon;
 
     /**
      * Default constructor
@@ -115,6 +116,7 @@ public class MazePanel extends JPanel{
         tempImage = a;
     }
 
+    public void setKidsIcon(BufferedImage a){KidsIcon = a;}
     /**
      * @param path set the image path
      */
@@ -305,8 +307,18 @@ public class MazePanel extends JPanel{
                 aMaze.getGoal().y>=0 && aMaze.getGoal().x<aMaze.getRows() &&
                 aMaze.getGoal().y< aMaze.getColumns()){
             g2D.setColor(Color.BLUE);//draw goal
-            g2D.fill(aMaze.getCellArray()[aMaze.getGoal().x]
-                    [aMaze.getGoal().y].getCell());
+            System.out.println((aMaze.getIsKidsMaze()));
+            if(aMaze.getIsKidsMaze() == false) {
+                g2D.fill(aMaze.getCellArray()[aMaze.getGoal().x]
+                        [aMaze.getGoal().y].getCell());
+            }else
+            {
+                BufferedImage img;
+                img = new BufferedImage(cellWidth,cellHeight,1 );
+                Rectangle a = aMaze.getCellArray()[aMaze.getGoal().x][aMaze.getGoal().y].getCell();
+                g2D.drawImage(img, (int) a.getX(), (int) a.getY()
+                        , cellWidth, cellHeight, Color.white, this);
+            }
         }
         if (aMaze.getLogo() != null && aMaze.getLogo().x>= 0  &&
                 aMaze.getLogo().y>=0 && aMaze.getLogo().x<aMaze.getRows() &&
@@ -327,8 +339,8 @@ public class MazePanel extends JPanel{
                 g2D.drawImage(tempImage, (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
-            ImageIcon img;
-            img = new ImageIcon("/Icons/logo.png");
+
+
 
             //g2D.fill(aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell());
 

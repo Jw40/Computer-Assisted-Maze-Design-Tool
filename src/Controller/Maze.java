@@ -83,7 +83,7 @@ public class Maze implements  IMaze
     /**
      * setting for kids maze or flase if adult maze
      */
-    public boolean iskidsmaze = false;
+    protected boolean iskidsmaze = false;
 
     //Constructor 1
     /**
@@ -99,6 +99,7 @@ public class Maze implements  IMaze
         logo = null;
         current = null;
         solution = null;
+        iskidsmaze = false;
     }
 
     //Constructor 2
@@ -134,6 +135,7 @@ public class Maze implements  IMaze
         current = null;
         solution = null;
         logo = null;
+        iskidsmaze = false;
     }
     //Constructor 3
     /**
@@ -158,6 +160,16 @@ public class Maze implements  IMaze
         goal = null;
         current = null;
         solution = null;
+        /*
+        if(iskidsmaze = true)
+        {
+            iskidsmaze = true;
+        }
+        else {
+            iskidsmaze = false;
+        }
+
+         */
     }
 
     //Constructor 4
@@ -175,6 +187,7 @@ public class Maze implements  IMaze
             int columns = scanner.nextInt();
             this.rows = rows;
             this.columns = columns;
+
 
             cellArray = new Cell[rows][columns];
             for (int i = 0; i < rows; i++)
@@ -212,6 +225,7 @@ public class Maze implements  IMaze
                     }
                 }
             }
+
         } catch (IOException e)
         {
             System.out.println("File Error - Input issue!");
@@ -245,6 +259,10 @@ public class Maze implements  IMaze
         iskidsmaze = true;
     }
 
+    public boolean getIsKidsMaze()
+    {
+        return iskidsmaze;
+    }
 
     /**
      * @param x x cord on maze
