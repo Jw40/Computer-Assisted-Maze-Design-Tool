@@ -19,7 +19,7 @@ public class DBQueries {
      * SQL Query to Search a user in the database by their username
      */
     public static final String SEARCH_USER =
-            "SELECT * FROM users where username = ?";
+            "SELECT * FROM user_prefs where username = ?";
     /*
      * SQL Query to insert maze info such as the name of the maze and the date created
      */
@@ -34,12 +34,18 @@ public class DBQueries {
     /*
      * SQL Query to select all maze info such as the name of the maze and the date created
      */
-    public static final String GET_ALL_MAZE_INFO =
-            "SELECT * FROM user_prefs";
+//    public static final String GET_ALL_MAZE_INFO =
+//            "SELECT * FROM user_prefs";
     /*
      * SQL Query to edit maze name such as the name of the maze and the date created
      */
     public static final String EDIT_MAZENAME =
-            "UPDATE user_prefs set mazeName = ? WHERE idx = ?";
+            "UPDATE user_prefs set mazeName = ? WHERE userName = ?";
+
+    /*
+     * SQL Query to find a user by their username
+     */
+    public static final String FIND_USER_BY_USERNAME =
+            "SELECT * FROM users WHERE username = ? LIMIT 1";
 
 }

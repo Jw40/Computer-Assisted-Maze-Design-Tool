@@ -9,8 +9,6 @@ public class DBDataSource {
      */
 
     // DBStrategy File or TradingDataSource
-    void mazeName(Maze mazeName) {
-
-    }
+    void mazeName(Maze mazeName)
 
 }
