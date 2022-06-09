@@ -441,6 +441,23 @@ public class Maze implements  IMaze
         start = null;
         goal = null;
     }
+    /**
+     * Counts non-traversable cells
+     */
+    @Override
+    public int countBlacken(){
+        int count = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++){
+
+                    if (cellArray[i][j].IsObstacle) {
+                        count++;
+                    };
+                }
+            }
+            return count;
+    }
 
     /**
      * Clears this maze

@@ -26,7 +26,7 @@ public class DBStatements extends DBDataSource {
 
     public DBStatements() {
         Connection connection = DBConnection.getInstance();
-        connection = connection.execute(CREATE_USERS_TABLE);
+        //connection = connection.execute(CREATE_USERS_TABLE);
         try {
 
             insertUser = connection.prepareStatement(DBQueries.INSERT_USER);

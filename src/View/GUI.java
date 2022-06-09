@@ -191,24 +191,50 @@ public class GUI extends Component {
 
         //Solution Metrics
         JPanel randomPanel = new JPanel(new BorderLayout());
-
         randomPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
         JPanel commandPanel = new JPanel();
         commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
         JLabel statusLabel = new JLabel("Status: Not Started");
         statusLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JLabel stepInfoLabel = new JLabel("Steps: 0");
-        stepInfoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JLabel solutionLabel = new JLabel("Max solution length: 0");
+        JLabel totalCellsLabel = new JLabel("Total Cells: 0");
+        totalCellsLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel countBlackenLabel = new JLabel("Cell Walls: 0");
+        countBlackenLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel percentageTaversable = new JLabel("Maze traversable: 0");
+        percentageTaversable.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel percentageTraversedOptimal = new JLabel("Traversable in solution: 0");
+        percentageTraversedOptimal.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel percentageDeadEnds = new JLabel("Ending in dead ends: 0");
+        percentageDeadEnds.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel solutionLabel = new JLabel("Cells visited for solution: 0");
         solutionLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JPanel infoPanel = new JPanel();
+        JPanel percentagePanel = new JPanel();
+        percentagePanel.setLayout(new BoxLayout(percentagePanel, BoxLayout.Y_AXIS));
+        JPanel stepPanel = new JPanel();
+        stepPanel.setLayout(new BoxLayout(stepPanel, BoxLayout.Y_AXIS));
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.add(statusLabel);
-        infoPanel.add(stepInfoLabel);
-        infoPanel.add(solutionLabel);
+        stepPanel.add(totalCellsLabel);
+        stepPanel.add(countBlackenLabel);
+        stepPanel.add(solutionLabel);
+        percentagePanel.add(percentageTaversable);
+        percentagePanel.add(percentageTraversedOptimal);
+        percentagePanel.add(percentageDeadEnds);
+        percentagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        percentagePanel.setBorder(BorderFactory.createTitledBorder(infoPanel.getBorder(),
+                "Percentage"));
+        stepPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        stepPanel.setBorder(BorderFactory.createTitledBorder(infoPanel.getBorder(),
+                "Step"));
+        stepPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+        percentagePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+
+        infoPanel.add(percentagePanel);
+        infoPanel.add(stepPanel);
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         infoPanel.setBorder(BorderFactory.createTitledBorder(infoPanel.getBorder(),
-                "Solution Metrics"));
+                "Metrics"));
         infoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
 
         //Edit Panel - Start Goal Logo
@@ -277,8 +303,6 @@ public class GUI extends Component {
         commandPanel.add(editPanel);
         commandPanel.add(Box.createVerticalGlue());
         commandPanel.setBorder(new EmptyBorder(5, 15, 5, 15));
-
-
 
 
         generateNewAdultButton.addActionListener(e -> {
@@ -395,9 +419,20 @@ public class GUI extends Component {
                         while (!solver.isSolved() && solver.nextStep(0)){
                             mazePanel.repaint();
                             mazePanel.getMaze().setSolution(solver.getSolution());
-                            stepInfoLabel.setText("Steps: "+solver.getSteps());
-                            solutionLabel.setText("Solution Length: "+
+                            solutionLabel.setText("Cells visited for solution: "+
                                     mazePanel.getMaze().getSolution().size());
+                            totalCellsLabel.setText("Total Cells: " + mazePanel.TotalCells());
+                            countBlackenLabel.setText("Cell Walls: " + maze.countBlacken());
+                            float total= mazePanel.TotalCells();
+                            float blacken = maze.countBlacken();
+                            float percentagetotal = blacken / total;
+                            float traversed = mazePanel.getMaze().getSolution().size();
+                            float percentageoptimal = traversed / total;
+                            float deadends = (total - blacken) - traversed;
+                            float percentagedead = deadends / total;
+                            percentageTaversable.setText("Maze traversable:  " + Math.round((percentagetotal*100)) +"%");
+                            percentageTraversedOptimal.setText("Maze traversable in solution: " + Math.round((percentageoptimal*100)) +"%");
+                            percentageDeadEnds.setText("Ending in dead ends: " + Math.round((percentagedead*100)) + "%");
                         }
                     } catch (InterruptedException p) {
                         System.out.println("Interrupted!");
@@ -413,8 +448,7 @@ public class GUI extends Component {
                     else{
                         statusLabel.setText("Status: No solution found");
                     }
-                    stepInfoLabel.setText("Steps: "+solver.getSteps());
-                    solutionLabel.setText("Solution Length: "+
+                    solutionLabel.setText("Cells visited for solution: "+
                             mazePanel.getMaze().getSolution().size());
                     solver = null;
                 });
