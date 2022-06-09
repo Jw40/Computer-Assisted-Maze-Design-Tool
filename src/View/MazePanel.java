@@ -602,7 +602,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Sets start&goal with drag n drop
+     * Sets start & goal with drag n drop
      *
      * @param selection string reperesenting user selection (start or goal)
      */

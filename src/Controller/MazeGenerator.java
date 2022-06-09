@@ -56,11 +56,14 @@ public class MazeGenerator {
     private final int vstep; // visit step, 2: classic, 1: randomized
     private IMaze aMaze;
 
+
     /**
-     * DFS initialization
-     * @param width maze width >= 4
-     * @param height maze height >= 4
-     * @param aMaze this maze
+     * Constructor for MazeGenerator
+     * Generates a new maze with given parameters
+     * @param width maze columns
+     * @param height maze rows
+     * @param classic classic maze setting to ensure a classic type of maze
+     * @param aMaze this maze to be generated
      */
     public MazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         this.classic = classic;
@@ -128,9 +131,9 @@ public class MazeGenerator {
 
     /**
      * Performs next generation step
-     * @param speed
+     * @param speed speed setting
      * @return true if step performed
-     * @throws InterruptedException
+     * @throws InterruptedException a
      */
     public boolean nextStep(int speed) throws InterruptedException{
         if(speed>0) Thread.sleep(speed);

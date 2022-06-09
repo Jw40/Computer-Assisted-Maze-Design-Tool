@@ -72,8 +72,14 @@ public class Maze implements  IMaze
      * name of the maze
      */
     public String mazeName;
-    public LocalDate creationDate;//creation date of the maze
+    /**
+     * creation date of the maze
+     */
+    public LocalDate creationDate;
     public LocalDate editDate;//last edit date
+    /**
+     * setting for kids maze or flase if adult maze
+     */
     public boolean iskidsmaze = false;
 
     //Constructor 1
