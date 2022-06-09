@@ -5,7 +5,11 @@ import java.sql.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 // Adapted from find the GGITHUB LINK
@@ -38,5 +42,23 @@ public class DBStatements extends DBDataSource {
         System.err.println("Access to the database was denied. Ensure MySQL server is running.");
     }
     }
+
+    public void run() {
+        try {
+            // Inserting Data to the database
+            insertData.setString(1, "foo_maze_data"); // change with the maze
+            insertData.setString(2, "Foo authorname"); // change with author name
+            insertData.setString(3, "fooMazeName"); // change with maze data string
+            insertData.setString(4, "2022-02-22");
+            insertData.executeUpdate();
+
+
+
+        } catch (SQLException sqlex) {
+            sqlex.printStackTrace();
+        }
+    }
+
+
 }
 
