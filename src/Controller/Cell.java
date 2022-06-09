@@ -43,13 +43,39 @@ import java.awt.Rectangle;
  */
 public class Cell implements Comparable<Cell> {
 
+     /**
+      * single cell of a maze
+      */
+
     public Rectangle cell;
+     /**
+      * x axis of cell
+      */
+
     public int x;
+     /**
+      * y axis of cell
+      */
     public int y;
 
+     /**
+      * variable to tell if a cell has been visited or not, used in solving
+      */
+
     public boolean isVisited;
+     /**
+      * variable to check if cell is added
+      */
     public boolean isAdded;
+
+     /**
+      * get the previous cell
+      */
+     
     public Cell previous;
+     /**
+      * check if a cell is a obstruct
+      */
     protected boolean IsObstacle;
 
      /**
