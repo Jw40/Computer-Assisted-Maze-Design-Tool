@@ -49,12 +49,12 @@ public class Cell implements Comparable<Cell> {
 
     public Rectangle cell;
      /**
-      * x axis of cell
+      * x-axis of cell
       */
 
     public int x;
      /**
-      * y axis of cell
+      * y-axis of cell
       */
     public int y;
 
@@ -74,7 +74,7 @@ public class Cell implements Comparable<Cell> {
      
     public Cell previous;
      /**
-      * check if a cell is a obstruct
+      * check if a cell is an obstetrical
       */
     protected boolean IsObstacle;
 

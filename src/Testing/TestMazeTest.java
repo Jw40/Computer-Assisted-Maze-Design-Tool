@@ -24,7 +24,7 @@ class TestMazeTest extends Maze {
 
         maze.blackenThisMaze();
         Cell[][] a = maze.getCellArray();
-        assertEquals(true, a[0][0].isObstacle());
+        assertTrue(a[0][0].isObstacle());
     }
 
     @Test

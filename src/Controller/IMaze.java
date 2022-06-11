@@ -22,7 +22,7 @@ public interface IMaze {
     void setGoal(int x, int y);
 
     /**
-     * Create a kids maze with less less rows
+     * Create a kids' maze with fewer rows
      */
     void KidMaze();
 
@@ -80,7 +80,7 @@ public interface IMaze {
 
 
     /**
-     * blacken this indivual cell of this maze, used for logo to blacken the cell underneath the logo
+     * blacken this individual cell of this maze, used for logo to blacken the cell underneath the logo
      * @param x pos x
      * @param y pos y
      *

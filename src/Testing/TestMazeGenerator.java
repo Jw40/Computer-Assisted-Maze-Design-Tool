@@ -13,7 +13,7 @@ class TestMazeGenerator extends MazeGenerator {
      *
      * @param width   maze width >= 4
      * @param height  maze height >= 4
-     * @param classic
+     * @param classic classic maze type
      * @param aMaze   this maze
      */
     public TestMazeGenerator(int width, int height, boolean classic, IMaze aMaze) {

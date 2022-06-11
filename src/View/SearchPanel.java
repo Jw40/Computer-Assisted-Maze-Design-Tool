@@ -5,6 +5,9 @@ import javax.swing.*;
 
 import java.awt.*;
 
+/**
+ * Search panel to hold the search text bar, button and table in a separate pane on the main frame
+ */
 public class SearchPanel extends JPanel {
     JPanel panel, textPanel, tablePanel;
     public SearchPanel() throws HeadlessException {
@@ -41,7 +44,7 @@ public class SearchPanel extends JPanel {
         //scrollPane.setPreferredSize(new Dimension(170, 170));
         //searchable.setSize(50,50);
 
-        //scrollPane.setPreferredSize(new Dimension(470, 470));
+        scrollPane.setPreferredSize(new Dimension(570, 570));
         //scrollPane.setSize(200,200);
         //searchB.setSize(1,1);
         tablePanel.add(scrollPane);
@@ -57,9 +60,7 @@ public class SearchPanel extends JPanel {
 
     }
 
-    private void addComponents() {
 
-    }
 /*
     private void setTable() {
         searchB.addActionListener(e -> result.setModel(DbUtils.resultSetToTableModel(

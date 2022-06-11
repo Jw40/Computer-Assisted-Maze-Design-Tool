@@ -73,15 +73,14 @@ public class GUI extends Component {
     /**
      * displays maze
      */
-    private MazePanel mazePanel;
+    private final MazePanel mazePanel;
     private boolean saved;//maze saved
     private String directory;//save directory
     private IMaze maze;//open maze, holds static maze data
     private MazeSolver solver;//solves the open maze
     private Thread runThread;//runs to solve the maze
     private MazeGenerator generator;//generates maze
-    private SearchPanel searchPanel;
-    private boolean generatorMode;//to check whether to reset on File menu click
+
 
     /**
      * Constructor, builds GUI
@@ -90,7 +89,6 @@ public class GUI extends Component {
         saved = true;
         directory = null;
         solver = null;
-        generatorMode = false;
 
         //remove this to change the style of the GUI
         try {
@@ -108,7 +106,7 @@ public class GUI extends Component {
         //create a maze base 16,16
         maze = new Maze(18, 18);
         mazePanel = new MazePanel(maze);
-        searchPanel = new SearchPanel();
+        SearchPanel searchPanel = new SearchPanel();
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -217,8 +215,8 @@ public class GUI extends Component {
         totalCellsLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel countBlackenLabel = new JLabel("Cell Walls: 0");
         countBlackenLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JLabel percentageTaversable = new JLabel("Maze traversable: 0");
-        percentageTaversable.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel traversedPercent = new JLabel("Maze traversable: 0");
+        traversedPercent.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel percentageTraversedOptimal = new JLabel("Traversable in solution: 0");
         percentageTraversedOptimal.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel percentageDeadEnds = new JLabel("Ending in dead ends: 0");
@@ -235,7 +233,7 @@ public class GUI extends Component {
         stepPanel.add(totalCellsLabel);
         stepPanel.add(countBlackenLabel);
         stepPanel.add(solutionLabel);
-        percentagePanel.add(percentageTaversable);
+        percentagePanel.add(traversedPercent);
         percentagePanel.add(percentageTraversedOptimal);
         percentagePanel.add(percentageDeadEnds);
         percentagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -341,11 +339,6 @@ public class GUI extends Component {
             System.out.println(maze.getIsKidsMaze());
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));
-            int x = maze.getRows();
-            int y = maze.getColumns();
-
-
-            //mazePanel.repaint();
         });
 
         //
@@ -354,8 +347,7 @@ public class GUI extends Component {
                 maze = mazePanel.getMaze();
                 System.out.println(maze.getIsKidsMaze());
                 statusLabel.setText("Status: Generating...");
-                generatorMode = true;
-                //random.setEnabled(true);
+            //random.setEnabled(true);
                 resetButton.setEnabled(false);
                 solveButton.setEnabled(true);
                 clearButton.setEnabled((true));
@@ -447,14 +439,14 @@ public class GUI extends Component {
                             countBlackenLabel.setText("Cell Walls: " + maze.countBlacken());
                             float total= mazePanel.TotalCells();
                             float blacken = maze.countBlacken();
-                            float percentagetotal = blacken / total;
+                            float totalPercent = blacken / total;
                             float traversed = mazePanel.getMaze().getSolution().size();
-                            float percentageoptimal = traversed / total;
-                            float deadends = (total - blacken) - traversed;
-                            float percentagedead = deadends / total;
-                            percentageTaversable.setText("Maze traversable:  " + Math.round((percentagetotal*100)) +"%");
-                            percentageTraversedOptimal.setText("Maze traversable in solution: " + Math.round((percentageoptimal*100)) +"%");
-                            percentageDeadEnds.setText("Ending in dead ends: " + Math.round((percentagedead*100)) + "%");
+                            float optimalPercent = traversed / total;
+                            float deadEnds = (total - blacken) - traversed;
+                            float deadEndPercent = deadEnds / total;
+                            traversedPercent.setText("Maze traversable:  " + Math.round((totalPercent*100)) +"%");
+                            percentageTraversedOptimal.setText("Maze traversable in solution: " + Math.round((optimalPercent*100)) +"%");
+                            percentageDeadEnds.setText("Ending in dead ends: " + Math.round((deadEndPercent*100)) + "%");
                         }
                     } catch (InterruptedException p) {
                         System.out.println("Interrupted!");
@@ -623,8 +615,8 @@ public class GUI extends Component {
                 mainFrame.dispose();
             }
         });
-        mainFrame.setMinimumSize(new Dimension(1000, 1000));
-        mainFrame.setPreferredSize(new Dimension(1000, 1000));
+        mainFrame.setMinimumSize(new Dimension(1200, 1200));
+        mainFrame.setPreferredSize(new Dimension(1200, 1000));
         mainFrame.pack();
         mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
                 screenSize.height/2 - (mainFrame.getHeight()/2));
@@ -717,12 +709,7 @@ public class GUI extends Component {
                 runThread.interrupt();
             }
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int maxSize;
-            if (screenSize.height > screenSize.width) {
-                maxSize = screenSize.height / 2;
-            } else {
-                maxSize = screenSize.width / 2;
-            }
+
             JDialog newDialog = new JDialog(mainFrame, "Build New Maze", true);
             newDialog.setResizable(false);
             JPanel newPanel = new JPanel();
@@ -916,41 +903,7 @@ public class GUI extends Component {
 
         catch(Exception e)
         {
-            System.out.println("Issues occured when importing an image");
-
-            System.out.println(e.getMessage());
-
-
-        }
-    }
-
-    /**
-     * Opens a maze from a text file
-     */
-    public void KidsIconImporter() {
-
-        try {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-                try {
-                    JPanel panel = new JPanel();
-                    panel.setBounds(0, 0, 1000, 1400);
-                    BufferedImage img = ImageIO.read(new File(selectedFile.getAbsolutePath()));
-                    mazePanel.setTempTimage(img);
-                    mazePanel.setImgPath(selectedFile.getAbsolutePath());
-                    mazePanel.repaint();
-                } catch (IOException ignored) {
-                }
-            }
-        }
-
-        catch(Exception e)
-        {
-            System.out.println("Issues occured when importing an image");
+            System.out.println("Issues occurred when importing an image");
 
             System.out.println(e.getMessage());
 

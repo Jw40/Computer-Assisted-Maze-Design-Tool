@@ -121,15 +121,10 @@ public class MazePanel extends JPanel{
         tempImage = a;
     }
 
-    /*
-    public void setKidsStartIcon(BufferedImage a){
-        kidsGoalIcon = a;}
 
-    public void setKidsGoalIcon(BufferedImage a){
-        kidsGoalIcon = a;}
     /**
      * @param path set the image path
-     */
+    */
     public void setImgPath(String path)
     {
         imagePath = path;

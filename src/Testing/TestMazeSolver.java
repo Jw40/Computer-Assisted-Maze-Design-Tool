@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TestMazeSolver extends MazeSolver {
     Maze maze = new Maze(20,20);
@@ -19,7 +19,7 @@ class TestMazeSolver extends MazeSolver {
      * Create maze from input
      *
      * @param mazeInput 2D array with 0 and 1 for obstacles
-     * @param mazeData
+     * @param mazeData this maze
      */
     public TestMazeSolver(int[][] mazeInput, IMaze mazeData) {
         super(mazeInput, mazeData);
@@ -35,7 +35,7 @@ class TestMazeSolver extends MazeSolver {
     public void TestSolver()
     {
         solver.getSolution();
-        assertEquals(false, solver.isSolved() );
+        assertFalse(solver.isSolved());
     }
 
 

@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contructors
+ * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contractors
  * the author name and maze name and the creation date are stored in this object
  */
 public class Maze implements  IMaze
@@ -81,7 +81,7 @@ public class Maze implements  IMaze
      */
     public LocalDate editDate;//last edit date
     /**
-     * setting for kids maze or flase if adult maze
+     * setting for kids maze or false if adult maze
      */
     protected boolean iskidsmaze = false;
 
@@ -113,7 +113,7 @@ public class Maze implements  IMaze
      * @param columns y
      * @param authorName name of author
      * @param mazeName name of maze
-     * @param creationDate creationg date of maze
+     * @param creationDate creation date of maze
      */
     public Maze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
     {
@@ -223,7 +223,7 @@ public class Maze implements  IMaze
     }
 
     /**
-     * create a kids maze
+     * create a kids' maze
      * less rows and more columns
      */
     public void KidMaze()
@@ -489,7 +489,7 @@ public class Maze implements  IMaze
 
                     if (cellArray[i][j].IsObstacle) {
                         count++;
-                    };
+                    }
                 }
             }
             return count;
