@@ -49,7 +49,7 @@ import java.util.Scanner;
  * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contructors
  * the author name and maze name and the creation date are stored in this object
  */
-public class Maze implements  IMaze
+public class KidsMaze implements  IMaze
 {
 
     private int rows;//rows of this maze
@@ -89,7 +89,7 @@ public class Maze implements  IMaze
     /**
      * initially set all variables to 0 or null
      */
-    public Maze()
+    public KidsMaze()
     {
         rows = 0;
         columns = 0;
@@ -115,7 +115,7 @@ public class Maze implements  IMaze
      * @param mazeName name of maze
      * @param creationDate creationg date of maze
      */
-    public Maze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
+    public KidsMaze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
     {
         this.creationDate = creationDate;
         this.mazeName = mazeName;
@@ -144,7 +144,7 @@ public class Maze implements  IMaze
      * @param columns number of columns in the maze
      */
 
-    public Maze(int rows, int columns)
+    public KidsMaze(int rows, int columns)
     {
         this.rows = rows;
         this.columns = columns;
@@ -160,6 +160,17 @@ public class Maze implements  IMaze
         goal = null;
         current = null;
         solution = null;
+        iskidsmaze = true;
+        /*
+        if(iskidsmaze = true)
+        {
+            iskidsmaze = true;
+        }
+        else {
+            iskidsmaze = false;
+        }
+
+         */
     }
 
     //Constructor 4
@@ -167,7 +178,7 @@ public class Maze implements  IMaze
      * Builds a new maze from a text file
      * @param path file path else throws IOException e
      */
-    public Maze (String path)
+    public KidsMaze (String path)
     {
         this();
         try (Scanner scanner = new Scanner(new File(path)))
@@ -483,16 +494,16 @@ public class Maze implements  IMaze
     @Override
     public int countBlacken(){
         int count = 0;
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++){
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++){
 
-                    if (cellArray[i][j].IsObstacle) {
-                        count++;
-                    };
-                }
+                if (cellArray[i][j].IsObstacle) {
+                    count++;
+                };
             }
-            return count;
+        }
+        return count;
     }
 
     /**

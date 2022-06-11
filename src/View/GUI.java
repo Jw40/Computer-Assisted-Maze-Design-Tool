@@ -80,6 +80,7 @@ public class GUI extends Component {
     private MazeSolver solver;//solves the open maze
     private Thread runThread;//runs to solve the maze
     private MazeGenerator generator;//generates maze
+    private SearchPanel searchPanel;
     private boolean generatorMode;//to check whether to reset on File menu click
 
     /**
@@ -107,9 +108,14 @@ public class GUI extends Component {
         //create a maze base 16,16
         maze = new Maze(18, 18);
         mazePanel = new MazePanel(maze);
+        searchPanel = new SearchPanel();
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        mainPanel.add(mazePanel);
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.addTab("Maze", mazePanel);
+        tabbedPane.addTab("Search", searchPanel);
+        mainPanel.add(tabbedPane);
+        //mainPanel.add(mazePanel);
 
         //Menu bar start
         JMenuBar menuBar = new JMenuBar();
@@ -122,6 +128,9 @@ public class GUI extends Component {
         JMenuItem importImage = new JMenuItem("Import Logo...");
         JMenuItem exit = new JMenuItem("Exit");
         JMenuItem clear = new JMenuItem("Clear Maze");
+
+
+
 
         fileMenu.add(newMaze);
         fileMenu.add(openMaze);
@@ -261,6 +270,7 @@ public class GUI extends Component {
         // Run Panel and Command Panel
         JPanel runPanel = new JPanel();
         runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS ));
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -358,9 +368,12 @@ public class GUI extends Component {
             int y = maze.getColumns();
 
             mazePanel.drawLogo();
+            System.out.println("New:  " + maze.getIsKidsMaze());
 
                 maze.setGoal(x - 2, y - 2);
                 maze.setStart(1, 1);
+
+
 
                 mazePanel.repaint();
                 runThread = new Thread(() -> {
@@ -719,9 +732,9 @@ public class GUI extends Component {
             GridLayout gridLayout = new GridLayout(1, 2, 5, 5);
 
             JSpinner rowSpinner = new JSpinner(new SpinnerNumberModel(mazePanel.getMaze().getRows(),
-                    2, maxSize, 1));
+                    2, 100, 1));
             JSpinner columnSpinner = new JSpinner(new SpinnerNumberModel(mazePanel.getMaze().getColumns(),
-                    2, maxSize, 1));
+                    2, 100, 1));
 
             JCheckBox keepOld = new JCheckBox("Keep previous maze");
             keepOld.setAlignmentX(Component.CENTER_ALIGNMENT);

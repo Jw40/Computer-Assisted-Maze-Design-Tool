@@ -37,6 +37,7 @@ package View;
  */
 
 import Controller.IMaze;
+import Controller.KidsMaze;
 import Controller.Maze;
 import Controller.Cell;
 
@@ -79,8 +80,12 @@ public class MazePanel extends JPanel{
             imagePath)));
     Graphics2D g2D;
     BufferedImage tempImage;
-    BufferedImage KidsIcon;
-
+    String kidsGoalIconPath = "/Icons/KidsGoal.png";
+    String kidsStartIconPath = "/Icons/KidsStart.png";
+    private ImageIcon KidsGoalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+            kidsGoalIconPath)));
+    private ImageIcon KidsStartIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+            kidsStartIconPath)));
     /**
      * Default constructor
      * @param aMaze maze linked to the panel
@@ -116,7 +121,12 @@ public class MazePanel extends JPanel{
         tempImage = a;
     }
 
-    public void setKidsIcon(BufferedImage a){KidsIcon = a;}
+    /*
+    public void setKidsStartIcon(BufferedImage a){
+        kidsGoalIcon = a;}
+
+    public void setKidsGoalIcon(BufferedImage a){
+        kidsGoalIcon = a;}
     /**
      * @param path set the image path
      */
@@ -300,8 +310,16 @@ public class MazePanel extends JPanel{
                 aMaze.getStart().y>= 0 && aMaze.getStart().x< aMaze.getRows() &&
                 aMaze.getStart().y< aMaze.getColumns()){
             g2D.setColor(Color.YELLOW);//draw start
-            g2D.fill(aMaze.getCellArray()[aMaze.getStart().x]
-                    [aMaze.getStart().y].getCell());
+            if (aMaze.getIsKidsMaze() == false) {
+                g2D.fill(aMaze.getCellArray()[aMaze.getStart().x]
+                        [aMaze.getStart().y].getCell());
+            }
+            else
+            {
+                Rectangle a = aMaze.getCellArray()[aMaze.getStart().x][aMaze.getStart().y].getCell();
+                g2D.drawImage(KidsStartIcon.getImage(), (int) a.getX(), (int) a.getY()
+                        , cellWidth, cellHeight, Color.white, this);
+            }
         }
         if (aMaze.getGoal() != null && aMaze.getGoal().x>= 0 &&
                 aMaze.getGoal().y>=0 && aMaze.getGoal().x<aMaze.getRows() &&
@@ -316,7 +334,7 @@ public class MazePanel extends JPanel{
                 BufferedImage img;
                 img = new BufferedImage(cellWidth,cellHeight,1 );
                 Rectangle a = aMaze.getCellArray()[aMaze.getGoal().x][aMaze.getGoal().y].getCell();
-                g2D.drawImage(img, (int) a.getX(), (int) a.getY()
+                g2D.drawImage(KidsGoalIcon.getImage(), (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
         }
@@ -485,18 +503,35 @@ public class MazePanel extends JPanel{
     /**
      * Transforms all cells to obstacles
      */
+
     public void blacken(){
-        if (aMaze.getRows()%2 == 0 && aMaze.getColumns()%2 == 0){
-            aMaze = new Maze(aMaze.getRows()+1, aMaze.getColumns()+1);
+        if(aMaze.getIsKidsMaze() != true) {
+            if (aMaze.getRows() % 2 == 0 && aMaze.getColumns() % 2 == 0) {
+                aMaze = new Maze(aMaze.getRows() + 1, aMaze.getColumns() + 1);
+            }
+            if (aMaze.getRows() % 2 == 0) {
+                aMaze = new Maze(aMaze.getRows() + 1, aMaze.getColumns());
+            }
+            if (aMaze.getColumns() % 2 == 0) {
+                aMaze = new Maze(aMaze.getRows(), aMaze.getColumns() + 1);
+            }
+            this.invalidate();
+            aMaze.blackenThisMaze();
         }
-        if (aMaze.getRows()%2 == 0){
-            aMaze = new Maze(aMaze.getRows()+1, aMaze.getColumns());
+        else if (aMaze.getIsKidsMaze() == true)
+        {
+            if (aMaze.getRows() % 2 == 0 && aMaze.getColumns() % 2 == 0) {
+                aMaze = new KidsMaze(aMaze.getRows() + 1, aMaze.getColumns() + 1);
+            }
+            if (aMaze.getRows() % 2 == 0) {
+                aMaze = new KidsMaze(aMaze.getRows() + 1, aMaze.getColumns());
+            }
+            if (aMaze.getColumns() % 2 == 0) {
+                aMaze = new KidsMaze(aMaze.getRows(), aMaze.getColumns() + 1);
+            }
+            this.invalidate();
+            aMaze.blackenThisMaze();
         }
-        if (aMaze.getColumns()%2 == 0){
-            aMaze = new Maze(aMaze.getRows(), aMaze.getColumns()+1);
-        }
-        this.invalidate();
-        aMaze.blackenThisMaze();
     }
 
 
@@ -756,7 +791,7 @@ public class MazePanel extends JPanel{
             public void mouseDragged(MouseEvent e){
                 if (selection!= null && editable){
                     if (SwingUtilities.isLeftMouseButton(e)){
-                        if (!selection.equals(aMaze.getStart()) && !selection.equals(aMaze.getGoal())){
+                        if (!selection.equals(aMaze.getStart()) && !selection.equals(aMaze.getGoal()) && !selection.equals(aMaze.getLogo())){
                             aMaze.getCellArray()[selection.x][selection.y].
                                     SetIsObstacle(true);
                         }
@@ -774,6 +809,14 @@ public class MazePanel extends JPanel{
                             TransferHandler handler = c.getTransferHandler();
                             handler.setDragImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
                                     "/Icons/goal.png")));
+                            handler.exportAsDrag(c, e, TransferHandler.COPY);
+                        }
+                        else if (selection.equals(aMaze.getLogo())){
+                            text = "L";
+                            JComponent c = (JComponent)e.getSource();
+                            TransferHandler handler = c.getTransferHandler();
+                            handler.setDragImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+                                    "/Icons/logo.png")));
                             handler.exportAsDrag(c, e, TransferHandler.COPY);
                         }
                     }
