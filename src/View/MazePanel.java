@@ -54,37 +54,85 @@ import javax.swing.event.MouseInputAdapter;
  * JPanel for the Maze to display on the main GUI frame
  */
 public class MazePanel extends JPanel{
-    private Point selection;//mouse selection
-    private boolean needsRedraw;//redraw flag
-    private IMaze aMaze;//linked maze
+    /**
+     * mouse selection
+     */
+    private Point selection;
+    /**
+     * redraw flag
+     */
+    private boolean needsRedraw;
+    /**
+     * linked maze
+     */
+    private IMaze aMaze;
 
-    private MouseAdapter mousePainter;//paints maze cells
-    private MouseAdapter mouseSelector;//selects maze cells
+    /**
+     * paints maze cells
+     */
+    private MouseAdapter mousePainter;
+    /**
+     * selects maze cells
+     */
+    private MouseAdapter mouseSelector;
 
     private final boolean drawArrows;//arrows on solution
     private boolean editable;//can be edited
-    private boolean drawgrid;//draw maze grid
-    private String text;//used in drag n drop operations
-    private boolean previewGoal;//previews drop point of goal (DnD operations)
-    private boolean previewStart;//previews drop point of start (DnD operations)
+    private boolean drawGrid;//draw maze grid
+    /**
+     * used in drag n drop operations
+     */
+    private String text;
+    /**
+     * previews drop point of goal (DnD operations)
+     */
+    private boolean previewGoal;
+    /**
+     * previews drop point of start (DnD operations)
+     */
+    private boolean previewStart;
+    /**
+     * preview drop point of logo
+     */
     private boolean previewLogo;
-    private boolean moveable;//can be moved around with cursor
-    private Point movementStartingPoint;//from which point movement occured
-    private IMaze originalMaze;//old linked maze
-    private final Point originalMazeStart;//where the old maze is placed in relation to the current one
+    private boolean IsMoveable;//can be moved around with cursor
+    /**
+     * from which point movement occurred
+     */
+    private Point movementStartingPoint;
+    /**
+     * old linked maze
+     */
+    private IMaze originalMaze;
+    /**
+     * where the old maze is placed in relation to the current one
+     */
+    private final Point originalMazeStart;
     /**
      * path of temp logo icon
      */
     public String imagePath = "/Icons/logo.png";
-    private ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+    /**
+     * getter for logo icon default path
+     */
+    private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             imagePath)));
     Graphics2D g2D;
-    BufferedImage tempImage;
+    /**
+     * logo image
+     */
+    BufferedImage thisLogoImage;
+    /**
+     * kids goal image path
+     */
     String kidsGoalIconPath = "/Icons/KidsGoal.png";
+    /**
+     * kids start image path
+     */
     String kidsStartIconPath = "/Icons/KidsStart.png";
-    private ImageIcon KidsGoalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+    private final ImageIcon KidsGoalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             kidsGoalIconPath)));
-    private ImageIcon KidsStartIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
+    private final ImageIcon KidsStartIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             kidsStartIconPath)));
     /**
      * Default constructor
@@ -98,8 +146,8 @@ public class MazePanel extends JPanel{
         needsRedraw = true;
         drawArrows = false;
         editable = true;
-        drawgrid = true;
-        moveable = false;
+        drawGrid = true;
+        IsMoveable = false;
         this.aMaze = aMaze;
         this.originalMaze = aMaze;
         this.originalMazeStart = new Point(0, 0);
@@ -118,7 +166,7 @@ public class MazePanel extends JPanel{
      */
     public void setTempTimage( BufferedImage a)
     {
-        tempImage = a;
+        thisLogoImage = a;
     }
 
 
@@ -204,7 +252,7 @@ public class MazePanel extends JPanel{
 
         for (int i = 0;i< aMaze.getRows();i++){//draw
             for (int j = 0;j< aMaze.getColumns();j++){
-                if (drawgrid){//draw grid
+                if (drawGrid){//draw grid
                     g2D.setColor(Color.BLACK);
                 }
                 else{
@@ -343,13 +391,13 @@ public class MazePanel extends JPanel{
 
             aMaze.blackenThisCell(aMaze.getLogo().x, aMaze.getLogo().y);
             aMaze.getCellArray()[aMaze.getLogo().x][aMaze.getLogo().y].getCell();
-            if(tempImage == null) {
+            if(thisLogoImage == null) {
                 g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
-            else if (tempImage != null)
+            else if (thisLogoImage != null)
             {
-                g2D.drawImage(tempImage, (int) a.getX(), (int) a.getY()
+                g2D.drawImage(thisLogoImage, (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
 
@@ -381,7 +429,7 @@ public class MazePanel extends JPanel{
         }
 
         g2D.setColor(Color.BLACK);
-        if (drawgrid){//draw grid
+        if (drawGrid){//draw grid
             for (int i = 0;i< aMaze.getRows();i++){
                 for (int j = 0;j< aMaze.getColumns();j++){
                     g2D.draw(aMaze.getCellArray()[i][j].getCell());
@@ -715,7 +763,7 @@ public class MazePanel extends JPanel{
      * @param drawGrid new value
      */
     public void setDrawGrid(boolean drawGrid){
-        this.drawgrid = drawGrid;
+        this.drawGrid = drawGrid;
         repaint();
     }
 
@@ -820,7 +868,7 @@ public class MazePanel extends JPanel{
                                 SetIsObstacle(false);
                     }
                 }
-                if (moveable && movementStartingPoint != null &&
+                if (IsMoveable && movementStartingPoint != null &&
                         selection != null &&
                         !movementStartingPoint.equals(selection)){
                     int i = movementStartingPoint.x - selection.x;
@@ -849,10 +897,10 @@ public class MazePanel extends JPanel{
 
             @Override
             public void mouseMoved(MouseEvent e){
-                if (moveable && selection != null){
+                if (IsMoveable && selection != null){
                     setCursor(new Cursor(Cursor.MOVE_CURSOR));
                 }
-                else if (moveable){
+                else if (IsMoveable){
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
             }
@@ -869,7 +917,7 @@ public class MazePanel extends JPanel{
      * @param moveable new value
      */
     public void setMoveable(boolean moveable){
-        this.moveable = moveable;
+        this.IsMoveable = moveable;
     }
 
     /**
@@ -893,7 +941,7 @@ public class MazePanel extends JPanel{
      * @return drawGrid variable
      */
     public boolean getDrawGrid(){
-        return this.drawgrid;
+        return this.drawGrid;
     }
 
 

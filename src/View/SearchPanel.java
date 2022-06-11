@@ -9,7 +9,7 @@ import java.awt.*;
  * Search panel to hold the search text bar, button and table in a separate pane on the main frame
  */
 public class SearchPanel extends JPanel {
-    JPanel panel, textPanel, tablePanel;
+    protected JPanel panel, textPanel, tablePanel;
     public SearchPanel() throws HeadlessException {
         panel = new JPanel();
         panel.setLayout((new BorderLayout(10, 10)));
