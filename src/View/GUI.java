@@ -78,17 +78,38 @@ public class GUI extends Component {
             "/Icons/goal.png")));
 
 
-    private final JFrame mainFrame;//main window
+    /**
+     * main window
+     */
+    private final JFrame mainFrame;
     /**
      * displays maze
      */
     private final MazePanel mazePanel;
-    private boolean saved;//maze saved
-    private String directory;//save directory
-    private IMaze maze;//open maze, holds static maze data
-    private MazeSolver solver;//solves the open maze
-    private Thread runThread;//runs to solve the maze
-    private MazeGenerator generator;//generates maze
+    /**
+     * maze saved
+     */
+    private boolean saved;
+    /**
+     * save directory
+     */
+    private String directory;
+    /**
+     * open maze, holds static maze data
+     */
+    private IMaze maze;
+    /**
+     * solves the open maze
+     */
+    private MazeSolver solver;
+    /**
+     * runs to solve the maze
+     */
+    private Thread runThread;
+    /**
+     * generates maze
+     */
+    private MazeGenerator generator;
 
 
     /**

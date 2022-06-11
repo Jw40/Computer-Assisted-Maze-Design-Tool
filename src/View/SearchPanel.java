@@ -9,7 +9,23 @@ import java.awt.*;
  * Search panel to hold the search text bar, button and table in a separate pane on the main frame
  */
 public class SearchPanel extends JPanel {
-    protected JPanel panel, textPanel, tablePanel;
+    /**
+     * main panel
+     */
+    protected JPanel panel;
+    /**
+     * text panel
+     */
+    protected JPanel textPanel;
+    /**
+     * table panel
+     */
+    protected JPanel tablePanel;
+
+    /**
+     * used to search for mazes or authors in the database and display the results to screen
+     * @throws HeadlessException a
+     */
     public SearchPanel() throws HeadlessException {
         panel = new JPanel();
         panel.setLayout((new BorderLayout(10, 10)));
