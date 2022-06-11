@@ -61,10 +61,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUI extends Component {
 
 
+    /**
+     * starting icon
+     */
     private final ImageIcon startIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/start.png")));
+    /**
+     * logo default icon
+     */
     private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/logo.png")));
+    /**
+     * goal icon
+     */
     private final ImageIcon goalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/goal.png")));
 

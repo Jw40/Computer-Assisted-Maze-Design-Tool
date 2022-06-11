@@ -76,9 +76,18 @@ public class MazePanel extends JPanel{
      */
     private MouseAdapter mouseSelector;
 
-    private final boolean drawArrows;//arrows on solution
-    private boolean editable;//can be edited
-    private boolean drawGrid;//draw maze grid
+    /**
+     * arrows on solution
+     */
+    private final boolean drawArrows;
+    /**
+     * can be edited
+     */
+    private boolean editable;
+    /**
+     * draw maze grid
+     */
+    private boolean drawGrid;
     /**
      * used in drag n drop operations
      */
@@ -95,7 +104,10 @@ public class MazePanel extends JPanel{
      * preview drop point of logo
      */
     private boolean previewLogo;
-    private boolean IsMoveable;//can be moved around with cursor
+    /**
+     * can be moved around with cursor
+     */
+    private boolean IsMoveable;
     /**
      * from which point movement occurred
      */
@@ -117,6 +129,9 @@ public class MazePanel extends JPanel{
      */
     private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             imagePath)));
+    /**
+     * this graphics
+     */
     Graphics2D g2D;
     /**
      * logo image
@@ -130,8 +145,14 @@ public class MazePanel extends JPanel{
      * kids start image path
      */
     String kidsStartIconPath = "/Icons/KidsStart.png";
+    /**
+     * getter for kids goal icon default path
+     */
     private final ImageIcon KidsGoalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             kidsGoalIconPath)));
+    /**
+     * getter for kids start logo icon default path
+     */
     private final ImageIcon KidsStartIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             kidsStartIconPath)));
     /**
