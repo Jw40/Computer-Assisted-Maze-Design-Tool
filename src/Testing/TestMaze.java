@@ -69,6 +69,7 @@ class TestMaze extends Maze {
         String a = maze.getMazeName();
         assertEquals( "John Smith", maze.getAuthorName());
         assertEquals( "myMaze", maze.getMazeName());
+        System.out.println(maze.ToString());
     }
 
     @Test
@@ -81,12 +82,81 @@ class TestMaze extends Maze {
     }
 
     @Test
-    public void testStartGoal()
+    public void testStart()
     {
-        assertEquals(null, getStart());
+        assertEquals(null, maze.getStart());
         maze.setStart(10,10);
         Point a = new Point(10,10);
         assertEquals(a, maze.getStart());
+    }
+
+    @Test
+    public void testGoal()
+    {
+        assertEquals(null, maze.getGoal());
+        maze.setGoal(20,20);
+        Point a = new Point(20,20);
+        assertEquals(a, maze.getGoal());
+    }
+
+    @Test
+    public void testLogo()
+    {
+        assertEquals(null, maze.getLogo());
+        Point a = new Point(30,30);
+        maze.setLogo(a);
+        Point b = new Point(30,30);
+        assertEquals(b, maze.getLogo());
+    }
+
+    @Test
+    public void testSaveMaze()
+    {
+        maze.saveMaze("/dummypath/dummypath/");
+    }
+
+    @Test
+    public void testSaveMazev2()
+    {
+        maze.saveMaze("Desktop");
+    }
+
+    @Test
+    public void testRowsColumns()
+    {
+        assertEquals(10, maze.getColumns());
+        assertEquals(10, maze.getRows());
+    }
+
+    @Test
+    public void testBlackenCell()
+    {
+        maze.whitenThisMaze();
+        maze = new Maze(10,10);
+        maze.blackenThisCell(8,8);
+        Cell[][] a = maze.getCellArray();
+        assertTrue( a[8][8].isObstacle());
+    }
+
+    @Test
+    public void testCountBlacken()
+    {
+        maze = new Maze(10,10);
+        maze.blackenThisMaze();
+        assertEquals(100, maze.countBlacken());
+    }
+
+    @Test
+    public void testAddRow()
+    {
+        IMaze thisMaze = new Maze(10,10);
+        maze.addRow((thisMaze));
+        assertEquals(110, maze.getRows()*maze.getColumns());
+    }
+
+    @Test
+    public void testAddColumn(){
+
     }
 
     @AfterEach
