@@ -82,8 +82,17 @@ Notes:
 
 Version 2.4
 Notes:
-12/06/2022
+10/06/2022
 - Add Search Panel Class - linked upto GUI
 - Added two panes, Maze and Search to GUI
 - Added Kids Logo to Kids Maze (also on auto generated kids mazes)
 - movable logo icon, both when imported and with temp logo icon
+
+Version 2.5
+Notes:
+12/06/2022
+- Added Unit testing
+- TestCell 
+- TestMaze
+- TestMazeGenerator
+- TestMazeSolver
