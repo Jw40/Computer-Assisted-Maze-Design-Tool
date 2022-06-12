@@ -223,6 +223,16 @@ public class Maze implements  IMaze
         }
     }
 
+    @Override
+    public String getMazeName()
+    {
+        return this.mazeName;
+    }
+    @Override
+    public String getAuthorName()
+    {
+        return this.authorName;
+    }
 
 
     public boolean getIsKidsMaze()

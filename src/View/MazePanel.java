@@ -182,8 +182,7 @@ public class MazePanel extends JPanel{
     }
 
     /**
-     * @param a the logo icon to be set
-     *          sets the logo icon over the temp logo icon
+     * @param a the logo icon to be set the logo icon over the temp logo icon
      */
     public void setTempTimage( BufferedImage a)
     {
@@ -210,7 +209,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Preffered size
+     * Preferred size
      * @return preferred size
      */
     @Override
@@ -315,7 +314,7 @@ public class MazePanel extends JPanel{
                             [aSolutionBox.x].getCell());
                 }
                 if (previous != null && aSolutionBox != null && drawArrows){
-                    g2D.setColor(Color.BLACK);//draw arrors
+                    g2D.setColor(Color.BLACK);//draw arrows
                     Rectangle cell = aMaze.getCellArray()[previous.y][previous.x].getCell();
                     if (previous.x > aSolutionBox.x){
                         g2D.fillPolygon(new int[]{cell.x,
@@ -473,7 +472,7 @@ public class MazePanel extends JPanel{
         return aMaze.getColumns() * aMaze.getRows();
     }
     /**
-     * draw logo to screen when the user presses the generte new maze button
+     * draw logo to screen when the user presses to generate new maze button
      */
     public void drawLogo()
     {
@@ -690,26 +689,28 @@ public class MazePanel extends JPanel{
     }
 
     /**
-     * Enables preview of DnD operations according to data transefered
+     * Enables preview of DnD operations according to data transferred
      * @param selection start or goal
      */
     public void setDnDPreview(String selection){
         if (editable){
             this.selection = calculatePointerSelection();
-            if (selection.equals("S")){
-                this.previewGoal = false;
-                this.previewStart = true;
-                this.previewLogo = false;
-            }
-            else if (selection.equals("G")){
-                this.previewGoal = true;
-                this.previewStart = false;
-                this.previewLogo = false;
-            }
-            else if (selection.equals("L")){
-                this.previewLogo = true;
-                this.previewGoal = false;
-                this.previewStart = false;
+            switch (selection) {
+                case "S" -> {
+                    this.previewGoal = false;
+                    this.previewStart = true;
+                    this.previewLogo = false;
+                }
+                case "G" -> {
+                    this.previewGoal = true;
+                    this.previewStart = false;
+                    this.previewLogo = false;
+                }
+                case "L" -> {
+                    this.previewLogo = true;
+                    this.previewGoal = false;
+                    this.previewStart = false;
+                }
             }
             repaint();
         }
@@ -720,7 +721,7 @@ public class MazePanel extends JPanel{
     /**
      * Sets start and goal with drag n drop
      *
-     * @param selection string reperesenting user selection (start or goal)
+     * @param selection string representing user selection (start or goal)
      */
 
     public void setText(String selection){
@@ -750,14 +751,10 @@ public class MazePanel extends JPanel{
         }
 
         else if (editable){
-            if (selection.equals("S")){
-                aMaze.setStart(null);
-            }
-            else if (selection.equals("L")){
-                aMaze.setGoal(null);
-            }
-            else if (selection.equals("L")){
-                aMaze.setLogo(null);
+            switch (selection) {
+                case "S" -> aMaze.setStart(null);
+                case "G" -> aMaze.setGoal(null);
+                case "L" -> aMaze.setLogo(null);
             }
         }
 
@@ -930,7 +927,7 @@ public class MazePanel extends JPanel{
 
 
     /**
-     * Setter of moveable variable
+     * Setter of movable variable
      * @param moveable new value
      */
     public void setMoveable(boolean moveable){

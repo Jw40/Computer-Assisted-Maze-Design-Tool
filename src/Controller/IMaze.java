@@ -164,6 +164,10 @@ public interface IMaze {
      */
     void removeColumn();
 
+    String getMazeName();
+
+    String getAuthorName();
+
     /**
      * @return return true if this is a kids maze
      */

@@ -223,6 +223,17 @@ public class KidsMaze implements  IMaze
         }
     }
 
+    @Override
+    public String getMazeName()
+    {
+        return this.mazeName;
+    }
+    @Override
+    public String getAuthorName()
+    {
+        return this.authorName;
+    }
+
     public boolean getIsKidsMaze()
     {
         return iskidsmaze;
