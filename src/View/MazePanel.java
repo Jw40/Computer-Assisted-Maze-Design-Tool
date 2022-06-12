@@ -283,13 +283,13 @@ public class MazePanel extends JPanel{
                     g2D.setColor(Color.BLACK);//draw obstacle
                     g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
-
+/*
                 if (aMaze.getCellArray()[i][j].isVisited()){ //REMOVE THIS TO REMOVE THE TILES TRAVERSED
                     g2D.setColor(Color.pink);//draw visited
                     g2D.fill(aMaze.getCellArray()[i][j].getCell());
                 }
 
-
+*/
 
             }
 

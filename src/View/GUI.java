@@ -644,7 +644,7 @@ public class GUI extends Component {
                 mainFrame.dispose();
             }
         });
-        mainFrame.setMinimumSize(new Dimension(1200, 1200));
+        mainFrame.setMinimumSize(new Dimension(1000, 1000));
         mainFrame.setPreferredSize(new Dimension(1200, 1000));
         mainFrame.pack();
         mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
