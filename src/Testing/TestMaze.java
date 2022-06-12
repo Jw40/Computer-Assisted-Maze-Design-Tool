@@ -156,7 +156,21 @@ class TestMaze extends Maze {
 
     @Test
     public void testAddColumn(){
+        IMaze thisMaze = new Maze(10,10);
+        maze.addColumn((thisMaze));
+        assertEquals(110, maze.getRows()*maze.getColumns());
+    }
 
+    @Test
+    public void testRemoveColumn(){
+        maze.removeColumn();
+        assertEquals(90, maze.getRows()*maze.getColumns());
+    }
+
+    @Test
+    public void testRemoveRow(){
+        maze.removeRow();
+        assertEquals(90, maze.getRows()*maze.getColumns());
     }
 
     @AfterEach
