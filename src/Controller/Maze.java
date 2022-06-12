@@ -46,8 +46,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contractors
- * the author name and maze name and the creation date are stored in this object
+ * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contractors.
+ * A maze can be created with just rows and columns as a parameter or with an author name, maze name and creation date.
+ *
  */
 public class Maze implements  IMaze
 {

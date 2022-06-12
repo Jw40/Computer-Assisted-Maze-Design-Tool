@@ -367,7 +367,7 @@ public class GUI extends Component {
             mazePanel.repaint();
             //maze.KidMaze();
             maze = new KidsMaze(10,14);
-            
+
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));
         });
