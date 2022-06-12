@@ -365,7 +365,8 @@ public class GUI extends Component {
             clearMaze();
             mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
-            maze.KidMaze();
+            //maze.KidMaze();
+            maze = new KidsMaze(10,14);
             System.out.println(maze.getIsKidsMaze());
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));

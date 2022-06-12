@@ -135,7 +135,7 @@ public class KidsMaze implements  IMaze
         current = null;
         solution = null;
         logo = null;
-        iskidsmaze = false;
+        iskidsmaze = true;
     }
     //Constructor 3
     /**
@@ -221,33 +221,6 @@ public class KidsMaze implements  IMaze
         {
             System.out.println("File Error - Input issue!");
         }
-    }
-
-    /**
-     * create a kids' maze
-     * less rows and more columns
-     */
-    public void KidMaze()
-    {
-        int rows = 10;
-        int columns = 14;
-
-        this.rows = rows;
-        this.columns = columns;
-        cellArray = new Cell[rows][columns];
-        for (int i = 0;i< rows;i++)
-        {
-            for (int j = 0;j< columns;j++)
-            {
-                cellArray[i][j] = new Cell();
-            }
-        }
-        start = null;
-        goal = null;
-        current = null;
-        solution = null;
-        logo = null;
-        iskidsmaze = true;
     }
 
     public boolean getIsKidsMaze()

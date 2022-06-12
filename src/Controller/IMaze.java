@@ -20,12 +20,13 @@ public interface IMaze {
      *          set goal variable
      */
     void setGoal(int x, int y);
-
     /**
      * Create a kids' maze with fewer rows
      */
-    void KidMaze();
+    /*
 
+    void KidMaze();
+    */
     /**
      * Saves this maze to a text file
      * @param path file path

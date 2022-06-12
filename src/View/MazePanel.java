@@ -299,12 +299,11 @@ public class MazePanel extends JPanel{
 
 
         g2D.setColor(Color.red);//draw solution so far
-        Cell previous = null;
+        Cell previous;
         Cell aSolutionBox = null;
         if (aMaze.getSolution() != null){
             int currentSize = aMaze.getSolution().size();
             for (int i = 0;i< currentSize;i++){
-                previous = aSolutionBox;
                 try {//catch concurrent modifications
                     previous = aSolutionBox;
                     aSolutionBox = aMaze.getSolution().get(i);
@@ -374,7 +373,7 @@ public class MazePanel extends JPanel{
                 aMaze.getStart().y>= 0 && aMaze.getStart().x< aMaze.getRows() &&
                 aMaze.getStart().y< aMaze.getColumns()){
             g2D.setColor(Color.YELLOW);//draw start
-            if (aMaze.getIsKidsMaze() == false) {
+            if (!aMaze.getIsKidsMaze()) {
                 g2D.fill(aMaze.getCellArray()[aMaze.getStart().x]
                         [aMaze.getStart().y].getCell());
             }
@@ -390,13 +389,11 @@ public class MazePanel extends JPanel{
                 aMaze.getGoal().y< aMaze.getColumns()){
             g2D.setColor(Color.BLUE);//draw goal
             System.out.println((aMaze.getIsKidsMaze()));
-            if(aMaze.getIsKidsMaze() == false) {
+            if(!aMaze.getIsKidsMaze()) {
                 g2D.fill(aMaze.getCellArray()[aMaze.getGoal().x]
                         [aMaze.getGoal().y].getCell());
             }else
             {
-                BufferedImage img;
-                img = new BufferedImage(cellWidth,cellHeight,1 );
                 Rectangle a = aMaze.getCellArray()[aMaze.getGoal().x][aMaze.getGoal().y].getCell();
                 g2D.drawImage(KidsGoalIcon.getImage(), (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
@@ -416,8 +413,7 @@ public class MazePanel extends JPanel{
                 g2D.drawImage(logoIcon.getImage(), (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
-            else if (thisLogoImage != null)
-            {
+            else {
                 g2D.drawImage(thisLogoImage, (int) a.getX(), (int) a.getY()
                         , cellWidth, cellHeight, Color.white, this);
             }
@@ -569,7 +565,7 @@ public class MazePanel extends JPanel{
      */
 
     public void blacken(){
-        if(aMaze.getIsKidsMaze() != true) {
+        if(!aMaze.getIsKidsMaze()) {
             if (aMaze.getRows() % 2 == 0 && aMaze.getColumns() % 2 == 0) {
                 aMaze = new Maze(aMaze.getRows() + 1, aMaze.getColumns() + 1);
             }
@@ -582,7 +578,7 @@ public class MazePanel extends JPanel{
             this.invalidate();
             aMaze.blackenThisMaze();
         }
-        else if (aMaze.getIsKidsMaze() == true)
+        else if (aMaze.getIsKidsMaze())
         {
             if (aMaze.getRows() % 2 == 0 && aMaze.getColumns() % 2 == 0) {
                 aMaze = new KidsMaze(aMaze.getRows() + 1, aMaze.getColumns() + 1);
