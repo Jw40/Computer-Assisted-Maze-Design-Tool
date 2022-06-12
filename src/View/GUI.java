@@ -367,7 +367,7 @@ public class GUI extends Component {
             mazePanel.repaint();
             //maze.KidMaze();
             maze = new KidsMaze(10,14);
-            System.out.println(maze.getIsKidsMaze());
+            
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));
         });
@@ -376,7 +376,6 @@ public class GUI extends Component {
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
                 maze = mazePanel.getMaze();
-                System.out.println(maze.getIsKidsMaze());
                 statusLabel.setText("Status: Generating...");
             //random.setEnabled(true);
                 resetButton.setEnabled(false);
@@ -391,7 +390,6 @@ public class GUI extends Component {
             int y = maze.getColumns();
 
             mazePanel.drawLogo();
-            System.out.println("New:  " + maze.getIsKidsMaze());
 
                 maze.setGoal(x - 2, y - 2);
                 maze.setStart(1, 1);

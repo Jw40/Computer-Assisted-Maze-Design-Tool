@@ -387,7 +387,6 @@ public class MazePanel extends JPanel{
                 aMaze.getGoal().y>=0 && aMaze.getGoal().x<aMaze.getRows() &&
                 aMaze.getGoal().y< aMaze.getColumns()){
             g2D.setColor(Color.BLUE);//draw goal
-            System.out.println((aMaze.getIsKidsMaze()));
             if(!aMaze.getIsKidsMaze()) {
                 g2D.fill(aMaze.getCellArray()[aMaze.getGoal().x]
                         [aMaze.getGoal().y].getCell());
