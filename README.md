@@ -73,3 +73,9 @@ Notes:
 - Enable Logo importing
 - Enable Start,Goal and Logo points to be set when generating a maze
 
+Version 2.3
+Notes:
+07/06/2022
+- Add Java Document (Maze API)
+- Added Comments to every method
+- Added Database Coonection and other classes related to database 
