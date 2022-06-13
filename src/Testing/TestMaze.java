@@ -34,6 +34,16 @@ class TestMaze extends Maze {
     }
 
     @Test
+    public void testGetMazeDetails()
+    {
+        maze.getMazeName();
+        maze.getAuthorName();
+        maze.getIsKidsMaze();
+
+
+    }
+
+    @Test
     public void testWhiteMaze(){
         maze.whitenThisMaze();
         int counter = 0;
@@ -121,6 +131,11 @@ class TestMaze extends Maze {
         maze.saveMaze("Desktop");
     }
 
+    @Test
+    public void testSaveMazev3()
+    {
+        maze.saveMaze("");
+    }
     @Test
     public void testRowsColumns()
     {

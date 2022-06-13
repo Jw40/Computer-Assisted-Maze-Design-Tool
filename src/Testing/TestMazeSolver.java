@@ -27,6 +27,7 @@ class TestMazeSolver extends MazeSolver {
 
     @BeforeEach
     void setUp() {
+        MazeSolverBFSInit();
 
 
     }
@@ -34,6 +35,7 @@ class TestMazeSolver extends MazeSolver {
     @Test
     public void TestSolver()
     {
+
         solver.getSolution();
         assertFalse(solver.isSolved());
     }

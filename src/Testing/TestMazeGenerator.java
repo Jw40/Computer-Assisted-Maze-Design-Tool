@@ -1,6 +1,7 @@
 package Testing;
 
 import Controller.IMaze;
+import Controller.Maze;
 import Controller.MazeGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +20,10 @@ class TestMazeGenerator extends MazeGenerator {
     public TestMazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         super(width, height, classic, aMaze);
     }
-
+    Maze maze = new Maze();
     @BeforeEach
     void setUp() {
+
     }
 
     @Test
