@@ -19,7 +19,7 @@ import java.sql.Statement;
  */
 public class DBStatements extends DBDataSource {
     /**
-     * A SQL Statement to find a user.
+     * A SQL Statement to insert Data.
      */
     private static PreparedStatement insertData;
 
@@ -51,7 +51,9 @@ public class DBStatements extends DBDataSource {
             insertData.setString(3, "fooMazeName"); // change with maze data string
             insertData.setString(4, "2022-02-22");
             insertData.executeUpdate();
+            //This works ^^^
 
+            
 
 
         } catch (SQLException sqlex) {
