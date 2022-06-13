@@ -61,26 +61,56 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GUI extends Component {
 
 
+    /**
+     * starting icon
+     */
     private final ImageIcon startIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/start.png")));
+    /**
+     * logo default icon
+     */
     private final ImageIcon logoIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/logo.png")));
+    /**
+     * goal icon
+     */
     private final ImageIcon goalIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource(
             "/Icons/goal.png")));
 
 
-    private final JFrame mainFrame;//main window
+    /**
+     * main window
+     */
+    private final JFrame mainFrame;
     /**
      * displays maze
      */
-    private MazePanel mazePanel;
-    private boolean saved;//maze saved
-    private String directory;//save directory
-    private IMaze maze;//open maze, holds static maze data
-    private MazeSolver solver;//solves the open maze
-    private Thread runThread;//runs to solve the maze
-    private MazeGenerator generator;//generates maze
-    private boolean generatorMode;//to check whether to reset on File menu click
+    private final MazePanel mazePanel;
+    /**
+     * maze saved
+     */
+    private boolean saved;
+    /**
+     * save directory
+     */
+    private String directory;
+    /**
+     * open maze, holds static maze data
+     */
+    private IMaze maze;
+    /**
+     * solves the open maze
+     */
+    private MazeSolver solver;
+    /**
+     * runs to solve the maze
+     */
+    private Thread runThread;
+    /**
+     * generates maze
+     */
+    private MazeGenerator generator;
+
 
     /**
      * Constructor, builds GUI
@@ -89,7 +119,6 @@ public class GUI extends Component {
         saved = true;
         directory = null;
         solver = null;
-        generatorMode = false;
 
         //remove this to change the style of the GUI
         try {
@@ -107,9 +136,14 @@ public class GUI extends Component {
         //create a maze base 16,16
         maze = new Maze(18, 18);
         mazePanel = new MazePanel(maze);
+        SearchPanel searchPanel = new SearchPanel();
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        mainPanel.add(mazePanel);
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.addTab("Maze", mazePanel);
+        tabbedPane.addTab("Search", searchPanel);
+        mainPanel.add(tabbedPane);
+        //mainPanel.add(mazePanel);
 
         //Menu bar start
         JMenuBar menuBar = new JMenuBar();
@@ -122,6 +156,9 @@ public class GUI extends Component {
         JMenuItem importImage = new JMenuItem("Import Logo...");
         JMenuItem exit = new JMenuItem("Exit");
         JMenuItem clear = new JMenuItem("Clear Maze");
+
+
+
 
         fileMenu.add(newMaze);
         fileMenu.add(openMaze);
@@ -208,8 +245,8 @@ public class GUI extends Component {
         totalCellsLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel countBlackenLabel = new JLabel("Cell Walls: 0");
         countBlackenLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JLabel percentageTaversable = new JLabel("Maze traversable: 0");
-        percentageTaversable.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        JLabel traversedPercent = new JLabel("Maze traversable: 0");
+        traversedPercent.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel percentageTraversedOptimal = new JLabel("Traversable in solution: 0");
         percentageTraversedOptimal.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         JLabel percentageDeadEnds = new JLabel("Ending in dead ends: 0");
@@ -226,7 +263,7 @@ public class GUI extends Component {
         stepPanel.add(totalCellsLabel);
         stepPanel.add(countBlackenLabel);
         stepPanel.add(solutionLabel);
-        percentagePanel.add(percentageTaversable);
+        percentagePanel.add(traversedPercent);
         percentagePanel.add(percentageTraversedOptimal);
         percentagePanel.add(percentageDeadEnds);
         percentagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -261,6 +298,7 @@ public class GUI extends Component {
         // Run Panel and Command Panel
         JPanel runPanel = new JPanel();
         runPanel.setLayout(new BoxLayout(runPanel, BoxLayout.Y_AXIS ));
+
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         runPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -327,24 +365,19 @@ public class GUI extends Component {
             clearMaze();
             mazePanel.getMaze().whitenThisMaze();
             mazePanel.repaint();
-            maze.KidMaze();
+            //maze.KidMaze();
+            maze = new KidsMaze(10,14);
+
             mazePanel.setMaze((maze));
             clearButton.setEnabled((true));
-            int x = maze.getRows();
-            int y = maze.getColumns();
-
-
-            //mazePanel.repaint();
         });
 
         //
         // Generate, Solve and Reset Buttons ACTION LISTENERS
         generateNewMazeButton.addActionListener(e -> {
                 maze = mazePanel.getMaze();
-
                 statusLabel.setText("Status: Generating...");
-                generatorMode = true;
-                //random.setEnabled(true);
+            //random.setEnabled(true);
                 resetButton.setEnabled(false);
                 solveButton.setEnabled(true);
                 clearButton.setEnabled((true));
@@ -360,6 +393,8 @@ public class GUI extends Component {
 
                 maze.setGoal(x - 2, y - 2);
                 maze.setStart(1, 1);
+
+
 
                 mazePanel.repaint();
                 runThread = new Thread(() -> {
@@ -433,14 +468,14 @@ public class GUI extends Component {
                             countBlackenLabel.setText("Cell Walls: " + maze.countBlacken());
                             float total= mazePanel.TotalCells();
                             float blacken = maze.countBlacken();
-                            float percentagetotal = blacken / total;
+                            float totalPercent = blacken / total;
                             float traversed = mazePanel.getMaze().getSolution().size();
-                            float percentageoptimal = traversed / total;
-                            float deadends = (total - blacken) - traversed;
-                            float percentagedead = deadends / total;
-                            percentageTaversable.setText("Maze traversable:  " + Math.round((percentagetotal*100)) +"%");
-                            percentageTraversedOptimal.setText("Maze traversable in solution: " + Math.round((percentageoptimal*100)) +"%");
-                            percentageDeadEnds.setText("Ending in dead ends: " + Math.round((percentagedead*100)) + "%");
+                            float optimalPercent = traversed / total;
+                            float deadEnds = (total - blacken) - traversed;
+                            float deadEndPercent = deadEnds / total;
+                            traversedPercent.setText("Maze traversable:  " + Math.round((totalPercent*100)) +"%");
+                            percentageTraversedOptimal.setText("Maze traversable in solution: " + Math.round((optimalPercent*100)) +"%");
+                            percentageDeadEnds.setText("Ending in dead ends: " + Math.round((deadEndPercent*100)) + "%");
                         }
                     } catch (InterruptedException p) {
                         System.out.println("Interrupted!");
@@ -609,8 +644,8 @@ public class GUI extends Component {
                 mainFrame.dispose();
             }
         });
-        mainFrame.setMinimumSize(new Dimension(800, 800));
-        mainFrame.setPreferredSize(new Dimension(800, 800));
+        mainFrame.setMinimumSize(new Dimension(1000, 1000));
+        mainFrame.setPreferredSize(new Dimension(1200, 1000));
         mainFrame.pack();
         mainFrame.setLocation(screenSize.width/2 - (mainFrame.getWidth())/2,
                 screenSize.height/2 - (mainFrame.getHeight()/2));
@@ -703,12 +738,7 @@ public class GUI extends Component {
                 runThread.interrupt();
             }
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int maxSize;
-            if (screenSize.height > screenSize.width) {
-                maxSize = screenSize.height / 2;
-            } else {
-                maxSize = screenSize.width / 2;
-            }
+
             JDialog newDialog = new JDialog(mainFrame, "Build New Maze", true);
             newDialog.setResizable(false);
             JPanel newPanel = new JPanel();
@@ -718,9 +748,9 @@ public class GUI extends Component {
             GridLayout gridLayout = new GridLayout(1, 2, 5, 5);
 
             JSpinner rowSpinner = new JSpinner(new SpinnerNumberModel(mazePanel.getMaze().getRows(),
-                    2, maxSize, 1));
+                    2, 100, 1));
             JSpinner columnSpinner = new JSpinner(new SpinnerNumberModel(mazePanel.getMaze().getColumns(),
-                    2, maxSize, 1));
+                    2, 100, 1));
 
             JCheckBox keepOld = new JCheckBox("Keep previous maze");
             keepOld.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -902,14 +932,13 @@ public class GUI extends Component {
 
         catch(Exception e)
         {
-            System.out.println("Issues occured when importing an image");
+            System.out.println("Issues occurred when importing an image");
 
             System.out.println(e.getMessage());
 
 
         }
     }
-
 
     private boolean openMaze(){
         boolean flag = false;

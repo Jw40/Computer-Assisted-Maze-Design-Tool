@@ -43,7 +43,10 @@ public class DBStatements extends DBDataSource {
     }
     }
 
-    public void run() {
+    /**
+     * test
+     */
+    public static void run() {
         try {
             // Inserting Data to the database
             insertData.setString(1, "foo_maze_data"); // change with the maze

@@ -46,8 +46,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contructors
- * the author name and maze name and the creation date are stored in this object
+ * Maze class uses an array of cells Cell[][] to construct a maze using one of 4 contractors.
+ * A maze can be created with just rows and columns as a parameter or with an author name, maze name and creation date.
+ *
  */
 public class Maze implements  IMaze
 {
@@ -72,9 +73,18 @@ public class Maze implements  IMaze
      * name of the maze
      */
     public String mazeName;
-    public LocalDate creationDate;//creation date of the maze
+    /**
+     * creation date of the maze
+     */
+    public LocalDate creationDate;
+    /**
+     * last edit date
+     */
     public LocalDate editDate;//last edit date
-    public boolean iskidsmaze = false;
+    /**
+     * setting for kids maze or false if adult maze
+     */
+    protected boolean iskidsmaze = false;
 
     //Constructor 1
     /**
@@ -90,6 +100,7 @@ public class Maze implements  IMaze
         logo = null;
         current = null;
         solution = null;
+        iskidsmaze = false;
     }
 
     //Constructor 2
@@ -103,7 +114,7 @@ public class Maze implements  IMaze
      * @param columns y
      * @param authorName name of author
      * @param mazeName name of maze
-     * @param creationDate creationg date of maze
+     * @param creationDate creation date of maze
      */
     public Maze(int rows, int columns, String authorName, String mazeName, LocalDate creationDate)
     {
@@ -125,6 +136,7 @@ public class Maze implements  IMaze
         current = null;
         solution = null;
         logo = null;
+        iskidsmaze = false;
     }
     //Constructor 3
     /**
@@ -149,6 +161,7 @@ public class Maze implements  IMaze
         goal = null;
         current = null;
         solution = null;
+        iskidsmaze = false;
     }
 
     //Constructor 4
@@ -166,6 +179,7 @@ public class Maze implements  IMaze
             int columns = scanner.nextInt();
             this.rows = rows;
             this.columns = columns;
+
 
             cellArray = new Cell[rows][columns];
             for (int i = 0; i < rows; i++)
@@ -203,39 +217,29 @@ public class Maze implements  IMaze
                     }
                 }
             }
+
         } catch (IOException e)
         {
             System.out.println("File Error - Input issue!");
         }
     }
 
-    /**
-     * create a kids maze
-     * less rows and more columns
-     */
-    public void KidMaze()
+    @Override
+    public String getMazeName()
     {
-        int rows = 10;
-        int columns = 14;
-
-        this.rows = rows;
-        this.columns = columns;
-        cellArray = new Cell[rows][columns];
-        for (int i = 0;i< rows;i++)
-        {
-            for (int j = 0;j< columns;j++)
-            {
-                cellArray[i][j] = new Cell();
-            }
-        }
-        start = null;
-        goal = null;
-        current = null;
-        solution = null;
-        logo = null;
-        iskidsmaze = true;
+        return this.mazeName;
+    }
+    @Override
+    public String getAuthorName()
+    {
+        return this.authorName;
     }
 
+
+    public boolean getIsKidsMaze()
+    {
+        return iskidsmaze;
+    }
 
     /**
      * @param x x cord on maze
@@ -472,7 +476,7 @@ public class Maze implements  IMaze
 
                     if (cellArray[i][j].IsObstacle) {
                         count++;
-                    };
+                    }
                 }
             }
             return count;

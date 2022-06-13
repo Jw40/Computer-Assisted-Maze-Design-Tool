@@ -42,18 +42,54 @@ import java.util.Collections;
 
 /**
  * Maze Solver used to find the path from the start to the goal
- * uses a breathd first search
- * returns the the GUI class to display to the screen
+ * uses a breathed first search
+ * returns the GUI class to display to the screen
  */
 public class MazeSolver {
 
-    protected int x, y; // current position
-    protected int end_x, end_y; // end position
-    protected Cell[][] maze; // the maze boxes
-    protected int width, height; // maze dimensions
-    protected int step; // solver step
-    protected ArrayList<Cell> solution; // maze solution
-    protected int maxFront; // max front set size
+    /**
+     * current x position
+     */
+    protected int x;
+    /**
+     * current y position
+     */
+    protected  int y;
+    /**
+     * end pos x
+     */
+    protected int end_x;
+    /**
+     * end pos y
+     */
+    protected int end_y; // end position
+    /**
+     * the maze rectangles array
+     */
+    protected Cell[][] maze;
+    /**
+     * maze width
+     */
+    protected int width;
+    /**
+     * maze height
+     */
+    protected  int height;
+    /**
+     *  solver step
+     */
+    protected int step;
+    /**
+     * maze solution
+     */
+    protected ArrayList<Cell> solution;
+    /**
+     * max front set size
+     */
+    protected int maxFront;
+    /**
+     * this maze
+     */
     protected IMaze mazeData;
 
     private ArrayList<Cell> front;
@@ -64,7 +100,7 @@ public class MazeSolver {
     /**
      * Create maze from input
      * @param mazeInput 2D array with 0 and 1 for obstacles
-     * @param mazeData
+     * @param mazeData this maze data
      */
     public MazeSolver(int[][] mazeInput, IMaze mazeData)
     {
@@ -99,7 +135,7 @@ public class MazeSolver {
 
     /**
      * BFS initialization
-     * initalize variables
+     * initialize variables
      */
     public void MazeSolverBFSInit()
     {
@@ -114,7 +150,7 @@ public class MazeSolver {
      * Perform the next step of search
      * @param speed in milliseconds
      * @return true if step performed
-     * @throws java.lang.InterruptedException
+     * @throws java.lang.InterruptedException a
      */
     public boolean nextStep(int speed) throws InterruptedException
     {
@@ -180,32 +216,32 @@ public class MazeSolver {
                 maze[y][x].previous = maze[this.y][this.x];
             }
             front.add(maze[y][x]);
-            int fsize = front.size();
-            if(fsize>maxFront){
-                maxFront = fsize;
+            int frontSize = front.size();
+            if(frontSize>maxFront){
+                maxFront = frontSize;
             }
         }
     }
 
 
     /**
-     * Visit MazeBox in x, y position
-     * @param x MazeBox x coordinate
-     * @param y MazeBox y coordinate
+     * Visit MazeBox in this x, this y position
+     * @param myX MazeBox this coordinate
+     * @param myY MazeBox myY coordinate
      * @return true if MazeBox is visited
      */
-    protected boolean visit(int x, int y)
+    protected boolean visit(int myX, int myY)
     {
-        if(!validPosition(x, y)){
+        if(!validPosition(myX, myY)){
             return false;
         }
-        this.x = x;
-        this.y = y;
-        maze[y][x].isVisited = true;
+        this.x = myX;
+        this.y = myY;
+        maze[myY][myX].isVisited = true;
         step++;
         //GUI
-        mazeData.getCellArray()[y][x].isVisited = true;
-        mazeData.setCurrent(new Point(y, x));
+        mazeData.getCellArray()[myY][myX].isVisited = true;
+        mazeData.setCurrent(new Point(myY, myX));
         return true;
     }
 

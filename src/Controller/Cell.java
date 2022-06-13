@@ -49,12 +49,12 @@ public class Cell implements Comparable<Cell> {
 
     public Rectangle cell;
      /**
-      * x axis of cell
+      * x-axis of cell
       */
 
     public int x;
      /**
-      * y axis of cell
+      * y-axis of cell
       */
     public int y;
 
@@ -74,7 +74,7 @@ public class Cell implements Comparable<Cell> {
      
     public Cell previous;
      /**
-      * check if a cell is a obstruct
+      * check if a cell is an obstetrical
       */
     protected boolean IsObstacle;
 
@@ -90,6 +90,7 @@ public class Cell implements Comparable<Cell> {
     }
 
     /**
+     * IsObstacle reference to if this cell is a black cell or white cell
      * @return IsObstacle which will either be true or false
      */
     public boolean isObstacle()
@@ -98,9 +99,10 @@ public class Cell implements Comparable<Cell> {
     }
 
     /**
-     * @param isObstacle bool which sets the cell to an obstacle or not
      * if @param isObstacle is true, the cell is Obstacle
-     * otherwise false and the cell is not an Obstacle
+     *      otherwise false and the cell is not an Obstacle
+     * @param isObstacle bool which sets the cell to an obstacle or not
+     *
      */
     public void SetIsObstacle(boolean isObstacle)
     {
@@ -108,8 +110,9 @@ public class Cell implements Comparable<Cell> {
     }
 
     /**
-     * @param cell the cell to be placed in the maze
+     * the cell to be placed in the maze
      *        updates the this.cell variable
+     * @param cell this cell to be placed
      */
     public void placeCell(Rectangle cell)
     {
@@ -117,6 +120,7 @@ public class Cell implements Comparable<Cell> {
     }
 
      /**
+      * reference to the current cell
       * @return return the current cell
       */
     public Rectangle getCell()
@@ -125,6 +129,7 @@ public class Cell implements Comparable<Cell> {
     }
 
      /**
+      * reference to the local variable set to true or false to determine if this cell has been already visted
       * @return return true if the cell has been visited in the search
       */
     public boolean isVisited()
@@ -133,10 +138,11 @@ public class Cell implements Comparable<Cell> {
     }
 
      /**
+      * this method is to keep the compiler happy
+      *       *  as it needs this method to implement the parent class
       * @param o this cell
       * @return 0
-      *  this method is to keep the compiler happy
-      *  as it needs this method to implement the parent class
+      *
       */
      @Override
      public int compareTo(Cell o)

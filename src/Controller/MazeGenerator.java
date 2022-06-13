@@ -54,13 +54,16 @@ public class MazeGenerator {
     private int step; // generator step
     private final boolean classic; // if the generated maze is classic
     private final int vstep; // visit step, 2: classic, 1: randomized
-    private IMaze aMaze;
+    private final IMaze aMaze;
+
 
     /**
-     * DFS initialization
-     * @param width maze width >= 4
-     * @param height maze height >= 4
-     * @param aMaze this maze
+     * Constructor for MazeGenerator
+     * Generates a new maze with given parameters
+     * @param width maze columns
+     * @param height maze rows
+     * @param classic classic maze setting to ensure a classic type of maze
+     * @param aMaze this maze to be generated
      */
     public MazeGenerator(int width, int height, boolean classic, IMaze aMaze) {
         this.classic = classic;
@@ -117,7 +120,6 @@ public class MazeGenerator {
 
     /**
      * Generates random int from 0 to ...
-     * @param to
      * @return random int
      */
     private int rand(int to){
@@ -128,9 +130,9 @@ public class MazeGenerator {
 
     /**
      * Performs next generation step
-     * @param speed
+     * @param speed speed setting
      * @return true if step performed
-     * @throws InterruptedException
+     * @throws InterruptedException a
      */
     public boolean nextStep(int speed) throws InterruptedException{
         if(speed>0) Thread.sleep(speed);
@@ -255,12 +257,12 @@ public class MazeGenerator {
         return 0;
     }
 
-    /** could delete this if we dont want, no usages found
+    /** could delete this if we don't want, no usages found
      * Gets generated maze
      * @return 2D array with maze (0: empty, 1: start, 2: end, 3: obstacle)
      */
     public int[][] getMaze(){
-        int out[][] = new int[height][width];
+        int[][] out = new int[height][width];
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
                 if(maze[i][j].isObstacle()) out[i][j] = 3;
