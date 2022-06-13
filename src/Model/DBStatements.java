@@ -24,9 +24,14 @@ public class DBStatements extends DBDataSource {
     private static PreparedStatement insertData;
 
     /**
-     * A SQL Statement to get maze size
+     * A SQL Statement to get mazedata by the author's name
      */
-    private PreparedStatement mazeSize;
+    private static PreparedStatement getMazeDataByName;
+
+    /**
+     * A SQL Statement to get mazedata by the author's name
+     */
+    private static PreparedStatement getAllMazeData;
 
     /**
      * Constructor for DBStatement
@@ -37,6 +42,8 @@ public class DBStatements extends DBDataSource {
             Statement statement = connection.createStatement();
 //            insertData = connection.prepareStatement(DBQueries.INSERT_DATA);
             insertData = connection.prepareStatement(DBQueries.INSERT_DATA);
+            getMazeDataByName = connection.prepareStatement(DBQueries.GET_MAZEDATA_BY_MAZENAME_AND_AUTHORNAME);
+            getAllMazeData = connection.prepareStatement(DBQueries.GET_ALL_MAZEDATA);
 //            connection.nativeSQL(INSERT_DATA);
         } catch (SQLException sqlex) {
         System.err.println("Access to the database was denied. Ensure MySQL server is running.");
@@ -49,15 +56,18 @@ public class DBStatements extends DBDataSource {
     public static void run() {
         try {
             // Inserting Data to the database
-            insertData.setString(1, "foo_maze_data"); // change with the maze
+            insertData.setString(1, "foo_maze_data"); // change with the mazeData
             insertData.setString(2, "Foo authorname"); // change with author name
             insertData.setString(3, "fooMazeName"); // change with maze data string
             insertData.setString(4, "2022-02-22");
             insertData.executeUpdate();
             //This works ^^^
 
-            
+            getMazeDataByName.setString(1, "ur maze"); // MazeName
+            getMazeDataByName.setString(2, "dex"); // Author Name
+            getMazeDataByName.executeUpdate();
 
+            getAllMazeData.executeUpdate();
 
         } catch (SQLException sqlex) {
             sqlex.printStackTrace();

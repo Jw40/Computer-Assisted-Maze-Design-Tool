@@ -17,36 +17,15 @@ public class DBQueries {
             "INSERT INTO user_data (mazeData, authorName, mazeName, creationDate) VALUES (?, ?, ?, ?);"; // IDX is auto incrementing
 
     /**
-     * SQL Query to Search a user in the database by their username
+     * SQL Query to get mazeData by using the mazeName and authorName
+     * Takes mazeName and authorName and returns a mazeData name.
      */
-    public static final String SEARCH_USER =
-            "SELECT * FROM user_prefs where username = ?";
-    /**
-     * SQL Query to insert maze info such as the name of the maze and the date created
-     */
-    public static final String INSERT_MAZE_INFO =
-            "INSERT INTO user_prefs (mazeName, dateCreated) VALUES (?, ?);";
+    public static final String GET_MAZEDATA_BY_MAZENAME_AND_AUTHORNAME =
+            "SELECT * FROM user_data WHERE mazeName = '?' and authorName = '?'";
 
     /**
-     * SQL Query to search maze info such as the name of the maze and the date created
+     * SQL Query to get all Maze Data Information
      */
-    public static final String GET_MAZE_INFO =
-            "SELECT * FROM user_prefs WHERE idx = ?;"; // Searching by IDX might not be the best way, might change later
-    /**
-     * SQL Query to select all maze info such as the name of the maze and the date created
-     */
-//    public static final String GET_ALL_MAZE_INFO =
-//            "SELECT * FROM user_prefs";
-    /**
-     * SQL Query to edit maze name such as the name of the maze and the date created
-     */
-    public static final String EDIT_MAZENAME =
-            "UPDATE user_prefs set mazeName = ? WHERE userName = ?";
-
-    /**
-     * SQL Query to find a user by their username
-     */
-    public static final String FIND_USER_BY_USERNAME =
-            "SELECT * FROM users WHERE username = ? LIMIT 1";
-
+    public static final String GET_ALL_MAZEDATA =
+            "SELECT * FROM user_data";
 }

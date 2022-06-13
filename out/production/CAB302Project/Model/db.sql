@@ -12,8 +12,8 @@ CREATE TABLE user_data (
     mazeData VARCHAR(50) NOT NULL,
     authorName VARCHAR(30) NOT NULL,
     mazeName VARCHAR(30) NOT NULL,
-    creationDate VARCHAR(10) NOT NULL,
-    PRIMARY KEY(authorName)
+    creationDate VARCHAR(10) NOT NULL
+--    PRIMARY KEY(authorName)
 );
 
 -- Add test entries.
