@@ -1,9 +1,15 @@
 package View;
 
+import Model.DBStatements;
+
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 //import net.proteanit.sql.DbUtils;
 
 import java.awt.*;
+import java.time.LocalDate;
 
 /**
  * Search panel to hold the search text bar, button and table in a separate pane on the main frame
@@ -74,7 +80,24 @@ public class SearchPanel extends JPanel {
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
+        /* Action Listeners */
+        // Getting info from the text box and getting results from database
+        searchB.addActionListener (e -> {
+            System.out.println(searchable.getText() + " will be added to the database, yet to be implimented");
+            // Initialising connection to DB
+            DBStatements statements = new DBStatements();
+            // DB Statement to insert data into the database
+            statements.GetAuthorOrMaze(searchable.getText());
+
+            // Schedule
+            // 430 - 930 mon
+            // 12-3 tues thurs
+            // No work wed, fri and weekend
+            //
+        });
+
     }
+
 
 
 /*

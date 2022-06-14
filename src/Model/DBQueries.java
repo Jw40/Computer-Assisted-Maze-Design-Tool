@@ -30,13 +30,9 @@ public class DBQueries {
             "SELECT * FROM user_data";
 
     /**
-     * SQL Query to get all Maze Data Information
+     * SQL Query to get maze name using the author name
      */
-    public static final String UPDATE_MAZE_NAME =
-            "UPDATE ";
+    public static final String GET_ALL_FROM_AUTHOR_OR_MAZE =
+            "SELECT * FROM user_data WHERE authorName = '?' OR mazeName = '?'";
 
-    // TODO
-    // Search by author name
-    // Search by Maze name
-    // Update Maze
 }
