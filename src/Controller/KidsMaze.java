@@ -323,6 +323,10 @@ public class KidsMaze implements  IMaze
         return rows;
     }
 
+    /**
+     * saves maze as a string to insert into the database
+     * @return maze to string
+     */
     @Override
     public String saveMazeToString ()
     {

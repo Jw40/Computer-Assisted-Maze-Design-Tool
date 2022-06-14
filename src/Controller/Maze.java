@@ -307,10 +307,8 @@ public class Maze implements  IMaze
 
 
     /**
-     * @param path file path
-     *             save the maze as a txt file
+     * save the maze as a string
      */
-
     @Override
     public String saveMazeToString ()
     {

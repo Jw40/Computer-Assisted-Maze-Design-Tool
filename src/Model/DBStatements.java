@@ -35,11 +35,10 @@ public class DBStatements extends DBDataSource {
     private static PreparedStatement getAuthorOrMazeName;
 
 
-
+    Connection connection = DBConnection.getInstance();
     /**
      * Constructor for DBStatement
      */
-    Connection connection = DBConnection.getInstance();
     public DBStatements() {
 
         try {
@@ -55,6 +54,12 @@ public class DBStatements extends DBDataSource {
     }
     }
 
+    /**
+     * @param mazeData this data
+     * @param mazeName this name
+     * @param authorName this name
+     * @param creationDate this date
+     */
     public void InsertData (String mazeData, String mazeName, String authorName, String creationDate) {
 
         try {
@@ -110,13 +115,15 @@ public class DBStatements extends DBDataSource {
 
         // output each row
         while (rs.next()) {
-            for (int i = 0; i < columnCount; i++) {
-                System.out.printf("%-20s", rs.getString(i + 1));
-            }
+            for (int i = 0; i < columnCount; i++) System.out.printf("%-20s", rs.getString(i + 1));
             System.out.printf("%n");
         }
         System.out.printf("%n");
     }
+
+    /**
+     * @param query search query
+     */
     public void GetAuthorOrMaze(String query) {
         // get all current entries
         ResultSet result = null;

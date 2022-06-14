@@ -35,6 +35,10 @@ public interface IMaze {
      */
     int getRows();
 
+    /**
+     * saves maze to string for inserting to the database
+     * @return this maze to string
+     */
     String saveMazeToString();
 
     /**
