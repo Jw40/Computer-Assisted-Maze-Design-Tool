@@ -37,13 +37,10 @@
 
 package View;
 import Controller.*;
+import Model.DBStatements;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -534,10 +531,15 @@ public class GUI extends Component {
             mazePanel.repaint();
         });
 
-        SaveToDatabaseButton.addActionListener(e -> {
-            maze = new Maze(mazePanel.getMaze().getRows(),
-                    mazePanel.getMaze().getColumns(), AuthorField.getText(), MazeName.getText(), LocalDate.now());
-            System.out.println(maze.ToString());
+        SaveToDatabaseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                maze = new Maze(mazePanel.getMaze().getRows(),
+                        mazePanel.getMaze().getColumns(), AuthorField.getText(), MazeName.getText(), LocalDate.now());
+//            System.out.println(maze.ToString());
+                DBStatements statements = new DBStatements();
+                statements.InsertData(AuthorField.getText(), MazeName.getText(), String.valueOf(LocalDate.now()));
+            }
         });
         // END
 

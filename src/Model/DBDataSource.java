@@ -10,7 +10,6 @@ public class DBDataSource {
     Interface for DBStatements that controls access to the database and it's required statements
      */
 
-    // DBStrategy File or TradingDataSource
-//    void mazeName(Maze mazeName);
+//    void InsertData (String mazeName, String authorName, String creationDate)
 
 }

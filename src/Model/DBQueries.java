@@ -14,7 +14,7 @@ public class DBQueries {
      * Username and password along with an ID number that is given automatically
      */
     public static final String INSERT_DATA =
-            "INSERT INTO user_data (mazeData, authorName, mazeName, creationDate) VALUES (?, ?, ?, ?);"; // IDX is auto incrementing
+            "INSERT INTO user_data (authorName, mazeName, creationDate) VALUES ( ?, ?, ?);"; // IDX is auto incrementing
 
     /**
      * SQL Query to get mazeData by using the mazeName and authorName
@@ -28,4 +28,15 @@ public class DBQueries {
      */
     public static final String GET_ALL_MAZEDATA =
             "SELECT * FROM user_data";
+
+    /**
+     * SQL Query to get all Maze Data Information
+     */
+    public static final String UPDATE_MAZE_NAME =
+            "UPDATE ";
+
+    // TODO
+    // Search by author name
+    // Search by Maze name
+    // Update Maze
 }

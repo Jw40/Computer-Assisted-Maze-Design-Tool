@@ -9,14 +9,14 @@ DROP TABLE IF EXISTS maze302project.user_data;
 -- Create tables.
 
 CREATE TABLE user_data (
-    mazeData VARCHAR(50) NOT NULL,
+    mazeData VARCHAR(50) ,
     authorName VARCHAR(30) NOT NULL,
     mazeName VARCHAR(30) NOT NULL,
     creationDate VARCHAR(10) NOT NULL,
     PRIMARY KEY(authorName)
 );
 
--- Add test entries.
+-- Add test entries.NULLABLE
 
 INSERT INTO
   user_data (mazeData, authorName, mazeName, creationDate)
