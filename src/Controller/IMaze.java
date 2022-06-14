@@ -35,6 +35,8 @@ public interface IMaze {
      */
     int getRows();
 
+    String saveMazeToString();
+
     /**
      * Maze details to string, used to print to console to verify details
      * @return Maze details to string

@@ -323,6 +323,50 @@ public class KidsMaze implements  IMaze
         return rows;
     }
 
+    @Override
+    public String saveMazeToString ()
+    {
+        String MazeData = "";
+        try (PrintWriter printer = new PrintWriter(new FileWriter(MazeData)))
+        {
+            printer.println(rows);
+            printer.println(columns);
+            for (int i = 0; i< rows; i++)
+            {
+                for (int j = 0; j< columns; j++)
+                {
+                    if (start != null && start.x == i && start.y == j)
+                    {
+                        printer.print("1 ");
+                    }
+                    else if (goal != null && goal.x == i && goal.y == j)
+                    {
+                        printer.print("2 ");
+                    }
+                    else if (logo != null && logo.x == i && logo.y == j)
+                    {
+                        printer.print("4 ");
+                    }
+                    else if (cellArray[i][j].isObstacle())
+                    {
+                        printer.print("3 ");
+                    }
+                    else
+                    {
+                        printer.print("0 ");
+                    }
+                }
+                printer.println();
+                MazeData = printer.toString();
+                System.out.println((MazeData));
+            }
+        }catch (Exception e)
+        {
+            System.out.println("Output issue!");
+        }
+        return MazeData;
+    }
+
     /**
      * gets columns
      * @return columns

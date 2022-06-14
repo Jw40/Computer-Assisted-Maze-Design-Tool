@@ -58,7 +58,7 @@ public class DBStatements extends DBDataSource {
     public void InsertData (String mazeData, String mazeName, String authorName, String creationDate) {
 
         try {
-            insertData.setString(1, mazeData)
+            insertData.setString(1, mazeData);
             insertData.setString(2, mazeName);
             insertData.setString(3, authorName);
             insertData.setString(4, creationDate);
@@ -97,7 +97,7 @@ public class DBStatements extends DBDataSource {
     // From Lec06-dataconn
     private static void displayContents(Statement st) throws SQLException {
         // get all current entries
-        ResultSet rs = st.executeQuery(GET_MAZEDATA_BY_MAZENAME_AND_AUTHORNAME);
+        ResultSet rs = st.executeQuery("GET_MAZEDATA_BY_MAZENAME_AND_AUTHORNAME");
 
         // use metadata to get the number of columns
         int columnCount = rs.getMetaData().getColumnCount();

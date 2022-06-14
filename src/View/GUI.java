@@ -543,7 +543,7 @@ public class GUI extends Component {
             DBStatements statements = new DBStatements();
             // DB Statement to insert data into the database
             // TODO get saveMaze as string and put it here vvv
-            statements.InsertData(IMaze.saveMaze, AuthorField.getText(), MazeName.getText(), String.valueOf(LocalDate.now()));
+            statements.InsertData(maze.saveMazeToString(), AuthorField.getText(), MazeName.getText(), String.valueOf(LocalDate.now()));
         });
         // END
 

@@ -24,7 +24,7 @@ public class DBTest {
 //            // Needs updating and fixing
 //            var getAllMazeData = connection.prepareStatement(DBQueries.GET_ALL_MAZEDATA);
 
-            statement.GetAuthorOrMaze("dex");
+            //statement.GetAuthorOrMaze("dex");
         } catch (SQLException sqlex) {
             System.err.println("Access to the database was denied. Ensure MySQL server is running.");
         }
