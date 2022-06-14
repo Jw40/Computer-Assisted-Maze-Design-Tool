@@ -55,15 +55,13 @@ public class DBStatements extends DBDataSource {
     }
     }
 
-    public void InsertData (String mazeName, String authorName, String creationDate) {
+    public void InsertData (String mazeData, String mazeName, String authorName, String creationDate) {
 
         try {
-            System.out.println(mazeName);
-            System.out.println(authorName);
-            System.out.println(creationDate);
-            insertData.setString(1, mazeName);
-            insertData.setString(2, authorName);
-            insertData.setString(3, creationDate);
+            insertData.setString(1, mazeData)
+            insertData.setString(2, mazeName);
+            insertData.setString(3, authorName);
+            insertData.setString(4, creationDate);
             insertData.executeQuery();
 
         } catch (SQLException exception) {

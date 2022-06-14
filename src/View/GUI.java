@@ -542,7 +542,8 @@ public class GUI extends Component {
             // Initialising connection to DB
             DBStatements statements = new DBStatements();
             // DB Statement to insert data into the database
-            statements.InsertData(AuthorField.getText(), MazeName.getText(), String.valueOf(LocalDate.now()));
+            // TODO get saveMaze as string and put it here vvv
+            statements.InsertData(IMaze.saveMaze, AuthorField.getText(), MazeName.getText(), String.valueOf(LocalDate.now()));
         });
         // END
 
