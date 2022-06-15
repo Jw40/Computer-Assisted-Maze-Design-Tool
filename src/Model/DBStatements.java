@@ -13,6 +13,7 @@ import java.sql.Statement;
 
 
 
+
 // Adapted from find the GGITHUB LINK
 
 /**
@@ -103,7 +104,6 @@ public class DBStatements extends DBDataSource {
     private static void displayContents(Statement st) throws SQLException {
         // get all current entries
         ResultSet rs = st.executeQuery("GET_MAZEDATA_BY_MAZENAME_AND_AUTHORNAME");
-
         // use metadata to get the number of columns
         int columnCount = rs.getMetaData().getColumnCount();
 
@@ -119,6 +119,8 @@ public class DBStatements extends DBDataSource {
             System.out.printf("%n");
         }
         System.out.printf("%n");
+
+
     }
 
     /**

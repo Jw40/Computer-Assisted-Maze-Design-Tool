@@ -1,5 +1,6 @@
 package View;
 
+import Model.DBConnection;
 import Model.DBStatements;
 
 import javax.swing.*;
@@ -7,6 +8,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 //import net.proteanit.sql.DbUtils;
+
+import  java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -32,7 +39,14 @@ public class SearchPanel extends JPanel {
      * used to search for mazes or authors in the database and display the results to screen
      * @throws HeadlessException a
      */
+
+
+    private PreparedStatement getMaze;
     public SearchPanel() throws HeadlessException {
+
+        Connection connection = DBConnection.getInstance();
+
+
         panel = new JPanel();
         panel.setLayout((new BorderLayout(10, 10)));
 
@@ -76,24 +90,50 @@ public class SearchPanel extends JPanel {
         //panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         //panel.setLayout((new GridLayout(0,1)));
 
+
+
         //setTable();
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
+        // Display each piece of information
+
+
+
+
         /* Action Listeners */
         // Getting info from the text box and getting results from database
+        //Attempting to at least display data in console
         searchB.addActionListener (e -> {
-            System.out.println(searchable.getText() + " will be added to the database, yet to be implimented");
+        try {
+            String sqlStatement = "SELECT * FROM user_data";
+            String results;
+
+            System.out.println(searchable.getText() + " will be added to the database, yet to be implemented");
             // Initialising connection to DB
             DBStatements statements = new DBStatements();
             // DB Statement to insert data into the database
             statements.GetAuthorOrMaze(searchable.getText());
 
+            getMaze = connection.prepareStatement(sqlStatement);
+            getMaze.executeQuery();
+
+
+
+            System.out.println(getMaze);
             // Schedule
             // 430 - 930 mon
             // 12-3 tues thurs
             // No work wed, fri and weekend
             //
+
+
+        }
+
+        catch(Exception f)
+        {
+            System.out.println(f.getMessage());
+        }
         });
 
     }
