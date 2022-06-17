@@ -1,0 +1,52 @@
+<project name="CAB302Project" default="all">
+	<property name="build.dir" location="target/classes" />
+	<path id="junit.class.path">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="test" depends="compile">
+		<mkdir dir="target/test-classes" />
+		<javac includeantruntime="false" srcdir="utest" destdir="target/test-classes">
+			<classpath refid="junit.class.path" />
+			<classpath location="target/classes" />
+		</javac>
+		<mkdir dir="target/test-results" />
+		<junitlauncher printsummary="true" failureproperty="junit.failure">
+			<classpath refid="junit.class.path" />
+			<classpath location="target/test-classes" />
+			<classpath location="target/classes" />
+			<testclasses outputdir="target/test-results">
+				<fileset dir="target/test-classes" includes="**/*.class" />
+				<listener type="legacy-plain" />
+			</testclasses>
+		</junitlauncher>
+		<fail if="junit.failure" message="junit tests failed - aborting" />
+	</target>
+
+	<target name="documentation">
+		<mkdir dir="doc" />
+		<javadoc sourcepath="src" destdir="doc" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="src" destdir="${build.dir}"
+			   includeantruntime="false" />
+	</target>
+
+	<target name="jar" depends="compile" >
+		<jar jarfile="target/Maze.jar" basedir="${build.dir}"
+			 manifest="jar-manifest.txt"/>
+	</target>
+
+	<target name="all" depends="compile, test, jar, documentation" />
+	<target name="clean">
+		<delete dir="target" quiet="true" />
+	</target>
+
+
+
+
+</project>
